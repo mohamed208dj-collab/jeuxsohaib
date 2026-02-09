@@ -1,1 +1,36 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة الألغاز الفخمة</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <section id="welcome-screen" class="active">
+            <h1 class="glow-text">لغز الذهب</h1>
+            <p>هل أنت ذكي بما يكفي لحل الألغاز؟</p>
+            <button onclick="startGame()" class="btn-main">ابدأ التحدي</button>
+        </section>
 
+        <section id="game-screen">
+            <div class="level-indicator">المستوى: <span id="current-level">1</span></div>
+            <div class="card">
+                <p id="riddle-text">جاري تحميل اللغز...</p>
+                <input type="text" id="answer-input" placeholder="اكتب إجابتك هنا...">
+                <button onclick="checkAnswer()" class="btn-gold">تحقق من الإجابة</button>
+                <p id="feedback"></p>
+            </div>
+            <button onclick="showHint()" class="btn-hint">💡 تلميح</button>
+        </section>
+
+        <section id="victory-screen">
+            <h2 class="glow-text">عبقري!</h2>
+            <p>لقد حللت اللغز بنجاح.</p>
+            <button onclick="nextLevel()" class="btn-main">اللغز التالي</button>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
