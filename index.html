@@ -1,36 +1,19 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لعبة الألغاز الفخمة</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div id="app">
-        <section id="welcome-screen" class="active">
-            <h1 class="glow-text">لغز الذهب</h1>
-            <p>هل أنت ذكي بما يكفي لحل الألغاز؟</p>
-            <button onclick="startGame()" class="btn-main">ابدأ التحدي</button>
-        </section>
+<section id="welcome-screen" class="active">
+    <div class="welcome-content">
+        <div class="logo-wrapper">
+            <div class="main-glow-circle"></div>
+            <i class="icon-enigma">?</i>
+        </div>
+        
+        <div class="text-reveal">
+            <h1 class="premium-title">أحـجـيـة <span>الـنـخـبـة</span></h1>
+            <div class="line-separator"></div>
+            <p class="subtitle">تحدى ذكاءك في عالم من الغموض</p>
+        </div>
 
-        <section id="game-screen">
-            <div class="level-indicator">المستوى: <span id="current-level">1</span></div>
-            <div class="card">
-                <p id="riddle-text">جاري تحميل اللغز...</p>
-                <input type="text" id="answer-input" placeholder="اكتب إجابتك هنا...">
-                <button onclick="checkAnswer()" class="btn-gold">تحقق من الإجابة</button>
-                <p id="feedback"></p>
-            </div>
-            <button onclick="showHint()" class="btn-hint">💡 تلميح</button>
-        </section>
-
-        <section id="victory-screen">
-            <h2 class="glow-text">عبقري!</h2>
-            <p>لقد حللت اللغز بنجاح.</p>
-            <button onclick="nextLevel()" class="btn-main">اللغز التالي</button>
-        </section>
+        <button onclick="startGame()" class="btn-premium">
+            <span class="btn-text">دخـول الـتـحـدي</span>
+            <div class="btn-glitch"></div>
+        </button>
     </div>
-    <script src="script.js"></script>
-</body>
-</html>
+</section>
