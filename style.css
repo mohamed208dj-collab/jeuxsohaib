@@ -1,91 +1,113 @@
-/* تصميم واجهة الترحيب الجديدة */
-.welcome-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    animation: zoomIn 1s ease-out;
+/* الألوان والخطوط */
+:root {
+    --primary-red: #ff0000;
+    --dark-red: #8b0000;
+    --glass-red: rgba(255, 0, 0, 0.1);
 }
 
-/* أنيميشن العنوان */
-.premium-title {
-    font-size: 4rem;
-    font-weight: 900;
-    color: #fff;
-    letter-spacing: 5px;
-    background: linear-gradient(to right, #d4af37, #f7e1ad, #d4af37);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shine 3s infinite linear;
-    margin-bottom: 10px;
-}
-
-/* الدائرة المضيئة خلف اللوجو */
-.main-glow-circle {
+/* الخلفية السينمائية */
+.red-glow-bg {
     position: absolute;
-    width: 150px;
-    height: 150px;
-    background: radial-gradient(circle, rgba(212,175,55,0.3) 0%, transparent 70%);
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(circle at center, #2e0000 0%, #000 100%);
+    z-index: -1;
+}
+
+/* أنيميشن الدائرة النابضة */
+.pulse-circle {
+    position: absolute;
+    width: 120px; height: 120px;
+    border: 2px solid var(--primary-red);
     border-radius: 50%;
-    animation: pulseGlow 2s infinite alternate;
+    animation: pulseRed 2s infinite ease-out;
 }
 
-.icon-enigma {
-    font-size: 5rem;
-    color: #d4af37;
-    font-style: normal;
-    position: relative;
-    z-index: 2;
+@keyframes pulseRed {
+    0% { transform: scale(0.8); opacity: 1; }
+    100% { transform: scale(1.5); opacity: 0; }
 }
 
-/* الزر الفخم */
-.btn-premium {
+.logo-area {
     position: relative;
-    padding: 15px 45px;
-    background: transparent;
-    border: 1px solid #d4af37;
-    color: #d4af37;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.main-icon {
+    font-size: 3rem;
+    color: var(--primary-red);
+    text-shadow: 0 0 20px var(--primary-red);
+}
+
+/* العنوان الرئيسي */
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: white;
+    margin: 0;
+    animation: fadeInUp 1s ease-out;
+}
+
+.hero-title span {
+    color: var(--primary-red);
+    text-transform: uppercase;
+}
+
+/* الخط الأحمر المتحرك */
+.red-line {
+    width: 0;
+    height: 3px;
+    background: var(--primary-red);
+    margin: 15px auto;
+    animation: growLine 1.5s forwards 0.5s;
+}
+
+@keyframes growLine {
+    to { width: 150px; }
+}
+
+/* الزر الأحمر "الروجي" */
+.btn-rouge {
+    background: var(--primary-red);
+    color: white;
+    border: none;
+    padding: 18px 50px;
+    border-radius: 50px;
     font-size: 1.2rem;
     font-weight: bold;
     cursor: pointer;
+    position: relative;
     overflow: hidden;
-    transition: 0.5s;
-    margin-top: 40px;
-    letter-spacing: 2px;
+    transition: 0.4s;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+    margin-top: 30px;
 }
 
-.btn-premium:hover {
-    background: #d4af37;
-    color: #000;
-    box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
+.btn-rouge:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 40px rgba(255, 0, 0, 0.7);
+    background: #ff3333;
 }
 
-/* Keyframes للأنيميشن */
-@keyframes shine {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 100% 50%; }
+/* تأثير اللمعان على الزر */
+.btn-shine {
+    position: absolute;
+    top: -50%; left: -150%;
+    width: 100%; height: 200%;
+    background: rgba(255,255,255,0.2);
+    transform: rotate(45deg);
+    transition: 0.6s;
 }
 
-@keyframes pulseGlow {
-    from { transform: scale(1); opacity: 0.5; }
-    to { transform: scale(1.3); opacity: 0.8; }
+.btn-rouge:hover .btn-shine {
+    left: 150%;
 }
 
-@keyframes zoomIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
-/* خط فاصل أنيق */
-.line-separator {
-    width: 0;
-    height: 2px;
-    background: #d4af37;
-    margin: 10px auto;
-    animation: expandLine 1.5s forwards delay 0.5s;
-}
-
-@keyframes expandLine {
-    to { width: 100%; }
+/* أنيميشن الظهور */
+@keyframes fadeInUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
