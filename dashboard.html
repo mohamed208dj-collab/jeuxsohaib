@@ -3,152 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة القيادة | مستقبلي</title>
+    <title>مستقبلي | منصة البكالوريا المتكاملة</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Tajawal', sans-serif; background-color: #f0f2f5; }
-        .sidebar { background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); }
-        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
-        .active-link { background: rgba(59, 130, 246, 0.2); border-right: 4px solid #3b82f6; color: #3b82f6; }
+        body { font-family: 'Tajawal', sans-serif; background: #f1f5f9; overflow-x: hidden; }
+        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .sidebar { transition: all 0.3s ease; z-index: 1000; }
+        .page-section { display: none; }
+        .active-section { display: block; }
         .progress-ring { transition: stroke-dashoffset 0.35s; transform: rotate(-90deg); transform-origin: 50% 50%; }
+        
+        /* تصميم زر القهوة */
+        .coffee-btn { background: linear-gradient(135deg, #634832 0%, #3c2a1a 100%); }
+        
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(100%); position: fixed; }
+            .sidebar.open { transform: translateX(0); }
+        }
     </style>
 </head>
-<body class="flex min-h-screen">
+<body class="bg-slate-50">
 
-    <aside class="sidebar w-64 hidden lg:flex flex-col text-white sticky top-0 h-screen shadow-2xl">
-        <div class="p-8 text-2xl font-black text-blue-400 tracking-tighter">🎯 مستقبلي</div>
-        <nav class="flex-1 px-4 space-y-2">
-            <a href="#" class="flex items-center gap-3 p-4 rounded-xl active-link transition"><span>🏠</span> الرئيسية</a>
-            <a href="#" class="flex items-center gap-3 p-4 rounded-xl text-slate-400 hover:bg-slate-800 transition"><span>📚</span> المواد</a>
-            <a href="#" class="flex items-center gap-3 p-4 rounded-xl text-slate-400 hover:bg-slate-800 transition"><span>📝</span> ملخصاتي</a>
-            <a href="#" class="flex items-center gap-3 p-4 rounded-xl text-slate-400 hover:bg-slate-800 transition"><span>🏆</span> التحديات</a>
-        </nav>
-        <div class="p-6 border-t border-slate-800">
-            <div class="flex items-center gap-3 bg-slate-800 p-3 rounded-2xl">
-                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center font-bold">A</div>
-                <div class="text-xs text-slate-300 font-bold">أمين بطل الباك</div>
-            </div>
+    <section id="loginScreen" class="page-section active-section min-h-screen flex items-center justify-center p-6 bg-slate-900">
+        <div class="animate__animated animate__zoomIn glass p-8 md:p-12 rounded-[3rem] shadow-2xl w-full max-w-md text-center">
+            <div class="text-6xl mb-6">🚀</div>
+            <h1 class="text-3xl font-black text-slate-800 mb-2">مستقبلي 2026</h1>
+            <p class="text-slate-500 mb-8">أدخل اسمك لتبدأ المراجعة بذكاء</p>
+            <input type="text" id="nameInput" placeholder="اكتب اسمك هنا..." 
+                class="w-full p-4 rounded-2xl bg-slate-100 border-none mb-6 focus:ring-2 focus:ring-blue-500 text-center text-lg font-bold">
+            <button onclick="startExperience()" class="w-full bg-blue-600 text-white font-bold py-4 rounded-2xl text-xl shadow-lg hover:bg-blue-700 transition">
+                دخول للمنصة
+            </button>
         </div>
-    </aside>
+    </section>
 
-    <main class="flex-1 p-4 md:p-8 overflow-y-auto">
+    <div id="dashboardScreen" class="page-section flex min-h-screen overflow-hidden">
         
-        <header class="flex justify-between items-center mb-10 animate__animated animate__fadeIn">
-            <div>
-                <h1 class="text-3xl font-black text-slate-800">لوحة التحكم 🚀</h1>
-                <p class="text-slate-500 mt-1">واش راك حاب تقرا اليوم؟</p>
+        <aside id="sidebar" class="sidebar w-64 bg-slate-900 text-white flex flex-col fixed lg:sticky top-0 h-screen shadow-2xl">
+            <div class="p-8 text-2xl font-black text-blue-400">🎯 مستقبلي</div>
+            <nav class="flex-1 px-4 space-y-2">
+                <a href="#" class="flex items-center gap-3 p-4 rounded-xl bg-blue-600/20 text-blue-400 font-bold border-r-4 border-blue-600">🏠 الرئيسية</a>
+                <a href="#" class="flex items-center gap-3 p-4 rounded-xl text-slate-400 hover:bg-slate-800 transition">📚 المواد</a>
+                <a href="#" class="flex items-center gap-3 p-4 rounded-xl text-slate-400 hover:bg-slate-800 transition">📊 إحصائياتي</a>
+            </nav>
+            <div class="p-6">
+                <button onclick="logout()" class="w-full p-3 rounded-xl bg-red-500/10 text-red-500 text-sm font-bold hover:bg-red-500 hover:text-white transition">تسجيل الخروج</button>
             </div>
-            <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
-                <span class="text-slate-400">📅 11 فيفري 2026</span>
-                <div class="w-px h-6 bg-slate-200"></div>
-                <span class="font-bold text-blue-600">باقي 124 يوم</span>
-            </div>
-        </header>
+        </aside>
 
-        <div class="grid lg:grid-cols-12 gap-8">
-            
-            <div class="lg:col-span-8 space-y-8">
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 animate__animated animate__fadeInUp">
-                    <div class="bg-blue-600 p-6 rounded-[2rem] text-white shadow-lg shadow-blue-200">
-                        <p class="opacity-70 text-sm">أنجزت اليوم</p>
-                        <h3 class="text-3xl font-black mt-1">4 ساعات</h3>
-                    </div>
-                    <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100">
-                        <p class="text-slate-400 text-sm">المهام المكتملة</p>
-                        <h3 class="text-3xl font-black text-slate-800 mt-1">12/15</h3>
-                    </div>
-                    <div class="bg-orange-500 p-6 rounded-[2rem] text-white shadow-lg shadow-orange-200">
-                        <p class="opacity-70 text-sm">نقاط الحماس</p>
-                        <h3 class="text-3xl font-black mt-1">1250 🔥</h3>
+        <main class="flex-1 p-4 md:p-8 overflow-y-auto">
+            <header class="flex justify-between items-center mb-10">
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleSidebar()" class="lg:hidden p-2 bg-white rounded-lg shadow-sm text-2xl">☰</button>
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-800">أهلاً، <span id="displayUserName" class="text-blue-600">أمين</span> 👋</h2>
+                        <p class="text-xs text-slate-400">اليوم: 11 فيفري 2026</p>
                     </div>
                 </div>
+                <div class="bg-white px-4 py-2 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-2">
+                    <span class="text-lg">🔥</span>
+                    <span class="font-black text-slate-700">124 يوم على الباك</span>
+                </div>
+            </header>
 
-                <div>
-                    <h2 class="text-xl font-black text-slate-800 mb-6 px-2">تقدم المواد الأساسية</h2>
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div class="bg-white p-6 rounded-3xl shadow-sm hover:shadow-md transition border border-slate-100 animate__animated animate__zoomIn">
-                            <div class="flex justify-between items-center mb-6">
-                                <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-2xl">📐</div>
-                                <span class="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">الرياضيات</span>
-                            </div>
-                            <h4 class="font-bold text-slate-700 mb-2 italic">وحدة المتتاليات</h4>
-                            <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
-                                <div class="bg-blue-600 h-full rounded-full" style="width: 75%"></div>
-                            </div>
-                            <div class="flex justify-between mt-3 text-[10px] font-bold text-slate-400">
-                                <span>التقدم: 75%</span>
-                                <span>باقي 4 دروس</span>
-                            </div>
+            <div class="grid lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-4 space-y-6">
+                    <div class="glass p-8 rounded-[3rem] text-center shadow-xl border-t-8 border-blue-600">
+                        <p class="text-[10px] font-bold text-slate-400 mb-6 uppercase tracking-widest">مؤقت التركيز</p>
+                        <div class="relative inline-flex items-center justify-center mb-8">
+                            <svg class="w-40 h-40">
+                                <circle class="text-slate-100" stroke-width="8" stroke="currentColor" fill="transparent" r="70" cx="80" cy="80"/>
+                                <circle class="text-blue-600 progress-ring" id="timerRing" stroke-width="8" stroke-dasharray="440" stroke-dashoffset="0" stroke-linecap="round" stroke="currentColor" fill="transparent" r="70" cx="80" cy="80"/>
+                            </svg>
+                            <span class="absolute text-4xl font-black text-slate-800" id="timerText">25:00</span>
                         </div>
-                        <div class="bg-white p-6 rounded-3xl shadow-sm hover:shadow-md transition border border-slate-100 animate__animated animate__zoomIn" style="animation-delay: 0.1s">
-                            <div class="flex justify-between items-center mb-6">
-                                <div class="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center text-2xl">🧬</div>
-                                <span class="text-xs font-bold text-green-600 bg-green-50 px-3 py-1 rounded-full">العلوم</span>
-                            </div>
-                            <h4 class="font-bold text-slate-700 mb-2 italic">المجال الأول: البروتينات</h4>
-                            <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
-                                <div class="bg-green-500 h-full rounded-full" style="width: 40%"></div>
-                            </div>
-                            <div class="flex justify-between mt-3 text-[10px] font-bold text-slate-400">
-                                <span>التقدم: 40%</span>
-                                <span>باقي 8 دروس</span>
-                            </div>
+                        <div class="flex gap-2">
+                            <button id="timerBtn" onclick="toggleTimer()" class="flex-1 bg-blue-600 text-white py-3 rounded-2xl font-bold shadow-md">ابدأ</button>
+                            <button onclick="resetTimer()" class="p-3 bg-slate-100 rounded-2xl">🔄</button>
                         </div>
                     </div>
+
+                    <div class="bg-white p-6 rounded-[2.5rem] shadow-sm flex items-center justify-between border border-slate-100">
+                        <div>
+                            <h4 class="font-black text-slate-800">ركن القهوة ☕</h4>
+                            <p class="text-[10px] text-slate-400">شربت <span id="coffeeCount" class="font-bold text-orange-600">0</span> فناجين اليوم</p>
+                        </div>
+                        <button onclick="addCoffee()" class="coffee-btn text-white p-4 rounded-2xl shadow-lg">زاد فنجان +</button>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-8 space-y-6">
+                    <div class="flex justify-between items-center px-2">
+                        <h3 class="text-xl font-black text-slate-800">برنامج المراجعة</h3>
+                        <button onclick="addSubject()" class="text-blue-600 font-bold text-sm hover:underline">+ إضافة مادة</button>
+                    </div>
+                    
+                    <div id="subjectsContainer" class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 card-anim">
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="text-3xl">📐</span>
+                                <span class="text-blue-600 font-bold text-[10px] bg-blue-50 px-2 py-1 rounded-md italic underline">الرياضيات</span>
+                            </div>
+                            <h4 class="font-bold text-slate-700 mb-2 italic">حل تمرين المتتاليات</h4>
+                            <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                                <div class="bg-blue-600 h-full w-[65%]" style="transition: width 1s;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="motivationBox" class="bg-gradient-to-r from-blue-700 to-indigo-800 p-8 rounded-[3rem] text-white shadow-2xl relative overflow-hidden hidden">
+                        <div class="relative z-10">
+                            <h4 class="font-bold text-xl mb-2" id="motMsg">يا محاينك.. راك قايم بيها! 🔥</h4>
+                            <p class="text-blue-100 text-xs">واصل المراجعة، الباك راه يرجف منك!</p>
+                        </div>
+                        <span class="absolute -right-10 -bottom-10 text-[10rem] opacity-10">🎓</span>
+                    </div>
                 </div>
             </div>
-
-            <div class="lg:col-span-4 space-y-8 animate__animated animate__fadeInRight">
-                
-                <div class="glass-card p-8 rounded-[3rem] text-center shadow-xl border-t-8 border-blue-600">
-                    <h3 class="text-slate-400 font-bold mb-6 text-xs uppercase tracking-widest">مؤقت التركيز ⏱️</h3>
-                    <div class="relative inline-flex items-center justify-center mb-8">
-                        <svg class="w-40 h-40">
-                            <circle class="text-slate-100" stroke-width="8" stroke="currentColor" fill="transparent" r="70" cx="80" cy="80"/>
-                            <circle class="text-blue-600 progress-ring" id="timerRing" stroke-width="8" stroke-dasharray="440" stroke-dashoffset="110" stroke-linecap="round" stroke="currentColor" fill="transparent" r="70" cx="80" cy="80"/>
-                        </svg>
-                        <span class="absolute text-4xl font-black text-slate-800" id="timerText">25:00</span>
-                    </div>
-                    <div class="flex gap-3">
-                        <button onclick="toggleTimer()" id="timerBtn" class="flex-1 bg-blue-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition">ابدأ الجلسة</button>
-                        <button onclick="resetTimer()" class="bg-slate-100 text-slate-500 p-4 rounded-2xl hover:bg-slate-200 transition">🔄</button>
-                    </div>
-                </div>
-
-                <div class="bg-white p-6 rounded-[2.5rem] shadow-sm border border-slate-100">
-                    <h3 class="font-black text-slate-800 mb-4 px-2 flex items-center gap-2"><span>📝</span> قائمة المهام</h3>
-                    <div class="space-y-3">
-                        <label class="flex items-center gap-3 p-4 bg-slate-50 rounded-2xl cursor-pointer hover:bg-blue-50 transition border border-transparent hover:border-blue-100">
-                            <input type="checkbox" class="w-5 h-5 rounded-md border-slate-300 text-blue-600">
-                            <span class="text-sm font-medium text-slate-700">حل تمرين المتتاليات 2023</span>
-                        </label>
-                        <label class="flex items-center gap-3 p-4 bg-slate-50 rounded-2xl cursor-pointer hover:bg-blue-50 transition border border-transparent hover:border-blue-100">
-                            <input type="checkbox" class="w-5 h-5 rounded-md border-slate-300 text-blue-600">
-                            <span class="text-sm font-medium text-slate-700">مراجعة وحدة المناعة</span>
-                        </label>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </main>
+        </main>
+    </div>
 
     <script>
-        // نظام مؤقت البومودورو
+        // --- الأساسيات (Navigation) ---
+        function startExperience() {
+            const name = document.getElementById('nameInput').value;
+            if(!name) return alert("اكتب اسمك يا بطل!");
+            
+            localStorage.setItem('studentName', name);
+            document.getElementById('displayUserName').innerText = name;
+            
+            document.getElementById('loginScreen').classList.replace('animate__zoomIn', 'animate__fadeOut');
+            setTimeout(() => {
+                document.getElementById('loginScreen').classList.remove('active-section');
+                document.getElementById('dashboardScreen').classList.add('active-section', 'animate__animated', 'animate__fadeIn');
+            }, 500);
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        function logout() {
+            localStorage.clear();
+            location.reload();
+        }
+
+        // --- مؤقت البومودورو ---
         let timeLeft = 25 * 60;
         let timerId = null;
         const ring = document.getElementById('timerRing');
         const dashArray = 440;
 
         function updateTimer() {
-            const mins = Math.floor(timeLeft / 60);
-            const secs = timeLeft % 60;
-            document.getElementById('timerText').innerText = 
-                `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-            
+            const m = Math.floor(timeLeft / 60);
+            const s = timeLeft % 60;
+            document.getElementById('timerText').innerText = `${m}:${s < 10 ? '0'+s : s}`;
             const offset = dashArray - (timeLeft / (25 * 60)) * dashArray;
             ring.style.strokeDashoffset = offset;
         }
@@ -158,19 +171,20 @@
             if (timerId) {
                 clearInterval(timerId);
                 timerId = null;
-                btn.innerText = "واصل الجلسة";
-                btn.classList.replace('bg-red-500', 'bg-blue-600');
+                btn.innerText = "واصل";
+                btn.className = "flex-1 bg-blue-600 text-white py-3 rounded-2xl font-bold";
             } else {
                 timerId = setInterval(() => {
                     timeLeft--;
                     updateTimer();
-                    if (timeLeft <= 0) {
+                    if(timeLeft <= 0) {
                         clearInterval(timerId);
-                        alert("انتهى وقت التركيز! خذ استراحة.");
+                        document.getElementById('motivationBox').classList.remove('hidden');
+                        alert("يا بطل! خلصت 25 دقيقة.. استراحة خفيفة وأرجع!");
                     }
                 }, 1000);
-                btn.innerText = "توقف مؤقت";
-                btn.classList.replace('bg-blue-600', 'bg-red-500');
+                btn.innerText = "توقف";
+                btn.className = "flex-1 bg-red-500 text-white py-3 rounded-2xl font-bold";
             }
         }
 
@@ -179,8 +193,38 @@
             timerId = null;
             timeLeft = 25 * 60;
             updateTimer();
-            document.getElementById('timerBtn').innerText = "ابدأ الجلسة";
-            document.getElementById('timerBtn').className = "flex-1 bg-blue-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition";
+            document.getElementById('timerBtn').innerText = "ابدأ";
+            document.getElementById('timerBtn').className = "flex-1 bg-blue-600 text-white py-3 rounded-2xl font-bold";
+        }
+
+        // --- ركن القهوة ---
+        let coffees = 0;
+        function addCoffee() {
+            coffees++;
+            document.getElementById('coffeeCount').innerText = coffees;
+            if(coffees == 3) alert("ما تكثرش القهوة بزااف.. سقم راسك برك!");
+        }
+
+        // --- إضافة المواد ---
+        function addSubject() {
+            const sub = prompt("واش هي المادة؟ (مثلاً: فيزياء)");
+            const task = prompt("واش هو الدرس اللي راح تراجعو؟");
+            if(sub && task) {
+                const container = document.getElementById('subjectsContainer');
+                const card = document.createElement('div');
+                card.className = "bg-white p-6 rounded-3xl shadow-sm border border-slate-100 animate__animated animate__backInUp";
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="text-3xl">📚</span>
+                        <span class="text-blue-600 font-bold text-[10px] bg-blue-50 px-2 py-1 rounded-md">${sub}</span>
+                    </div>
+                    <h4 class="font-bold text-slate-700 mb-2 italic">${task}</h4>
+                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                        <div class="bg-blue-600 h-full w-[10%]" style="transition: width 1s;"></div>
+                    </div>
+                `;
+                container.appendChild(card);
+            }
         }
     </script>
 </body>
