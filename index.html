@@ -1,21 +1,71 @@
-<section id="welcome-screen" class="active">
-    <div class="red-glow-bg"></div>
-    
-    <div class="welcome-container">
-        <div class="logo-area">
-            <div class="pulse-circle"></div>
-            <span class="main-icon">★</span>
-        </div>
-        
-        <div class="content-text">
-            <h1 class="hero-title">أحـجـيـة <span>الـريد</span></h1>
-            <div class="red-line"></div>
-            <p class="hero-subtitle">تحدى الحدود، فكك الشفرات، واربح التحدي</p>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول | مستقبلي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Tajawal', sans-serif; }
+        .glass {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .bg-animate {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+</head>
+<body class="bg-animate min-h-screen flex items-center justify-center p-4">
+
+    <div class="glass animate__animated animate__fadeInDown w-full max-w-md p-8 rounded-3xl shadow-2xl text-white">
+        <div class="text-center mb-8">
+            <div class="text-4xl mb-2">🎯</div>
+            <h1 class="text-2xl font-bold">مرحباً بك مجدداً</h1>
+            <p class="text-blue-100 text-sm">سجل دخولك لتكمل مراجعتك</p>
         </div>
 
-        <button onclick="startGame()" class="btn-rouge">
-            <span class="btn-label">ابدأ التحدي الآن</span>
-            <div class="btn-shine"></div>
-        </button>
+        <form action="#" class="space-y-6">
+            <div>
+                <label class="block mb-2 text-sm">البريد الإلكتروني</label>
+                <input type="email" placeholder="example@mail.com" 
+                    class="w-full p-3 rounded-xl bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 transition">
+            </div>
+
+            <div>
+                <label class="block mb-2 text-sm">كلمة السر</label>
+                <input type="password" placeholder="••••••••" 
+                    class="w-full p-3 rounded-xl bg-white/20 border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50 transition">
+            </div>
+
+            <div class="flex justify-between items-center text-xs">
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" class="rounded"> تذكرني
+                </label>
+                <a href="#" class="hover:underline">نسيت كلمة السر؟</a>
+            </div>
+
+            <button type="submit" 
+                class="w-full bg-white text-blue-600 font-bold py-3 rounded-xl hover:bg-opacity-90 transition transform hover:scale-105 active:scale-95 shadow-lg">
+                دخول
+            </button>
+        </form>
+
+        <div class="mt-8 text-center text-sm">
+            <span>ليس لديك حساب؟</span>
+            <a href="#" class="font-bold border-b border-white hover:text-blue-200 transition">سجل الآن مجاناً</a>
+        </div>
     </div>
-</section>
+
+</body>
+</html>
