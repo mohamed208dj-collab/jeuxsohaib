@@ -3,47 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دخول | مستقبلي للباك</title>
+    <title>دخول سريع | مستقبلي</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Tajawal', sans-serif; }
-        .bg-gradient { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); }
-    </style>
 </head>
-<body class="bg-gradient min-h-screen flex items-center justify-center p-6">
+<body class="bg-slate-900 min-h-screen flex items-center justify-center">
 
-    <div id="login-card" class="animate__animated animate__fadeInUp bg-white p-8 rounded-[2.5rem] shadow-2xl w-full max-w-md text-center">
-        <div class="mb-8">
-            <div class="text-6xl mb-4">🚀</div>
-            <h1 class="text-3xl font-extrabold text-gray-800">مستقبلي للباك</h1>
-            <p class="text-gray-500 mt-2">نظم مراجعتك وارفع معدلك</p>
-        </div>
+    <div class="bg-white p-10 rounded-[3rem] shadow-2xl text-center max-w-sm w-full animate__animated animate__zoomIn">
+        <div class="text-5xl mb-4">🔑</div>
+        <h1 class="text-2xl font-bold mb-2">دخول الطلبة</h1>
+        <p class="text-gray-500 mb-8 text-sm">اضغط على الزر ليتم تحويلك للداشبورد</p>
 
-        <div class="bg-blue-50 p-6 rounded-2xl border-2 border-dashed border-blue-200">
-            <p class="text-sm text-blue-600 mb-4 font-bold">سجل دخولك عبر البوت لتبدأ</p>
+        <div class="flex justify-center">
             <script async src="https://telegram.org/js/telegram-widget.js?22" 
                 data-telegram-login="YourBotName_bot" 
                 data-size="large" 
                 data-onauth="onTelegramAuth(user)" 
                 data-request-access="write"></script>
         </div>
-
-        <p class="text-xs text-gray-400 mt-6 leading-relaxed">
-            بمجرد الدخول، سيتم مزامنة اسمك وصورتك تلقائياً.
-        </p>
     </div>
 
     <script>
+        // هادي الدالة تعيط لها تيليغرام غير يضغط المستخدم على "Confirm"
         function onTelegramAuth(user) {
-            // حفظ بيانات المستخدم في المتصفح
+            // 1. نخزنو البيانات باش نخدمو بيهم في الداشبورد
             localStorage.setItem('userName', user.first_name);
             localStorage.setItem('userPhoto', user.photo_url || '');
             
-            // تحويل للداشبورد
+            // 2. التحويل المباشر واللحظي
             window.location.href = "dashboard.html";
         }
     </script>
+
 </body>
 </html>
