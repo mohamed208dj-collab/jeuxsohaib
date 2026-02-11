@@ -3,162 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ETHEREAL | الجوهر</title>
+    <title>NEBULA OS | المنصة المتكاملة</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;900&family=Tajawal:wght@200;500;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600&family=Tajawal:wght@300;500;800;900&display=swap" rel="stylesheet">
+    
     <style>
-        :root { --accent: #ffffff; }
-        body, html { 
-            margin: 0; padding: 0; 
-            background: #000; color: #fff;
-            font-family: 'Tajawal', sans-serif;
-            overflow: hidden; height: 100vh;
-        }
+        :root { --accent: #3b82f6; --bg: #030712; }
+        body { font-family: 'Tajawal', sans-serif; background: var(--bg); color: #f8fafc; overflow-x: hidden; }
+        
+        /* Glass Components */
+        .glass { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 28px; }
+        .glass-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); transition: 0.3s; }
+        .glass-btn:hover { background: rgba(59, 130, 246, 0.1); border-color: var(--accent); }
 
-        /* خلفية السائل المتحرك */
-        .fluid-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
-            z-index: -1;
-        }
+        /* Custom Progress */
+        .progress-bar { height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #8b5cf6); transition: width 1s ease; }
 
-        .blob {
-            position: absolute; width: 500px; height: 500px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);
-            filter: blur(80px); border-radius: 50%;
-            animation: move 20s infinite alternate;
-        }
+        /* Animations */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .floating { animation: float 5s infinite ease-in-out; }
 
-        @keyframes move {
-            from { transform: translate(-10%, -10%) rotate(0deg); }
-            to { transform: translate(20%, 20%) rotate(360deg); }
-        }
-
-        /* تصميم البطاقة الأثيرية */
-        .ethereal-card {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(40px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            border-radius: 50px;
-            transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-
-        .ethereal-card:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.15);
-            transform: scale(1.01) translateY(-5px);
-        }
-
-        /* زر "النبض" */
-        .pulse-btn {
-            background: #fff; color: #000;
-            padding: 20px 50px; border-radius: 100px;
-            font-weight: 900; letter-spacing: 3px;
-            transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-            box-shadow: 0 0 0 rgba(255,255,255,0);
-        }
-
-        .pulse-btn:hover {
-            letter-spacing: 6px;
-            box-shadow: 0 0 50px rgba(255,255,255,0.3);
-            transform: translateY(-2px);
-        }
-
-        /* إخفاء السكرول */
-        ::-webkit-scrollbar { display: none; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
     </style>
 </head>
-<body class="flex items-center justify-center">
+<body class="min-h-screen p-4 md:p-8">
 
-    <div class="fluid-bg">
-        <div class="blob" style="top: -10%; left: -10%;"></div>
-        <div class="blob" style="bottom: -10%; right: -10%; animation-delay: -5s; width: 600px;"></div>
+    <div class="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 blur-[120px] rounded-full z-[-1]"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/10 blur-[120px] rounded-full z-[-1]"></div>
+
+    <div class="max-w-7xl mx-auto space-y-6">
+        
+        <nav class="glass p-5 flex justify-between items-center px-8">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center font-black shadow-lg shadow-blue-500/20">N</div>
+                <h1 class="text-xl font-black tracking-tighter">NEBULA<span class="text-blue-500">.OS</span></h1>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="hidden md:block text-right">
+                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Countdown</p>
+                    <p id="countdown" class="text-sm font-mono font-bold text-blue-400">00D 00H 00M</p>
+                </div>
+                <div class="h-8 w-px bg-white/10"></div>
+                <img src="https://ui-avatars.com/api/?name=User&background=3b82f6&color=fff" class="w-10 h-10 rounded-full border border-white/20">
+            </div>
+        </nav>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <div class="lg:col-span-8 space-y-6">
+                
+                <div class="glass p-8 relative overflow-hidden group">
+                    <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-6">
+                        <div class="text-center md:text-right">
+                            <h2 class="text-4xl font-black mb-2">مرحباً <span class="text-blue-500">أمين</span></h2>
+                            <p class="text-slate-400">لقد أنجزت <span class="text-white font-bold">75%</span> من أهدافك اليوم. واصل التقدم!</p>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="text-center p-4 bg-white/5 rounded-2xl min-w-[100px]">
+                                <p class="text-[10px] text-slate-500 mb-1 uppercase">XP النقاط</p>
+                                <p class="text-2xl font-black">1,240</p>
+                            </div>
+                            <div class="text-center p-4 bg-blue-600 rounded-2xl min-w-[100px] shadow-lg shadow-blue-500/20">
+                                <p class="text-[10px] text-blue-100 mb-1 uppercase">المستوى</p>
+                                <p class="text-2xl font-black">09</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass p-6 space-y-6">
+                        <h3 class="font-bold flex justify-between items-center">
+                            المواد الدراسية <span class="text-[10px] text-blue-400">تحديث حي</span>
+                        </h3>
+                        <div class="space-y-5" id="subjects-list">
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-xs font-bold">
+                                    <span>العلوم الطبيعية</span>
+                                    <span class="text-slate-500">80%</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-fill" style="width: 80%"></div></div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-xs font-bold">
+                                    <span>الفيزياء</span>
+                                    <span class="text-slate-500">45%</span>
+                                </div>
+                                <div class="progress-bar"><div class="progress-fill" style="width: 45%; background: #a855f7;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-bold">قائمة المهام</h3>
+                            <button onclick="addTask()" class="text-xs bg-white/5 px-3 py-1 rounded-lg hover:bg-white/10 transition">+</button>
+                        </div>
+                        <div class="space-y-3 max-h-48 overflow-y-auto pr-2" id="todo-list">
+                            <div class="flex items-center gap-3 p-3 bg-white/5 rounded-xl text-sm border-r-2 border-blue-500">
+                                <input type="checkbox" class="accent-blue-500">
+                                <span class="flex-1">حل تمارين المتتاليات</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-4 space-y-6">
+                
+                <div class="glass p-8 text-center">
+                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-6">Focus Engine</p>
+                    <div class="text-7xl font-light tracking-tighter mb-8 font-mono" id="timer">25:00</div>
+                    <div class="flex gap-2">
+                        <button onclick="toggleTimer()" id="timerBtn" class="flex-1 py-4 bg-blue-600 text-white rounded-2xl font-black shadow-lg shadow-blue-500/20 transition hover:scale-105 active:scale-95">ابدأ</button>
+                        <button onclick="resetTimer()" class="px-5 bg-white/5 rounded-2xl hover:bg-white/10">🔄</button>
+                    </div>
+                </div>
+
+                <div class="glass p-6">
+                    <p class="text-[10px] text-slate-500 font-bold uppercase mb-4">Focus Sounds</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="playAudio('rain')" class="glass-btn py-3 rounded-xl text-xs font-bold">🌧️ مطر</button>
+                        <button onclick="playAudio('lofi')" class="glass-btn py-3 rounded-xl text-xs font-bold">🎧 LoFi</button>
+                    </div>
+                    <audio id="player" loop></audio>
+                </div>
+
+                <div class="glass p-6 bg-gradient-to-br from-blue-600/20 to-purple-600/20 border-blue-500/30">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center animate-pulse">🤖</div>
+                        <span class="text-xs font-black uppercase">نصيحة الذكاء الاصطناعي</span>
+                    </div>
+                    <p class="text-sm leading-relaxed text-slate-200 italic" id="ai-advice">
+                        "بناءً على وتيرتك، أنصحك بمراجعة الفيزياء الآن لمدة 40 دقيقة، ثم أخذ استراحة 5 دقائق."
+                    </p>
+                </div>
+
+            </div>
+        </div>
     </div>
 
-    <main class="relative z-10 w-full max-w-6xl p-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        
-        <div class="lg:col-span-7 space-y-12">
-            <header class="space-y-4">
-                <div class="flex items-center gap-4 opacity-30">
-                    <div class="w-12 h-[1px] bg-white"></div>
-                    <span class="text-[10px] tracking-[0.8em] font-bold uppercase">System Active</span>
-                </div>
-                <h1 class="text-8xl font-black tracking-tighter leading-none">
-                    <span class="opacity-20 font-thin">أهلاً،</span><br>أمين.
-                </h1>
-                <p class="max-w-md text-white/40 font-light leading-relaxed text-lg">
-                    النجاح ليس صدفة، بل هو تصميم دقيق. ركز، تقدم، وانتصر.
-                </p>
-            </header>
-
-            <div class="flex gap-8">
-                <button onclick="startSession()" class="pulse-btn text-[10px]">ابدأ الرحلة</button>
-                <div class="flex flex-col justify-center">
-                    <span class="text-[10px] opacity-30 uppercase tracking-widest mb-1">المعدل المتوقع</span>
-                    <span class="text-2xl font-thin tracking-tighter">18.50</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="lg:col-span-5">
-            <div class="ethereal-card p-12 text-center space-y-16">
-                <div>
-                    <span class="text-[10px] opacity-30 uppercase tracking-[0.5em]">Deep Focus</span>
-                    <div id="timer" class="text-[120px] font-thin tracking-tighter leading-none mt-8">25:00</div>
-                </div>
-
-                <div class="grid grid-cols-3 gap-4">
-                    <div class="flex flex-col gap-2">
-                        <div class="h-[2px] bg-white/20 rounded-full overflow-hidden">
-                            <div class="h-full bg-white w-2/3"></div>
-                        </div>
-                        <span class="text-[8px] opacity-30 uppercase">Math</span>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <div class="h-[2px] bg-white/20 rounded-full overflow-hidden">
-                            <div class="h-full bg-white w-1/2"></div>
-                        </div>
-                        <span class="text-[8px] opacity-30 uppercase">Physics</span>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <div class="h-[2px] bg-white/20 rounded-full overflow-hidden">
-                            <div class="h-full bg-white w-4/5"></div>
-                        </div>
-                        <span class="text-[8px] opacity-30 uppercase">Science</span>
-                    </div>
-                </div>
-
-                <p class="text-[10px] italic text-white/40 leading-relaxed">
-                    "أنت الآن في منطقة الإبداع. لا تسمح لأي شيء بتشتيتك."
-                </p>
-            </div>
-        </div>
-    </main>
-
-    <footer class="fixed bottom-10 w-full px-12 flex justify-between items-end opacity-20">
-        <div class="text-[10px] font-bold tracking-[0.4em]">BAC 2026 / ORAN</div>
-        <div class="text-[40px] font-thin tracking-tighter">123<span class="text-xs">DAYS</span></div>
-    </footer>
-
     <script>
-        let seconds = 1500;
-        let timerRunning = false;
+        // 1. Timer System
+        let seconds = 25 * 60;
+        let isRunning = false;
         let interval;
 
-        function startSession() {
-            if(timerRunning) return;
-            timerRunning = true;
-            document.querySelector('.pulse-btn').innerText = "جاري التركيز...";
-            document.querySelector('.pulse-btn').style.opacity = "0.5";
-            
-            interval = setInterval(() => {
-                seconds--;
-                let m = Math.floor(seconds / 60);
-                let s = seconds % 60;
-                document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-                if(seconds <= 0) clearInterval(interval);
+        function toggleTimer() {
+            const btn = document.getElementById('timerBtn');
+            if (isRunning) {
+                clearInterval(interval);
+                btn.innerText = "واصل";
+                isRunning = false;
+            } else {
+                interval = setInterval(() => {
+                    seconds--;
+                    updateTimerDisplay();
+                    if (seconds <= 0) clearInterval(interval);
+                }, 1000);
+                btn.innerText = "توقف";
+                isRunning = true;
+            }
+        }
+
+        function updateTimerDisplay() {
+            const m = Math.floor(seconds / 60);
+            const s = seconds % 60;
+            document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+        }
+
+        function resetTimer() {
+            clearInterval(interval);
+            seconds = 25 * 60;
+            updateTimerDisplay();
+            isRunning = false;
+            document.getElementById('timerBtn').innerText = "ابدأ";
+        }
+
+        // 2. Audio System
+        function playAudio(type) {
+            const player = document.getElementById('player');
+            const links = {
+                'rain': 'https://www.soundjay.com/nature/rain-01.mp3',
+                'lofi': 'https://www.soundjay.com/misc/sounds/bell-ringing-01.mp3'
+            };
+            if (!player.paused) {
+                player.pause();
+            } else {
+                player.src = links[type];
+                player.play();
+            }
+        }
+
+        // 3. To-Do System
+        function addTask() {
+            const task = prompt("ما هي المهمة الجديدة؟");
+            if (task) {
+                const list = document.getElementById('todo-list');
+                const div = document.createElement('div');
+                div.className = "flex items-center gap-3 p-3 bg-white/5 rounded-xl text-sm border-r-2 border-purple-500 animate-fadeIn";
+                div.innerHTML = `<input type="checkbox" class="accent-blue-500"> <span class="flex-1">${task}</span>`;
+                list.prepend(div);
+            }
+        }
+
+        // 4. Countdown System (June 8, 2026)
+        function updateCountdown() {
+            const target = new Date("June 8, 2026 08:00:00").getTime();
+            setInterval(() => {
+                const now = new Date().getTime();
+                const diff = target - now;
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                document.getElementById('countdown').innerText = `${d}D ${h}H ${m}M`;
             }, 1000);
         }
+
+        // Initial Calls
+        updateCountdown();
+        
+        // AI Dynamic Advice
+        const advices = [
+            "عقلك الآن في قمة استيعابه للفيزياء، ابدأ بالتمارين الصعبة.",
+            "لا تنسَ تقنية الطماطم (Pomodoro)، 25 دقيقة مراجعة و5 دقائق راحة.",
+            "شرب الماء يحسن التركيز بنسبة 15%، قم واشرب الآن!"
+        ];
+        setInterval(() => {
+            document.getElementById('ai-advice').innerText = `"${advices[Math.floor(Math.random()*advices.length)]}"`;
+        }, 30000);
+
     </script>
 </body>
 </html>
