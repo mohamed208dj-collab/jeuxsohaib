@@ -3,191 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ONYX | النخبة</title>
+    <title>ETHEREAL | الجوهر</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;400;900&family=Tajawal:wght@200;500;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;900&family=Tajawal:wght@200;500;900&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #000;
-            color: #fff;
+        :root { --accent: #ffffff; }
+        body, html { 
+            margin: 0; padding: 0; 
+            background: #000; color: #fff;
             font-family: 'Tajawal', sans-serif;
-            overflow: hidden;
+            overflow: hidden; height: 100vh;
         }
 
-        /* توهج خلفي سينمائي */
-        .ambient-glow {
-            position: fixed;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80vw; height: 80vh;
-            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+        /* خلفية السائل المتحرك */
+        .fluid-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
             z-index: -1;
         }
 
-        /* الكرة الذكية - قلب النظام */
-        .ai-core {
-            width: 200px; height: 200px;
-            background: #fff;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.2;
-            animation: pulse 8s infinite alternate;
+        .blob {
+            position: absolute; width: 500px; height: 500px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+            filter: blur(80px); border-radius: 50%;
+            animation: move 20s infinite alternate;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.1; }
-            100% { transform: scale(1.5); opacity: 0.3; }
+        @keyframes move {
+            from { transform: translate(-10%, -10%) rotate(0deg); }
+            to { transform: translate(20%, 20%) rotate(360deg); }
         }
 
-        /* بطاقات "ميركوري" الزجاجية */
-        .mercury-card {
-            background: rgba(255, 255, 255, 0.01);
-            backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 40px;
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        /* تصميم البطاقة الأثيرية */
+        .ethereal-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(40px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 50px;
+            transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        .mercury-card:hover {
-            background: rgba(255, 255, 255, 0.03);
-            border-color: rgba(255, 255, 255, 0.1);
-            transform: translateY(-10px) scale(1.01);
+        .ethereal-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: scale(1.01) translateY(-5px);
         }
 
-        .text-mercury {
-            background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.4) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* زر "النبض" */
+        .pulse-btn {
+            background: #fff; color: #000;
+            padding: 20px 50px; border-radius: 100px;
+            font-weight: 900; letter-spacing: 3px;
+            transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            box-shadow: 0 0 0 rgba(255,255,255,0);
         }
 
-        /* زر الأكشن */
-        .action-btn {
-            background: #fff;
-            color: #000;
-            padding: 1.5rem 3rem;
-            border-radius: 100px;
-            font-weight: 900;
-            transition: 0.4s;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .action-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 50px rgba(255,255,255,0.2);
+        .pulse-btn:hover {
+            letter-spacing: 6px;
+            box-shadow: 0 0 50px rgba(255,255,255,0.3);
+            transform: translateY(-2px);
         }
 
         /* إخفاء السكرول */
         ::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-6">
+<body class="flex items-center justify-center">
 
-    <div class="ambient-glow"></div>
-    
-    <div class="fixed inset-0 flex items-center justify-center z-0">
-        <div class="ai-core"></div>
+    <div class="fluid-bg">
+        <div class="blob" style="top: -10%; left: -10%;"></div>
+        <div class="blob" style="bottom: -10%; right: -10%; animation-delay: -5s; width: 600px;"></div>
     </div>
 
-    <div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-10 relative z-10">
+    <main class="relative z-10 w-full max-w-6xl p-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         
-        <aside class="lg:col-span-3 flex flex-col justify-between py-10">
-            <div>
-                <h1 class="text-4xl font-black text-mercury tracking-tighter mb-2">ONYX</h1>
-                <p class="text-[10px] tracking-[0.6em] text-white/30 uppercase">Intelligence OS</p>
-            </div>
+        <div class="lg:col-span-7 space-y-12">
+            <header class="space-y-4">
+                <div class="flex items-center gap-4 opacity-30">
+                    <div class="w-12 h-[1px] bg-white"></div>
+                    <span class="text-[10px] tracking-[0.8em] font-bold uppercase">System Active</span>
+                </div>
+                <h1 class="text-8xl font-black tracking-tighter leading-none">
+                    <span class="opacity-20 font-thin">أهلاً،</span><br>أمين.
+                </h1>
+                <p class="max-w-md text-white/40 font-light leading-relaxed text-lg">
+                    النجاح ليس صدفة، بل هو تصميم دقيق. ركز، تقدم، وانتصر.
+                </p>
+            </header>
 
-            <div class="space-y-10">
+            <div class="flex gap-8">
+                <button onclick="startSession()" class="pulse-btn text-[10px]">ابدأ الرحلة</button>
+                <div class="flex flex-col justify-center">
+                    <span class="text-[10px] opacity-30 uppercase tracking-widest mb-1">المعدل المتوقع</span>
+                    <span class="text-2xl font-thin tracking-tighter">18.50</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-5">
+            <div class="ethereal-card p-12 text-center space-y-16">
                 <div>
-                    <p class="text-[10px] text-white/20 mb-4 uppercase tracking-widest">المستوى الحالي</p>
-                    <div class="text-5xl font-thin tracking-tighter">LVL. 09</div>
+                    <span class="text-[10px] opacity-30 uppercase tracking-[0.5em]">Deep Focus</span>
+                    <div id="timer" class="text-[120px] font-thin tracking-tighter leading-none mt-8">25:00</div>
                 </div>
-                <div>
-                    <p class="text-[10px] text-white/20 mb-4 uppercase tracking-widest">نقاط الخبرة</p>
-                    <div class="w-full h-[1px] bg-white/10 overflow-hidden">
-                        <div class="w-2/3 h-full bg-white"></div>
-                    </div>
-                </div>
-            </div>
-        </aside>
 
-        <main class="lg:col-span-6 space-y-10">
-            <div class="mercury-card p-12 text-center">
-                <p class="text-[10px] text-white/30 uppercase tracking-[0.5em] mb-12">Session Focus</p>
-                <div id="timer" class="text-[100px] font-thin tracking-tighter mb-12 leading-none">25:00</div>
-                <button onclick="toggleTimer()" id="mainBtn" class="action-btn text-xs tracking-[0.2em]">ACTIVATE ENGINE</button>
-            </div>
-
-            <div class="grid grid-cols-2 gap-6">
-                <div class="mercury-card p-8">
-                    <p class="text-[10px] text-white/20 mb-4">AI ANALYTICS</p>
-                    <p class="text-sm font-light leading-relaxed">بناءً على نشاطك: مراجعة الفيزياء الآن ترفع نسبة نجاحك بـ 4%.</p>
-                </div>
-                <div class="mercury-card p-8">
-                    <p class="text-[10px] text-white/20 mb-4">STATUS</p>
-                    <div class="flex items-center gap-2">
-                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                        <span class="text-xs font-bold tracking-widest uppercase">Optimum</span>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="flex flex-col gap-2">
+                        <div class="h-[2px] bg-white/20 rounded-full overflow-hidden">
+                            <div class="h-full bg-white w-2/3"></div>
+                        </div>
+                        <span class="text-[8px] opacity-30 uppercase">Math</span>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <div class="h-[2px] bg-white/20 rounded-full overflow-hidden">
+                            <div class="h-full bg-white w-1/2"></div>
+                        </div>
+                        <span class="text-[8px] opacity-30 uppercase">Physics</span>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <div class="h-[2px] bg-white/20 rounded-full overflow-hidden">
+                            <div class="h-full bg-white w-4/5"></div>
+                        </div>
+                        <span class="text-[8px] opacity-30 uppercase">Science</span>
                     </div>
                 </div>
-            </div>
-        </main>
 
-        <aside class="lg:col-span-3 py-10 space-y-12">
-            <div class="text-right">
-                <p class="text-[10px] text-white/20 mb-6 uppercase tracking-widest">المهام القادمة</p>
-                <div class="space-y-8">
-                    <div class="opacity-40 hover:opacity-100 transition cursor-pointer">
-                        <p class="text-xs font-bold mb-1">تحليل الدالة الأسية</p>
-                        <p class="text-[10px] text-white/30 tracking-widest font-thin">MATHEMATICS</p>
-                    </div>
-                    <div class="opacity-100 border-r-2 border-white pr-4 transition cursor-pointer">
-                        <p class="text-xs font-bold mb-1">قوانين الميكانيك</p>
-                        <p class="text-[10px] text-white/30 tracking-widest font-thin">PHYSICS</p>
-                    </div>
-                    <div class="opacity-40 hover:opacity-100 transition cursor-pointer">
-                        <p class="text-xs font-bold mb-1">المقال الفلسفي</p>
-                        <p class="text-[10px] text-white/30 tracking-widest font-thin">PHILOSOPHY</p>
-                    </div>
-                </div>
+                <p class="text-[10px] italic text-white/40 leading-relaxed">
+                    "أنت الآن في منطقة الإبداع. لا تسمح لأي شيء بتشتيتك."
+                </p>
             </div>
+        </div>
+    </main>
 
-            <div class="mercury-card p-6 border-none bg-white/5">
-                <p class="text-[10px] text-white/20 mb-4 uppercase">COUNTDOWN</p>
-                <p class="text-2xl font-black text-mercury">123 DAYS</p>
-            </div>
-        </aside>
-    </div>
+    <footer class="fixed bottom-10 w-full px-12 flex justify-between items-end opacity-20">
+        <div class="text-[10px] font-bold tracking-[0.4em]">BAC 2026 / ORAN</div>
+        <div class="text-[40px] font-thin tracking-tighter">123<span class="text-xs">DAYS</span></div>
+    </footer>
 
     <script>
-        let time = 1500;
-        let active = false;
+        let seconds = 1500;
+        let timerRunning = false;
         let interval;
 
-        function toggleTimer() {
-            active = !active;
-            const btn = document.getElementById('mainBtn');
-            if(active) {
-                btn.innerText = "SHUT DOWN";
-                btn.style.background = "transparent";
-                btn.style.color = "#fff";
-                btn.style.border = "1px solid rgba(255,255,255,0.2)";
-                interval = setInterval(() => {
-                    time--;
-                    updateDisplay();
-                }, 1000);
-            } else {
-                clearInterval(interval);
-                btn.innerText = "ACTIVATE ENGINE";
-                btn.style.background = "#fff";
-                btn.style.color = "#000";
-            }
-        }
-
-        function updateDisplay() {
-            let m = Math.floor(time / 60);
-            let s = time % 60;
-            document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+        function startSession() {
+            if(timerRunning) return;
+            timerRunning = true;
+            document.querySelector('.pulse-btn').innerText = "جاري التركيز...";
+            document.querySelector('.pulse-btn').style.opacity = "0.5";
+            
+            interval = setInterval(() => {
+                seconds--;
+                let m = Math.floor(seconds / 60);
+                let s = seconds % 60;
+                document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+                if(seconds <= 0) clearInterval(interval);
+            }, 1000);
         }
     </script>
 </body>
