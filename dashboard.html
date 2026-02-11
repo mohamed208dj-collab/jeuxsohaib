@@ -3,82 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مستقبلي | DashBoard Pro v3</title>
+    <title>مستقبلي | المنصة الشاملة 2026</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
-        :root { --primary: #2563eb; --bg: #f8fafc; --card: #ffffff; --text: #1e293b; }
+        :root { --primary: #2563eb; --bg: #f8fafc; --card: #ffffff; }
         .dark { --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; }
-
-        body { font-family: 'Tajawal', sans-serif; background-color: var(--bg); color: var(--text); transition: all 0.4s ease; }
-        .card-pro { background: var(--card); border-radius: 24px; transition: all 0.3s; border: 1px solid rgba(0,0,0,0.05); }
-        .page-hide { display: none; }
-        
-        /* تصميم الإشعار (Toast) */
-        #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 5000; display: none; }
+        body { font-family: 'Tajawal', sans-serif; background-color: var(--bg); transition: 0.3s; }
+        .glass-card { background: var(--card); border-radius: 2rem; border: 1px solid rgba(0,0,0,0.05); shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .hidden-section { display: none; }
+        .done { text-decoration: line-through; opacity: 0.5; }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen text-slate-800 dark:text-slate-100">
 
-    <div id="toast" class="bg-blue-600 text-white px-8 py-3 rounded-full shadow-2xl animate__animated font-bold"></div>
-
-    <section id="loginPage" class="fixed inset-0 z-[2000] bg-slate-900 flex items-center justify-center p-6">
+    <section id="loginPage" class="fixed inset-0 z-[5000] bg-slate-900 flex items-center justify-center p-6">
         <div class="max-w-md w-full text-center animate__animated animate__zoomIn">
-            <h1 class="text-5xl font-black text-white mb-8">مستقبلي 🎓</h1>
-            <input type="text" id="studentName" placeholder="أدخل اسمك يا بطل" 
-                class="w-full px-6 py-5 rounded-3xl bg-white/10 border-2 border-white/20 text-white focus:bg-white focus:text-slate-900 outline-none text-center font-bold text-xl mb-6 transition-all">
-            <button onclick="initApp()" class="w-full py-5 rounded-3xl bg-blue-600 text-white font-black text-xl shadow-xl hover:bg-blue-500 transition-all">
-                دخول للداشبورد 🚀
-            </button>
+            <div class="text-7xl mb-6">🎯</div>
+            <h1 class="text-4xl font-black text-white mb-8 italic">مستقبلي 2026</h1>
+            <input type="text" id="nameInput" placeholder="أدخل اسمك يا بطل..." 
+                class="w-full p-5 rounded-2xl bg-white/10 border-2 border-white/20 text-white focus:bg-white focus:text-slate-900 outline-none text-center font-bold mb-4 shadow-2xl">
+            <button onclick="login()" class="w-full p-5 rounded-2xl bg-blue-600 text-white font-black text-xl hover:bg-blue-500 transition-all shadow-xl">ابدأ رحلة النجاح 🚀</button>
         </div>
     </section>
 
-    <div id="mainDashboard" class="flex min-h-screen page-hide">
+    <div id="dashboard" class="hidden-section flex flex-col lg:flex-row min-h-screen">
         
-        <aside class="w-64 hidden lg:flex flex-col bg-white dark:bg-slate-800 p-6 border-l border-slate-200 dark:border-slate-700 sticky top-0 h-screen">
-            <h2 class="text-2xl font-black text-blue-600 mb-10">المنصة</h2>
-            <nav class="space-y-4">
-                <button onclick="toggleTheme()" class="w-full flex items-center gap-3 p-4 rounded-2xl bg-slate-100 dark:bg-slate-700 font-bold">
-                    <span id="themeIcon">🌙</span> <span id="themeText">الوضع الليلي</span>
-                </button>
-                <div class="h-px bg-slate-200 dark:bg-slate-700"></div>
-                <button onclick="logout()" class="w-full p-4 rounded-2xl text-red-500 font-bold hover:bg-red-50 transition">خروج</button>
+        <aside class="w-full lg:w-72 bg-white dark:bg-slate-800 p-6 shadow-xl lg:sticky lg:top-0 lg:h-screen">
+            <div class="flex items-center justify-between mb-10">
+                <h2 class="text-2xl font-black text-blue-600 italic">مستقبلي</h2>
+                <button onclick="toggleDark()" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-700">🌙</button>
+            </div>
+            
+            <nav class="space-y-3">
+                <button class="w-full text-right p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 font-bold">🏠 الرئيسية</button>
+                <div class="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-2xl">
+                    <p class="text-[10px] uppercase font-bold text-slate-400 mb-2">عداد الباك</p>
+                    <div id="countdown" class="text-sm font-black text-red-500">جاري الحساب...</div>
+                </div>
             </nav>
+
+            <div class="mt-10 p-4 border-t border-slate-100 dark:border-slate-700">
+                <p class="text-xs text-slate-400 mb-2 font-bold">حكمة اليوم:</p>
+                <p id="quote" class="text-xs italic font-medium leading-relaxed italic">"النجاح هو مجموع مجهودات صغيرة تتكرر كل يوم."</p>
+            </div>
         </aside>
 
-        <main class="flex-1 p-6 md:p-10">
-            <header class="flex justify-between items-center mb-10">
-                <div>
-                    <h2 class="text-3xl font-black italic">مرحباً، <span id="userDisplayName" class="text-blue-600"></span>!</h2>
-                    <p class="text-slate-400">اليوم هو: <span id="currentDate"></span></p>
+        <main class="flex-1 p-4 md:p-8 space-y-8">
+            <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <h2 class="text-3xl font-black">أهلاً، <span id="userName" class="text-blue-600"></span> 🔥</h2>
+                <div class="flex gap-2">
+                    <button onclick="addSubject()" class="bg-blue-600 text-white px-5 py-2 rounded-xl font-bold shadow-lg">+ مادة</button>
+                    <button onclick="logout()" class="bg-red-50 text-red-500 px-5 py-2 rounded-xl font-bold">خروج</button>
                 </div>
             </header>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="card-pro p-8 border-t-8 border-blue-600 shadow-lg">
-                    <p class="text-blue-500 font-bold text-xs mb-2 uppercase">مؤقت التركيز</p>
-                    <h3 class="text-7xl font-black mb-8" id="timerDisplay">25:00</h3>
-                    <div class="flex gap-4">
-                        <button id="timerBtn" onclick="toggleTimer()" class="px-8 py-4 bg-blue-600 text-white rounded-2xl font-black shadow-lg">ابدأ</button>
-                        <button onclick="resetTimer()" class="p-4 bg-slate-100 dark:bg-slate-700 rounded-2xl">🔄</button>
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                <div class="glass-card p-8 bg-white dark:bg-slate-800 shadow-xl border-t-8 border-blue-600 text-center">
+                    <p class="text-xs font-bold text-slate-400 mb-4 tracking-widest uppercase">مؤقت التركيز</p>
+                    <div class="text-6xl font-black mb-8 font-mono" id="timer">25:00</div>
+                    <div class="flex gap-2 justify-center">
+                        <button id="startBtn" onclick="toggleTimer()" class="px-8 py-3 bg-blue-600 text-white rounded-xl font-bold shadow-lg">ابدأ</button>
+                        <button onclick="resetTimer()" class="p-3 bg-slate-100 dark:bg-slate-700 rounded-xl">🔄</button>
                     </div>
                 </div>
 
-                <div class="card-pro p-8 text-center flex flex-col items-center justify-center border-b-8 border-orange-500">
-                    <span class="text-5xl mb-4">☕</span>
-                    <h4 class="text-4xl font-black mb-4"><span id="coffeeCount">0</span> كوب</h4>
-                    <button onclick="addCoffee()" class="w-full py-4 bg-orange-500 text-white rounded-2xl font-bold shadow-lg">اشرب قهوة +</button>
+                <div class="xl:col-span-2 glass-card p-8 bg-white dark:bg-slate-800 shadow-xl">
+                    <h3 class="font-black text-xl mb-4">قائمة المهام اليومية ✅</h3>
+                    <div class="flex gap-2 mb-6">
+                        <input type="text" id="taskInput" placeholder="واش راح تدير دوكا؟" class="flex-1 p-3 rounded-xl bg-slate-50 dark:bg-slate-700 outline-none">
+                        <button onclick="addTask()" class="bg-blue-600 text-white px-6 rounded-xl font-bold">إضافة</button>
+                    </div>
+                    <div id="taskList" class="space-y-3 max-h-48 overflow-y-auto">
+                        </div>
                 </div>
             </div>
 
-            <div class="mt-12">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-2xl font-black">برنامج المراجعة</h3>
-                    <button onclick="addSubject()" class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold shadow-md">+ إضافة مادة</button>
-                </div>
+            <div>
+                <h3 class="text-2xl font-black mb-6 italic">برنامج المراجعة الشخصي</h3>
                 <div id="subjectGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     </div>
             </div>
@@ -86,92 +91,146 @@
     </div>
 
     <script>
-        // --- الأساسيات (Login & Theme) ---
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.innerText = msg; t.style.display = 'block'; t.classList.add('animate__fadeInUp');
-            setTimeout(() => { t.classList.replace('animate__fadeInUp', 'animate__fadeOutDown'); setTimeout(()=> t.style.display='none', 500); }, 2500);
+        // --- البيانات واللوجيك ---
+        let timerSeconds = 25 * 60, timerId = null;
+        let subjects = JSON.parse(localStorage.getItem('subjects')) || [];
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+        function login() {
+            const name = document.getElementById('nameInput').value;
+            if(!name) return alert("اكتب اسمك يا بطل!");
+            localStorage.setItem('user', name);
+            renderApp();
         }
 
-        function initApp() {
-            const name = document.getElementById('studentName').value;
-            if(!name) { showToast("أدخل اسمك يا بطل!"); return; }
-            
+        function renderApp() {
             document.getElementById('loginPage').classList.add('animate__animated', 'animate__fadeOut');
             setTimeout(() => {
                 document.getElementById('loginPage').style.display = 'none';
-                document.getElementById('mainDashboard').classList.remove('page-hide');
-                document.getElementById('userDisplayName').innerText = name;
-                document.getElementById('currentDate').innerText = new Date().toLocaleDateString('ar-DZ');
-                showToast("بالتوفيق في المراجعة يا " + name);
+                document.getElementById('dashboard').classList.remove('hidden-section');
+                document.getElementById('userName').innerText = localStorage.getItem('user');
+                loadSubjects();
+                loadTasks();
+                startCountdown();
             }, 500);
         }
 
-        function toggleTheme() {
-            document.body.classList.toggle('dark');
-            const isDark = document.body.classList.contains('dark');
-            document.getElementById('themeIcon').innerText = isDark ? '☀️' : '🌙';
-            document.getElementById('themeText').innerText = isDark ? 'الوضع النهاري' : 'الوضع الليلي';
+        // --- نظام المهام (To-Do) ---
+        function addTask() {
+            const input = document.getElementById('taskInput');
+            if(!input.value) return;
+            tasks.push({ id: Date.now(), text: input.value, done: false });
+            input.value = '';
+            saveAndRenderTasks();
         }
 
-        // --- مؤقت بومودورو الشغال ---
-        let timeLeft = 25 * 60, timerId = null;
-        function updateTimerUI() {
-            const m = Math.floor(timeLeft / 60), s = timeLeft % 60;
-            document.getElementById('timerDisplay').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+        function toggleTask(id) {
+            tasks = tasks.map(t => t.id === id ? {...t, done: !t.done} : t);
+            saveAndRenderTasks();
         }
 
+        function loadTasks() {
+            const list = document.getElementById('taskList');
+            list.innerHTML = tasks.map(t => `
+                <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded-xl animate__animated animate__fadeIn">
+                    <span class="${t.done ? 'done' : ''} font-bold">${t.text}</span>
+                    <div class="flex gap-2">
+                        <button onclick="toggleTask(${t.id})" class="text-green-500 font-bold text-xs">${t.done ? 'إلغاء' : 'تم'}</button>
+                        <button onclick="deleteTask(${t.id})" class="text-red-500 font-bold text-xs">حذف</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteTask(id) {
+            tasks = tasks.filter(t => t.id !== id);
+            saveAndRenderTasks();
+        }
+
+        function saveAndRenderTasks() {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            loadTasks();
+        }
+
+        // --- نظام المواد ---
+        function addSubject() {
+            const name = prompt("اسم المادة:");
+            const lesson = prompt("واش راح تراجع؟");
+            if(name && lesson) {
+                subjects.push({ id: Date.now(), name, lesson });
+                localStorage.setItem('subjects', JSON.stringify(subjects));
+                loadSubjects();
+            }
+        }
+
+        function loadSubjects() {
+            const grid = document.getElementById('subjectGrid');
+            grid.innerHTML = subjects.map(s => `
+                <div class="glass-card p-6 bg-white dark:bg-slate-800 animate__animated animate__zoomIn">
+                    <div class="flex justify-between items-start mb-4 text-2xl">📚
+                        <button onclick="deleteSubject(${s.id})" class="text-xs text-red-400">حذف</button>
+                    </div>
+                    <h4 class="text-xl font-black mb-1">${s.name}</h4>
+                    <p class="text-slate-400 text-sm italic font-medium">${s.lesson}</p>
+                </div>
+            `).join('');
+        }
+
+        function deleteSubject(id) {
+            subjects = subjects.filter(s => s.id !== id);
+            localStorage.setItem('subjects', JSON.stringify(subjects));
+            loadSubjects();
+        }
+
+        // --- المؤقت والتحسينات ---
         function toggleTimer() {
-            const btn = document.getElementById('timerBtn');
-            if (timerId) {
+            const btn = document.getElementById('startBtn');
+            if(timerId) {
                 clearInterval(timerId); timerId = null;
-                btn.innerText = "واصل"; btn.classList.replace('bg-red-500', 'bg-blue-600');
+                btn.innerText = "واصل"; btn.className = "px-8 py-3 bg-orange-500 text-white rounded-xl font-bold shadow-lg";
             } else {
                 timerId = setInterval(() => {
-                    timeLeft--; updateTimerUI();
-                    if (timeLeft <= 0) {
-                        clearInterval(timerId); timerId = null;
+                    timerSeconds--;
+                    updateTimerDisplay();
+                    if(timerSeconds <= 0) {
+                        clearInterval(timerId);
                         new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg').play();
-                        showToast("وقت الاستراحة! ☕");
+                        alert("انتهت الجلسة! خذ استراحة.");
                     }
                 }, 1000);
-                btn.innerText = "توقف"; btn.classList.replace('bg-blue-600', 'bg-red-500');
+                btn.innerText = "توقف"; btn.className = "px-8 py-3 bg-red-600 text-white rounded-xl font-bold shadow-lg";
             }
+        }
+
+        function updateTimerDisplay() {
+            const m = Math.floor(timerSeconds / 60);
+            const s = timerSeconds % 60;
+            document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
         }
 
         function resetTimer() {
-            clearInterval(timerId); timerId = null; timeLeft = 25 * 60; updateTimerUI();
-            document.getElementById('timerBtn').innerText = "ابدأ";
-            document.getElementById('timerBtn').classList.replace('bg-red-500', 'bg-blue-600');
+            clearInterval(timerId); timerId = null;
+            timerSeconds = 25 * 60; updateTimerDisplay();
+            document.getElementById('startBtn').innerText = "ابدأ";
+            document.getElementById('startBtn').className = "px-8 py-3 bg-blue-600 text-white rounded-xl font-bold shadow-lg";
         }
 
-        // --- القهوة وإضافة المواد ---
-        let coffees = 0;
-        function addCoffee() { 
-            coffees++; 
-            document.getElementById('coffeeCount').innerText = coffees; 
-            showToast("بصحتك! القهوة رقم " + coffees); 
+        function startCountdown() {
+            const examDate = new Date("June 8, 2026 08:00:00").getTime();
+            setInterval(() => {
+                const now = new Date().getTime();
+                const diff = examDate - now;
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                document.getElementById('countdown').innerText = `${days} يوم و ${hours} ساعة`;
+            }, 1000);
         }
 
-        function addSubject() {
-            const title = prompt("اسم المادة:");
-            const task = prompt("واش راح تراجع؟");
-            if(title && task) {
-                const grid = document.getElementById('subjectGrid');
-                const card = document.createElement('div');
-                card.className = "card-pro p-6 bg-white dark:bg-slate-800 animate__animated animate__zoomIn";
-                card.innerHTML = `
-                    <div class="flex justify-between mb-4"><span class="text-2xl">📚</span><button onclick="this.closest('div.card-pro').remove()" class="text-red-400 text-xs">حذف</button></div>
-                    <h4 class="text-xl font-bold mb-1">${title}</h4>
-                    <p class="text-slate-400 text-sm mb-4">${task}</p>
-                    <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden"><div class="bg-green-500 h-full w-[20%]"></div></div>
-                `;
-                grid.appendChild(card);
-                showToast("تمت إضافة " + title);
-            }
-        }
+        function toggleDark() { document.body.classList.toggle('dark'); }
+        function logout() { localStorage.clear(); location.reload(); }
 
-        function logout() { location.reload(); }
+        // التأكد من تسجيل الدخول عند فتح الصفحة
+        if(localStorage.getItem('user')) renderApp();
     </script>
 </body>
 </html>
