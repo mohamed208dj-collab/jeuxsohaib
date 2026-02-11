@@ -3,198 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZENITH | نظام القيادة الدراسية</title>
+    <title>ZENITH ELITE | 2026</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Tajawal:wght@300;500;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Tajawal:wght@200;500;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --cyan: #00f2ff;
-            --purple: #bc13fe;
-            --bg: #05070a;
-            --glass: rgba(15, 20, 28, 0.7);
+            --bg: #030405;
+            --accent: #d4af37; /* لون ذهبي ملكي */
+            --glass: rgba(255, 255, 255, 0.02);
         }
 
         body {
             font-family: 'Tajawal', sans-serif;
-            background: var(--bg);
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(0, 242, 255, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 0% 0%, rgba(188, 19, 254, 0.05) 0%, transparent 30%);
-            color: #e2e8f0;
-            min-height: 100vh;
+            background-color: var(--bg);
+            color: #fff;
             overflow-x: hidden;
+            letter-spacing: 0.05em;
         }
 
-        .font-cyber { font-family: 'Orbitron', sans-serif; }
-
-        /* تأثير الزجاج الفخم */
-        .zenith-card {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-            position: relative;
-            overflow: hidden;
+        /* خلفية سينمائية */
+        .void-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 30%, #1a1e2e 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, #1a1525 0%, transparent 40%);
+            z-index: -1;
         }
 
-        /* الحافة المضيئة */
-        .zenith-card::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 1px;
-            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-            opacity: 0.5;
+        /* تأثير الزجاج السائل */
+        .liquid-glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(40px) saturate(150%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        /* مبيانات CSS الصافية */
-        .bar-chart {
-            display: flex;
-            align-items: flex-end;
-            gap: 4px;
-            height: 60px;
-        }
-        .bar {
-            width: 4px;
-            background: var(--cyan);
-            border-radius: 2px;
-            animation: grow 1.5s ease-out forwards;
+        .gold-text {
+            background: linear-gradient(to bottom right, #d4af37, #f7e7ce);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Cinzel', serif;
         }
 
-        @keyframes grow { from { height: 0; } }
-
-        .glow-text {
-            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+        /* زر فخم */
+        .btn-elite {
+            background: #fff;
+            color: #000;
+            font-weight: 900;
+            letter-spacing: 2px;
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            border-radius: 15px;
+            text-transform: uppercase;
         }
 
-        .ai-orb {
-            width: 100px; h-100px;
-            border-radius: 50%;
-            background: conic-gradient(from 0deg, var(--cyan), var(--purple), var(--cyan));
-            animation: rotate 4s linear infinite;
-            filter: blur(15px);
-            opacity: 0.3;
+        .btn-elite:hover {
+            letter-spacing: 5px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+            transform: scale(1.02);
         }
 
-        @keyframes rotate { to { transform: rotate(360deg); } }
+        /* أنيميشن ناعمة جداً */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating { animation: float 6s ease-in-out infinite; }
     </style>
 </head>
-<body class="p-4 md:p-10">
+<body class="p-6 md:p-12">
 
-    <header class="max-w-7xl mx-auto flex justify-between items-center mb-12">
-        <div class="flex items-center gap-4">
-            <h1 class="text-4xl font-cyber font-black tracking-widest glow-text">ZENITH<span class="text-cyan-400">.</span></h1>
-        </div>
-        <div class="zenith-card px-6 py-2 flex items-center gap-6">
-            <div class="text-right">
-                <p class="text-[10px] text-cyan-400 font-bold font-cyber">TIME TO EXAM</p>
-                <p class="text-sm font-cyber font-bold">123D 04H 32M</p>
-            </div>
-            <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">👤</div>
-        </div>
-    </header>
+    <div class="void-bg"></div>
 
-    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
-        <div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="zenith-card p-8 flex flex-col justify-center items-center text-center">
-                <div class="relative mb-6">
-                    <div class="absolute inset-0 ai-orb"></div>
-                    <img src="https://ui-avatars.com/api/?name=User&background=0f172a&color=00f2ff" class="w-24 h-24 rounded-full relative z-10 border-2 border-cyan-400/30 p-1">
+    <div class="max-w-6xl mx-auto">
+        <header class="flex justify-between items-center mb-20">
+            <div class="text-3xl font-black gold-text tracking-tighter">ZENITH ELITE</div>
+            <div class="text-[10px] tracking-[0.5em] opacity-40 font-bold">EST. 2026</div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            
+            <div class="lg:col-span-7 space-y-12">
+                <section>
+                    <h1 class="text-7xl font-light mb-4 leading-tight">مرحباً <span class="font-black">أمين</span>.</h1>
+                    <p class="text-slate-500 text-lg font-light tracking-widest uppercase">نظامك الشخصي للتميز الدراسي</p>
+                </section>
+
+                <div class="liquid-glass p-12 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 blur-3xl group-hover:opacity-10 transition-all"></div>
+                    <p class="text-[10px] tracking-[0.3em] text-slate-500 mb-8 font-bold">AI STRATEGY ADVISOR</p>
+                    <p id="ai-quote" class="text-2xl font-medium leading-relaxed italic opacity-90">
+                        "الذكاء ليس في كثرة القراءة، بل في جودة التركيز. ابدأ بالرياضيات، عقلك الآن في قمة المنطق."
+                    </p>
                 </div>
-                <h2 class="text-2xl font-black mb-2">مستعد للتحدي؟</h2>
-                <p class="text-slate-500 text-xs mb-6 uppercase tracking-widest">Physics Expert Level 08</p>
-                <div class="flex gap-4">
-                    <div class="bg-cyan-400/10 px-4 py-2 rounded-lg border border-cyan-400/20 text-cyan-400 text-xs font-bold">PHYSICS</div>
-                    <div class="bg-purple-400/10 px-4 py-2 rounded-lg border border-purple-400/20 text-purple-400 text-xs font-bold">38% DONE</div>
-                </div>
-            </div>
 
-            <div class="zenith-card p-8 relative">
-                <p class="text-xs text-slate-500 font-cyber mb-8">CONCENTRATION_CORE</p>
-                <div class="text-7xl font-cyber font-black text-center mb-10 glow-text" id="timer">25:00</div>
-                <button onclick="startTimer()" class="w-full py-4 bg-cyan-500 text-slate-900 font-black rounded-xl hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(0,242,255,0.3)]">
-                    ACTIVATION
-                </button>
-            </div>
-        </div>
-
-        <div class="lg:col-span-4 zenith-card p-8">
-            <p class="text-xs text-slate-500 font-cyber mb-6">CEL_ALAD ANALYTICS</p>
-            <div class="bar-chart mb-8">
-                <div class="bar flex-1" style="height: 40%"></div>
-                <div class="bar flex-1" style="height: 70%; background: var(--purple)"></div>
-                <div class="bar flex-1" style="height: 50%"></div>
-                <div class="bar flex-1" style="height: 90%; background: var(--purple)"></div>
-                <div class="bar flex-1" style="height: 60%"></div>
-                <div class="bar flex-1" style="height: 80%"></div>
-                <div class="bar flex-1" style="height: 45%; background: var(--purple)"></div>
-            </div>
-            <div class="space-y-4">
-                <div class="flex justify-between text-xs font-bold">
-                    <span class="text-slate-400 italic">Weekly Goal</span>
-                    <span class="text-cyan-400">75%</span>
-                </div>
-                <div class="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
-                    <div class="h-full bg-cyan-400 w-[75%]"></div>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="liquid-glass p-8 text-center">
+                        <p class="text-xs opacity-40 mb-2 uppercase">مستوى التقدم</p>
+                        <p class="text-4xl font-light font-plus">74<span class="text-sm opacity-30">%</span></p>
+                    </div>
+                    <div class="liquid-glass p-8 text-center">
+                        <p class="text-xs opacity-40 mb-2 uppercase">المهام المكتملة</p>
+                        <p class="text-4xl font-light">12<span class="text-sm opacity-30">/15</span></p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="lg:col-span-4 zenith-card p-6">
-            <h3 class="text-sm font-bold mb-6 flex justify-between items-center">
-                SOCIAL_ENGINE <span class="text-cyan-400">✓</span>
-            </h3>
-            <div class="space-y-4">
-                <div class="flex items-center gap-3 p-3 bg-white/5 rounded-xl border-l-2 border-cyan-400">
-                    <div class="w-2 h-2 rounded-full bg-cyan-400"></div>
-                    <span class="text-xs">مراجعة وحدة الميكانيك</span>
+            <div class="lg:col-span-5 space-y-8">
+                <div class="liquid-glass p-12 text-center relative border-t-2 border-white/5">
+                    <p class="text-[10px] tracking-[0.5em] text-slate-500 mb-12">DEEP FOCUS SESSION</p>
+                    <div class="text-[8rem] font-thin leading-none mb-12 tracking-tighter" id="timer">25:00</div>
+                    <button onclick="toggleTimer()" id="timerBtn" class="w-full py-5 btn-elite text-xs">
+                        Start Session
+                    </button>
                 </div>
-                <div class="flex items-center gap-3 p-3 bg-white/5 rounded-xl border-l-2 border-slate-700">
-                    <div class="w-2 h-2 rounded-full bg-slate-700"></div>
-                    <span class="text-xs">حل مقال الفلسفة</span>
+
+                <div class="p-6 space-y-6">
+                    <h4 class="text-xs tracking-[0.4em] text-slate-600 font-bold uppercase">المهمة القادمة</h4>
+                    <div class="flex items-center justify-between group cursor-pointer">
+                        <span class="text-xl font-light opacity-50 group-hover:opacity-100 transition-all">مراجعة الفيزياء النووية</span>
+                        <div class="w-2 h-2 rounded-full bg-white opacity-20 group-hover:opacity-100"></div>
+                    </div>
+                    <div class="h-px bg-white/5 w-full"></div>
+                    <div class="flex items-center justify-between group cursor-pointer">
+                        <span class="text-xl font-light opacity-50 group-hover:opacity-100 transition-all">حل بكالوريا تجريبية</span>
+                        <div class="w-2 h-2 rounded-full bg-white opacity-20 group-hover:opacity-100"></div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="lg:col-span-4 zenith-card p-6">
-            <h3 class="text-sm font-bold mb-6 flex justify-between items-center">
-                DATA_STREAM <span class="text-purple-400 italic">...</span>
-            </h3>
-            <div class="flex flex-col gap-4">
-                <div class="h-12 bg-white/5 rounded-xl flex items-center px-4 justify-between border border-white/5">
-                    <span class="text-[10px] text-slate-500 font-cyber">AI_STATUS</span>
-                    <span class="text-[10px] text-green-400 animate-pulse">OPTIMIZED</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="lg:col-span-4 zenith-card p-6 flex items-center gap-6">
-            <div class="ai-orb"></div>
-            <div class="relative z-10">
-                <h4 class="text-xs font-bold text-cyan-400 mb-1">AI ORB ACTIVE</h4>
-                <p class="text-[10px] text-slate-400">النظام يحلل أنماط دراستك الآن...</p>
-            </div>
-        </div>
-
-    </main>
+        <footer class="mt-32 flex justify-between items-center opacity-20 text-[10px] tracking-widest">
+            <div>BAC 2026 SURVEILLANCE SYSTEM</div>
+            <div id="date-display">WEDNESDAY, FEB 11</div>
+        </footer>
+    </div>
 
     <script>
-        // كود المؤقت البسيط
+        // كود التحكم في الوقت (Minimal & High Performance)
         let time = 25 * 60;
         let timer = null;
 
-        function startTimer() {
-            if(timer) return;
-            timer = setInterval(() => {
-                time--;
-                let m = Math.floor(time / 60);
-                let s = time % 60;
-                document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-                if(time <= 0) clearInterval(timer);
-            }, 1000);
+        function toggleTimer() {
+            const btn = document.getElementById('timerBtn');
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+                btn.innerText = "Resume Session";
+            } else {
+                timer = setInterval(() => {
+                    time--;
+                    let m = Math.floor(time / 60);
+                    let s = time % 60;
+                    document.getElementById('timer').innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                    if (time <= 0) clearInterval(timer);
+                }, 1000);
+                btn.innerText = "Pause";
+            }
         }
     </script>
 </body>
