@@ -3,211 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AURA | نظام المراجعة الاحترافي</title>
+    <title>ZENITH | نظام القيادة الدراسية</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600&family=Tajawal:wght@300;500;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Tajawal:wght@300;500;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --accent: #3b82f6;
-            --bg-dark: #020617;
-            --card-dark: #0f172a;
+            --cyan: #00f2ff;
+            --purple: #bc13fe;
+            --bg: #05070a;
+            --glass: rgba(15, 20, 28, 0.7);
         }
 
         body {
             font-family: 'Tajawal', sans-serif;
-            background-color: var(--bg-dark);
-            color: #f1f5f9;
-            letter-spacing: -0.01em;
+            background: var(--bg);
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(0, 242, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 0% 0%, rgba(188, 19, 254, 0.05) 0%, transparent 30%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* تصميم الـ Glassmorphism النقي */
-        .glass-ui {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(12px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
+        .font-cyber { font-family: 'Orbitron', sans-serif; }
+
+        /* تأثير الزجاج الفخم */
+        .zenith-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            position: relative;
+            overflow: hidden;
         }
 
-        /* أنيميشن الدخول الناعمة */
-        @keyframes reveal {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* الحافة المضيئة */
+        .zenith-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+            opacity: 0.5;
         }
 
-        .reveal { animation: reveal 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
-
-        /* زر البريميوم */
-        .btn-premium {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        /* مبيانات CSS الصافية */
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 60px;
+        }
+        .bar {
+            width: 4px;
+            background: var(--cyan);
+            border-radius: 2px;
+            animation: grow 1.5s ease-out forwards;
         }
 
-        .btn-premium:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.5);
+        @keyframes grow { from { height: 0; } }
+
+        .glow-text {
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
         }
 
-        .stat-card {
-            border-bottom: 2px solid transparent;
-            transition: 0.3s;
+        .ai-orb {
+            width: 100px; h-100px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, var(--cyan), var(--purple), var(--cyan));
+            animation: rotate 4s linear infinite;
+            filter: blur(15px);
+            opacity: 0.3;
         }
 
-        .stat-card:hover {
-            border-bottom-color: var(--accent);
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .font-plus { font-family: 'Plus Jakarta Sans', sans-serif; }
+        @keyframes rotate { to { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="antialiased overflow-x-hidden">
+<body class="p-4 md:p-10">
 
-    <nav class="max-w-7xl mx-auto py-8 px-6 flex justify-between items-center reveal">
-        <div class="flex items-center gap-3">
-            <div class="w-8 h-8 bg-blue-600 rounded-full blur-[2px] animate-pulse"></div>
-            <span class="text-2xl font-black tracking-tighter">AURA<span class="text-blue-500 text-4xl">.</span></span>
+    <header class="max-w-7xl mx-auto flex justify-between items-center mb-12">
+        <div class="flex items-center gap-4">
+            <h1 class="text-4xl font-cyber font-black tracking-widest glow-text">ZENITH<span class="text-cyan-400">.</span></h1>
         </div>
-        <div class="flex items-center gap-8">
-            <div class="hidden md:flex gap-6 text-sm font-medium text-slate-400">
-                <a href="#" class="hover:text-white transition">الجدول</a>
-                <a href="#" class="hover:text-white transition">المصادر</a>
-                <a href="#" class="hover:text-white transition">الذكاء الاصطناعي</a>
+        <div class="zenith-card px-6 py-2 flex items-center gap-6">
+            <div class="text-right">
+                <p class="text-[10px] text-cyan-400 font-bold font-cyber">TIME TO EXAM</p>
+                <p class="text-sm font-cyber font-bold">123D 04H 32M</p>
             </div>
-            <div id="countdown" class="font-plus font-bold text-blue-500 bg-blue-500/10 px-4 py-2 rounded-full text-xs">
-                124 DAYS LEFT
+            <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">👤</div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="zenith-card p-8 flex flex-col justify-center items-center text-center">
+                <div class="relative mb-6">
+                    <div class="absolute inset-0 ai-orb"></div>
+                    <img src="https://ui-avatars.com/api/?name=User&background=0f172a&color=00f2ff" class="w-24 h-24 rounded-full relative z-10 border-2 border-cyan-400/30 p-1">
+                </div>
+                <h2 class="text-2xl font-black mb-2">مستعد للتحدي؟</h2>
+                <p class="text-slate-500 text-xs mb-6 uppercase tracking-widest">Physics Expert Level 08</p>
+                <div class="flex gap-4">
+                    <div class="bg-cyan-400/10 px-4 py-2 rounded-lg border border-cyan-400/20 text-cyan-400 text-xs font-bold">PHYSICS</div>
+                    <div class="bg-purple-400/10 px-4 py-2 rounded-lg border border-purple-400/20 text-purple-400 text-xs font-bold">38% DONE</div>
+                </div>
+            </div>
+
+            <div class="zenith-card p-8 relative">
+                <p class="text-xs text-slate-500 font-cyber mb-8">CONCENTRATION_CORE</p>
+                <div class="text-7xl font-cyber font-black text-center mb-10 glow-text" id="timer">25:00</div>
+                <button onclick="startTimer()" class="w-full py-4 bg-cyan-500 text-slate-900 font-black rounded-xl hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(0,242,255,0.3)]">
+                    ACTIVATION
+                </button>
             </div>
         </div>
-    </nav>
 
-    <main class="max-w-7xl mx-auto px-6 py-12">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
-            <div class="lg:col-span-8 space-y-8">
-                <header class="reveal" style="animation-delay: 0.1s;">
-                    <h1 class="text-6xl font-black mb-4 leading-tight">صمم مستقبلك بذكاء<br><span class="text-slate-500">مرحباً، أمين.</span></h1>
-                    <p class="text-slate-400 text-lg max-w-xl">نظام متطور لتحليل الأداء الدراسي ومتابعة أهداف البكالوريا 2026 بأعلى معايير الدقة.</p>
-                </header>
-
-                <div class="glass-ui p-8 reveal" style="animation-delay: 0.2s;">
-                    <div class="flex items-start gap-6">
-                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-2xl shadow-xl">🧠</div>
-                        <div class="flex-1">
-                            <h3 class="text-sm font-bold text-blue-400 mb-2 uppercase tracking-widest">تحليل AI الحركي</h3>
-                            <p id="aiInsightText" class="text-lg font-medium leading-relaxed text-slate-200">
-                                "نلاحظ تحسناً بنسبة 15% في حل تمارين الرياضيات. ننصحك اليوم بجلسة تركيز عميق على الفيزياء النووية."
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 reveal" style="animation-delay: 0.3s;">
-                    <div class="glass-ui p-8 stat-card">
-                        <div class="flex justify-between items-center mb-6">
-                            <span class="text-xs font-bold text-slate-500 uppercase">المادة الأساسية</span>
-                            <span class="text-blue-500 font-plus font-bold">82%</span>
-                        </div>
-                        <h4 class="text-2xl font-bold mb-2">العلوم الطبيعية</h4>
-                        <p class="text-sm text-slate-500 mb-6">المجال الأول: تركيب البروتين</p>
-                        <div class="h-1 w-full bg-slate-800 rounded-full overflow-hidden">
-                            <div class="h-full bg-blue-600 w-[82%] shadow-[0_0_15px_rgba(59,130,246,0.5)]"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="glass-ui p-8 stat-card">
-                        <div class="flex justify-between items-center mb-6">
-                            <span class="text-xs font-bold text-slate-500 uppercase">المادة القادمة</span>
-                            <span class="text-purple-500 font-plus font-bold">45%</span>
-                        </div>
-                        <h4 class="text-2xl font-bold mb-2">الفلسفة</h4>
-                        <p class="text-sm text-slate-500 mb-6">مشكلة الأنا والآخر</p>
-                        <div class="h-1 w-full bg-slate-800 rounded-full overflow-hidden">
-                            <div class="h-full bg-purple-600 w-[45%] shadow-[0_0_15px_rgba(168,85,247,0.5)]"></div>
-                        </div>
-                    </div>
-                </div>
+        <div class="lg:col-span-4 zenith-card p-8">
+            <p class="text-xs text-slate-500 font-cyber mb-6">CEL_ALAD ANALYTICS</p>
+            <div class="bar-chart mb-8">
+                <div class="bar flex-1" style="height: 40%"></div>
+                <div class="bar flex-1" style="height: 70%; background: var(--purple)"></div>
+                <div class="bar flex-1" style="height: 50%"></div>
+                <div class="bar flex-1" style="height: 90%; background: var(--purple)"></div>
+                <div class="bar flex-1" style="height: 60%"></div>
+                <div class="bar flex-1" style="height: 80%"></div>
+                <div class="bar flex-1" style="height: 45%; background: var(--purple)"></div>
             </div>
-
-            <div class="lg:col-span-4 space-y-8">
-                <div class="glass-ui p-8 reveal" style="animation-delay: 0.4s;">
-                    <div class="text-center">
-                        <p class="text-xs font-bold text-slate-500 uppercase mb-8 tracking-widest">Focus Engine</p>
-                        <div class="text-7xl font-plus font-light tracking-tighter mb-10" id="timer">25:00</div>
-                        <button onclick="toggleTimer()" id="timerBtn" class="w-full py-4 btn-premium rounded-2xl font-bold text-sm tracking-wide transition-all">
-                            ابدأ الجلسة
-                        </button>
-                    </div>
+            <div class="space-y-4">
+                <div class="flex justify-between text-xs font-bold">
+                    <span class="text-slate-400 italic">Weekly Goal</span>
+                    <span class="text-cyan-400">75%</span>
                 </div>
-
-                <div class="glass-ui p-8 reveal" style="animation-delay: 0.5s;">
-                    <h4 class="text-sm font-bold text-slate-400 uppercase mb-6">المهام الاستراتيجية</h4>
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-4 p-4 rounded-2xl hover:bg-white/5 transition group cursor-pointer">
-                            <div class="w-2 h-2 rounded-full bg-blue-500 group-hover:scale-150 transition"></div>
-                            <span class="text-sm font-medium">مراجعة قوانين نيوتن</span>
-                        </div>
-                        <div class="flex items-center gap-4 p-4 rounded-2xl hover:bg-white/5 transition group cursor-pointer border-r-2 border-blue-500 bg-blue-500/5">
-                            <div class="w-2 h-2 rounded-full bg-blue-500"></div>
-                            <span class="text-sm font-medium">حل بكالوريا 2023</span>
-                        </div>
-                    </div>
+                <div class="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
+                    <div class="h-full bg-cyan-400 w-[75%]"></div>
                 </div>
             </div>
         </div>
+
+        <div class="lg:col-span-4 zenith-card p-6">
+            <h3 class="text-sm font-bold mb-6 flex justify-between items-center">
+                SOCIAL_ENGINE <span class="text-cyan-400">✓</span>
+            </h3>
+            <div class="space-y-4">
+                <div class="flex items-center gap-3 p-3 bg-white/5 rounded-xl border-l-2 border-cyan-400">
+                    <div class="w-2 h-2 rounded-full bg-cyan-400"></div>
+                    <span class="text-xs">مراجعة وحدة الميكانيك</span>
+                </div>
+                <div class="flex items-center gap-3 p-3 bg-white/5 rounded-xl border-l-2 border-slate-700">
+                    <div class="w-2 h-2 rounded-full bg-slate-700"></div>
+                    <span class="text-xs">حل مقال الفلسفة</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-4 zenith-card p-6">
+            <h3 class="text-sm font-bold mb-6 flex justify-between items-center">
+                DATA_STREAM <span class="text-purple-400 italic">...</span>
+            </h3>
+            <div class="flex flex-col gap-4">
+                <div class="h-12 bg-white/5 rounded-xl flex items-center px-4 justify-between border border-white/5">
+                    <span class="text-[10px] text-slate-500 font-cyber">AI_STATUS</span>
+                    <span class="text-[10px] text-green-400 animate-pulse">OPTIMIZED</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-4 zenith-card p-6 flex items-center gap-6">
+            <div class="ai-orb"></div>
+            <div class="relative z-10">
+                <h4 class="text-xs font-bold text-cyan-400 mb-1">AI ORB ACTIVE</h4>
+                <p class="text-[10px] text-slate-400">النظام يحلل أنماط دراستك الآن...</p>
+            </div>
+        </div>
+
     </main>
 
     <script>
-        // نظام المؤقت الاحترافي
-        let seconds = 25 * 60;
-        let running = false;
-        let timerId;
+        // كود المؤقت البسيط
+        let time = 25 * 60;
+        let timer = null;
 
-        function toggleTimer() {
-            const btn = document.getElementById('timerBtn');
-            if(running) {
-                clearInterval(timerId);
-                btn.innerText = "واصل الجلسة";
-                btn.classList.replace('bg-blue-600', 'bg-slate-800');
-            } else {
-                timerId = setInterval(() => {
-                    seconds--;
-                    updateUI();
-                    if(seconds <= 0) {
-                        clearInterval(timerId);
-                        alert("اكتملت جلسة التركيز العميق.");
-                    }
-                }, 1000);
-                btn.innerText = "توقف مؤقت";
-                btn.classList.replace('bg-slate-800', 'bg-blue-600');
-            }
-            running = !running;
+        function startTimer() {
+            if(timer) return;
+            timer = setInterval(() => {
+                time--;
+                let m = Math.floor(time / 60);
+                let s = time % 60;
+                document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+                if(time <= 0) clearInterval(timer);
+            }, 1000);
         }
-
-        function updateUI() {
-            const m = Math.floor(seconds / 60);
-            const s = seconds % 60;
-            document.getElementById('timer').innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-        }
-
-        // تفاعل الـ AI
-        const thoughts = [
-            "تحليل: مستوى التركيز مرتفع حالياً.",
-            "اقتراح: مراجعة العلوم الطبيعية هي الخيار الأفضل الآن.",
-            "تنبيه: لقد عملت لمدة ساعتين، الـ AI يقترح راحة 5 دقائق."
-        ];
-        
-        setInterval(() => {
-            if(!running) {
-                const text = document.getElementById('aiInsightText');
-                text.style.opacity = 0;
-                setTimeout(() => {
-                    text.innerText = thoughts[Math.floor(Math.random() * thoughts.length)];
-                    text.style.opacity = 1;
-                }, 500);
-            }
-        }, 10000);
     </script>
 </body>
 </html>
