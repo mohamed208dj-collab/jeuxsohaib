@@ -3,134 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مستقبلي | DashBoard Pro</title>
+    <title>مستقبلي | DashBoard Pro v2</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --primary: #2563eb;
-            --bg-body: #f4f7fe;
-            --sidebar: #ffffff;
-        }
+        :root { --primary: #2563eb; --bg: #f8fafc; --card: #ffffff; --text: #1e293b; }
+        .dark { --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; }
 
-        body { font-family: 'Tajawal', sans-serif; background-color: var(--bg-body); color: #1e293b; }
-
-        /* تجميل شريط التمرير */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-
-        /* تأثير الزجاج والخلفيات */
-        .card-pro { background: #ffffff; border-radius: 24px; border: 1px solid rgba(226, 232, 240, 0.8); box-shadow: 0 4px 20px -10px rgba(0,0,0,0.05); }
-        .sidebar { background: var(--sidebar); border-left: 1px solid #e2e8f0; }
+        body { font-family: 'Tajawal', sans-serif; background-color: var(--bg); color: var(--text); transition: all 0.4s ease; }
+        .card-pro { background: var(--card); border-radius: 24px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(0,0,0,0.05); }
+        .card-pro:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); border-color: var(--primary); }
         
-        /* الأنيميشن السلس */
-        .smooth-transition { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        /* أنيميشن التوهج */
+        .glow { box-shadow: 0 0 15px rgba(37, 99, 235, 0.3); }
         .page-hide { display: none; }
+        
+        /* تصميم النوتفكيشن */
+        #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 3000; display: none; }
     </style>
 </head>
-<body class="min-h-screen">
+<body>
 
-    <section id="loginPage" class="fixed inset-0 z-[2000] bg-white flex items-center justify-center p-6">
-        <div class="max-w-md w-full text-center animate__animated animate__fadeInUp">
-            <div class="w-20 h-20 bg-blue-600 rounded-3xl mx-auto mb-6 flex items-center justify-center shadow-xl rotate-12">
-                <span class="text-4xl -rotate-12">🎓</span>
+    <div id="toast" class="bg-slate-800 text-white px-6 py-3 rounded-2xl shadow-2xl animate__animated"></div>
+
+    <section id="loginPage" class="fixed inset-0 z-[2000] bg-slate-900 flex items-center justify-center p-6">
+        <div class="max-w-md w-full text-center animate__animated animate__backInDown">
+            <div class="w-24 h-24 bg-blue-600 rounded-[2rem] mx-auto mb-8 flex items-center justify-center shadow-2xl glow">
+                <span class="text-5xl">⚡</span>
             </div>
-            <h1 class="text-3xl font-black text-slate-800 mb-2">مرحباً بك في مستقبلي</h1>
-            <p class="text-slate-500 mb-8">منصة تنظيم مراجعة البكالوريا 2026</p>
-            
-            <div class="space-y-4">
-                <input type="text" id="studentName" placeholder="أدخل اسمك الكريم" 
-                    class="w-full px-6 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 outline-none text-center font-bold">
-                <button onclick="initApp()" class="w-full py-4 rounded-2xl bg-blue-600 text-white font-black text-lg shadow-lg shadow-blue-200 hover:bg-blue-700 smooth-transition">
-                    دخول للوحة التحكم
-                </button>
-            </div>
+            <h1 class="text-4xl font-black text-white mb-4">مستقبلي</h1>
+            <input type="text" id="studentName" placeholder="واسمك يا بطل؟" 
+                class="w-full px-8 py-5 rounded-3xl bg-white/10 border border-white/20 text-white focus:bg-white focus:text-slate-900 outline-none text-center font-bold text-xl transition-all mb-6">
+            <button onclick="initApp()" class="w-full py-5 rounded-3xl bg-blue-600 text-white font-black text-xl shadow-xl hover:bg-blue-500 transition-all active:scale-95">
+                دخول اللوحة 🚀
+            </button>
         </div>
     </section>
 
-    <div id="mainDashboard" class="flex min-h-screen page-hide">
+    <div id="mainDashboard" class="flex min-h-screen page-hide animate__animated animate__fadeIn">
         
-        <aside class="sidebar w-72 hidden lg:flex flex-col sticky top-0 h-screen p-6">
-            <div class="text-2xl font-black text-blue-600 mb-10 px-4">🎯 مستقبلي</div>
-            
-            <nav class="flex-1 space-y-2">
-                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-2xl bg-blue-50 text-blue-600 font-bold">
-                    <span>🏠</span> الرئيسية
-                </a>
-                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-2xl text-slate-500 hover:bg-slate-50 smooth-transition">
-                    <span>📚</span> المواد الدراسية
-                </a>
-                <a href="#" class="flex items-center gap-4 px-4 py-3 rounded-2xl text-slate-500 hover:bg-slate-50 smooth-transition">
-                    <span>📅</span> جدول المراجعة
-                </a>
-            </nav>
-
-            <div class="mt-auto p-4 card-pro bg-slate-50 border-none">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold" id="userInitial">أ</div>
-                    <div>
-                        <p class="text-xs text-slate-400">طالب بكالوريا</p>
-                        <p class="font-bold text-sm" id="userDisplayName">أمين</p>
-                    </div>
-                </div>
+        <aside class="w-72 hidden lg:flex flex-col sticky top-0 h-screen p-6 border-l border-slate-200 dark:border-slate-700">
+            <div class="flex items-center gap-3 text-2xl font-black text-blue-600 mb-12">
+                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white text-sm">M</div>
+                <span>مستقبلي</span>
             </div>
+            <nav class="flex-1 space-y-3">
+                <button onclick="toggleTheme()" class="w-full flex items-center gap-4 px-5 py-4 rounded-2xl bg-slate-100 dark:bg-slate-800 font-bold hover:scale-105 transition">
+                    <span id="themeIcon">🌙</span> <span id="themeText">الوضع الليلي</span>
+                </button>
+                <div class="h-px bg-slate-200 dark:bg-slate-700 my-4"></div>
+                <a href="#" class="flex items-center gap-4 px-5 py-3 rounded-2xl text-blue-600 bg-blue-50 dark:bg-blue-900/20 font-bold">🏠 الرئيسية</a>
+                <a href="#" class="flex items-center gap-4 px-5 py-3 rounded-2xl text-slate-400 hover:text-blue-500 transition">📚 مكتبتي</a>
+            </nav>
         </aside>
 
         <main class="flex-1 p-4 md:p-10">
-            <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+            <header class="flex justify-between items-center mb-12">
                 <div>
-                    <h2 class="text-2xl font-black text-slate-800">لوحة التحكم</h2>
-                    <p class="text-slate-400 text-sm">باقي <span class="text-blue-600 font-bold">124 يوم</span> على امتحان البكالوريا</p>
+                    <h2 class="text-3xl font-black italic">لوحة القائد <span id="userDisplayName" class="text-blue-600"></span></h2>
+                    <p class="text-slate-400 font-medium">باقي <span class="text-red-500 font-bold animate-pulse">124 يوم</span> على التحدي الكبير</p>
                 </div>
-                <div class="flex items-center gap-4 bg-white p-2 rounded-2xl shadow-sm border border-slate-100">
-                    <div class="px-4 py-2 text-center">
-                        <p class="text-[10px] text-slate-400 font-bold uppercase">المهام اليومية</p>
-                        <p class="font-black text-blue-600">85%</p>
-                    </div>
+                <div class="w-16 h-16 bg-white dark:bg-slate-800 rounded-2xl shadow-sm flex items-center justify-center border border-slate-100 dark:border-slate-700">
+                    <span class="text-2xl">🔥</span>
                 </div>
             </header>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <div class="card-pro p-6 flex items-center gap-5">
-                    <div class="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-2xl">☕</div>
-                    <div>
-                        <p class="text-slate-400 text-xs font-bold uppercase tracking-wider">عداد القهوة</p>
-                        <h4 class="text-2xl font-black text-slate-800"><span id="coffeeCount">0</span> كوب</h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <div class="card-pro p-8 md:col-span-2 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform">
+                        <span class="text-9xl">⏱️</span>
                     </div>
-                    <button onclick="updateCoffee()" class="mr-auto w-10 h-10 rounded-full bg-slate-50 hover:bg-orange-500 hover:text-white smooth-transition text-xl font-bold">+</button>
+                    <div class="relative z-10">
+                        <p class="text-blue-500 font-bold text-xs mb-2 tracking-widest uppercase">نظام بومودورو</p>
+                        <h3 class="text-6xl font-black mb-8 tracking-tighter" id="timerDisplay">25:00</h3>
+                        <div class="flex gap-4">
+                            <button id="timerBtn" onclick="toggleTimer()" class="px-10 py-4 bg-blue-600 text-white rounded-2xl font-black shadow-lg shadow-blue-200 hover:scale-105 transition">ابدأ التركيز</button>
+                            <button onclick="resetTimer()" class="p-4 bg-slate-100 dark:bg-slate-700 rounded-2xl hover:rotate-180 transition-all duration-500">🔄</button>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="card-pro p-6 flex items-center gap-5 md:col-span-2 bg-blue-600 text-white border-none shadow-blue-200">
-                    <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-2xl">⏱️</div>
-                    <div class="flex-1">
-                        <p class="text-blue-100 text-xs font-bold uppercase tracking-wider">مؤقت بومودورو للتركيز</p>
-                        <h4 class="text-3xl font-black" id="timerDisplay">25:00</h4>
-                    </div>
-                    <div class="flex gap-2">
-                        <button id="timerBtn" onclick="toggleTimer()" class="px-6 py-2 bg-white text-blue-600 font-black rounded-xl hover:bg-blue-50 smooth-transition">ابدأ</button>
-                        <button onclick="resetTimer()" class="px-4 py-2 bg-white/20 text-white rounded-xl hover:bg-white/30 transition">🔄</button>
-                    </div>
+                <div class="card-pro p-8 text-center flex flex-col justify-center items-center border-b-8 border-orange-500">
+                    <div class="text-5xl mb-4 animate__animated animate__bounceIn">☕</div>
+                    <p class="text-slate-400 font-bold text-xs mb-1 uppercase">فناجين اليوم</p>
+                    <h4 class="text-4xl font-black mb-6"><span id="coffeeCount">0</span></h4>
+                    <button onclick="updateCoffee()" class="w-full py-3 bg-orange-500 text-white rounded-xl font-bold shadow-lg shadow-orange-100 hover:bg-orange-600 transition">زاد فنجان +</button>
                 </div>
             </div>
 
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-black text-slate-800">برنامج اليوم</h3>
-                <button onclick="addSubject()" class="text-blue-600 font-bold hover:underline">+ مادة جديدة</button>
-            </div>
-
-            <div id="subjectGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="card-pro p-6 animate__animated animate__fadeIn">
-                    <div class="flex justify-between items-start mb-6">
-                        <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-2xl">📐</div>
-                        <span class="px-3 py-1 bg-green-100 text-green-600 text-[10px] font-bold rounded-lg uppercase">قيد المراجعة</span>
-                    </div>
-                    <h4 class="text-lg font-black text-slate-800 mb-1">الرياضيات</h4>
-                    <p class="text-slate-400 text-xs mb-4">وحدة المتتاليات العددية - حل تمارين</p>
-                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                        <div class="bg-blue-600 h-full rounded-full" style="width: 65%"></div>
+            <div class="mt-12">
+                <div class="flex justify-between items-center mb-8">
+                    <h3 class="text-2xl font-black">خطتي الدراسية</h3>
+                    <button onclick="addSubject()" class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold hover:shadow-lg transition">+ إضافة مادة</button>
+                </div>
+                <div id="subjectGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="card-pro p-6 animate__animated animate__fadeIn">
+                        <div class="flex justify-between mb-4">
+                            <span class="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-xl text-2xl">📐</span>
+                            <span class="text-[10px] font-bold text-blue-500 uppercase">أساسي</span>
+                        </div>
+                        <h4 class="text-xl font-black mb-1">الرياضيات</h4>
+                        <p class="text-slate-400 text-xs mb-6 italic">مراجعة الدوال اللوغاريتمية</p>
+                        <div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                            <div class="bg-blue-600 h-full w-[70%] animate-pulse"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -138,100 +118,78 @@
     </div>
 
     <script>
-        // 1. إدارة التطبيق
-        function initApp() {
-            const nameInput = document.getElementById('studentName');
-            if (!nameInput.value.trim()) {
-                alert("تعيش.. اكتب اسمك باش تخرج الخدمة منظمة!");
-                return;
-            }
-
-            // تخزين البيانات
-            localStorage.setItem('student_name', nameInput.value);
-            
-            // تحويل الواجهات
-            const loginPage = document.getElementById('loginPage');
-            loginPage.classList.add('animate__animated', 'animate__fadeOut');
-            
+        // --- 1. المنطق العام ---
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.style.display = 'block';
+            t.classList.add('animate__fadeInUp');
             setTimeout(() => {
-                loginPage.style.display = 'none';
-                const dashboard = document.getElementById('mainDashboard');
-                dashboard.classList.remove('page-hide');
-                dashboard.classList.add('animate__animated', 'animate__fadeIn');
-                
-                // تحديث المعلومات
-                document.getElementById('userDisplayName').innerText = nameInput.value;
-                document.getElementById('userInitial').innerText = nameInput.value.charAt(0).toUpperCase();
+                t.classList.replace('animate__fadeInUp', 'animate__fadeOutDown');
+                setTimeout(() => { t.style.display = 'none'; t.classList.remove('animate__fadeOutDown'); }, 500);
+            }, 3000);
+        }
+
+        function initApp() {
+            const name = document.getElementById('studentName').value;
+            if(!name) return showToast("أدخل اسمك أولاً!");
+
+            document.getElementById('loginPage').classList.add('animate__animated', 'animate__fadeOutLeft');
+            setTimeout(() => {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('mainDashboard').classList.remove('page-hide');
+                document.getElementById('userDisplayName').innerText = name;
+                showToast("مرحباً بك يا " + name);
             }, 600);
         }
 
-        // 2. إدارة المؤقت (Timer)
-        let timeLeft = 25 * 60;
-        let timerId = null;
-
-        function updateTimerUI() {
-            const m = Math.floor(timeLeft / 60);
-            const s = timeLeft % 60;
-            document.getElementById('timerDisplay').innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        // --- 2. الوضع الليلي ---
+        function toggleTheme() {
+            document.body.classList.toggle('dark');
+            const isDark = document.body.classList.contains('dark');
+            document.getElementById('themeIcon').innerText = isDark ? '☀️' : '🌙';
+            document.getElementById('themeText').innerText = isDark ? 'الوضع النهاري' : 'الوضع الليلي';
+            showToast(isDark ? "تم تفعيل الوضع الليلي 🌙" : "تم تفعيل الوضع النهاري ☀️");
         }
 
+        // --- 3. المؤقت (Timer) ---
+        let timeLeft = 25 * 60, timerId = null;
+        function updateTimerUI() {
+            const m = Math.floor(timeLeft / 60), s = timeLeft % 60;
+            document.getElementById('timerDisplay').innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
         function toggleTimer() {
             const btn = document.getElementById('timerBtn');
             if (timerId) {
-                clearInterval(timerId);
-                timerId = null;
-                btn.innerText = "واصل";
-                btn.className = "px-6 py-2 bg-white text-blue-600 font-black rounded-xl";
+                clearInterval(timerId); timerId = null;
+                btn.innerText = "واصل"; btn.className = "px-10 py-4 bg-orange-500 text-white rounded-2xl font-black shadow-lg";
             } else {
                 timerId = setInterval(() => {
-                    timeLeft--;
-                    updateTimerUI();
-                    if (timeLeft <= 0) {
-                        clearInterval(timerId);
-                        alert("أحسنت! كملت جلسة المراجعة. خذ استراحة.");
-                    }
+                    timeLeft--; updateTimerUI();
+                    if (timeLeft <= 0) { clearInterval(timerId); showToast("انتهى الوقت! خذ استراحة ☕"); }
                 }, 1000);
-                btn.innerText = "توقف";
-                btn.className = "px-6 py-2 bg-red-500 text-white font-black rounded-xl";
+                btn.innerText = "توقف"; btn.className = "px-10 py-4 bg-red-500 text-white rounded-2xl font-black shadow-lg";
             }
         }
-
         function resetTimer() {
-            clearInterval(timerId);
-            timerId = null;
-            timeLeft = 25 * 60;
-            updateTimerUI();
-            document.getElementById('timerBtn').innerText = "ابدأ";
-            document.getElementById('timerBtn').className = "px-6 py-2 bg-white text-blue-600 font-black rounded-xl";
+            clearInterval(timerId); timerId = null; timeLeft = 25 * 60; updateTimerUI();
+            document.getElementById('timerBtn').innerText = "ابدأ التركيز";
+            document.getElementById('timerBtn').className = "px-10 py-4 bg-blue-600 text-white rounded-2xl font-black shadow-lg";
         }
 
-        // 3. عداد القهوة
+        // --- 4. القهوة وإضافة المواد ---
         let count = 0;
-        function updateCoffee() {
-            count++;
-            document.getElementById('coffeeCount').innerText = count;
-        }
+        function updateCoffee() { count++; document.getElementById('coffeeCount').innerText = count; showToast("بصحتك القهوة! ☕"); }
 
-        // 4. إضافة مادة
         function addSubject() {
-            const title = prompt("اسم المادة:");
-            const lesson = prompt("واش راح تراجع فيها؟");
-            if (title && lesson) {
+            const title = prompt("اسم المادة:"), desc = prompt("واش راح تراجع؟");
+            if(title && desc) {
                 const grid = document.getElementById('subjectGrid');
-                const card = document.createElement('div');
-                card.className = "card-pro p-6 animate__animated animate__fadeInUp";
-                card.innerHTML = `
-                    <div class="flex justify-between items-start mb-6">
-                        <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-2xl">📚</div>
-                        <span class="px-3 py-1 bg-blue-100 text-blue-600 text-[10px] font-bold rounded-lg uppercase">جديد</span>
-                    </div>
-                    <h4 class="text-lg font-black text-slate-800 mb-1">${title}</h4>
-                    <p class="text-slate-400 text-xs mb-4">${lesson}</p>
-                    <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                        <div class="bg-blue-600 h-full rounded-full" style="width: 10%"></div>
-                    </div>
-                `;
-                grid.appendChild(card);
+                const div = document.createElement('div');
+                div.className = "card-pro p-6 animate__animated animate__backInUp";
+                div.innerHTML = `<div class="flex justify-between mb-4"><span class="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-xl text-2xl">📚</span></div><h4 class="text-xl font-black mb-1">${title}</h4><p class="text-slate-400 text-xs mb-6 italic">${desc}</p><div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden"><div class="bg-blue-600 h-full w-[10%]"></div></div>`;
+                grid.appendChild(div);
+                showToast("تمت إضافة مادة " + title);
             }
         }
     </script>
