@@ -3,102 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مستقبلي | المنصة الشاملة 2026</title>
+    <title>مستقبلي AI | المنصة الذكية للبكالوريا</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
-        :root { --primary: #2563eb; --bg: #f8fafc; --card: #ffffff; }
-        .dark { --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; }
-        body { font-family: 'Tajawal', sans-serif; background-color: var(--bg); transition: 0.3s; }
-        .glass-card { background: var(--card); border-radius: 2rem; border: 1px solid rgba(0,0,0,0.05); shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        :root { --ai-purple: #8b5cf6; --ai-blue: #3b82f6; }
+        body { font-family: 'Tajawal', sans-serif; background: #f8fafc; transition: 0.3s; }
+        .ai-gradient { background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 2rem; }
+        .ai-chat-box { height: 300px; overflow-y: auto; border-radius: 1.5rem; background: rgba(0,0,0,0.02); p: 4; }
         .hidden-section { display: none; }
-        .done { text-decoration: line-through; opacity: 0.5; }
+        .ai-status-pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
     </style>
 </head>
-<body class="min-h-screen text-slate-800 dark:text-slate-100">
+<body class="min-h-screen text-slate-800">
 
-    <section id="loginPage" class="fixed inset-0 z-[5000] bg-slate-900 flex items-center justify-center p-6">
-        <div class="max-w-md w-full text-center animate__animated animate__zoomIn">
-            <div class="text-7xl mb-6">🎯</div>
-            <h1 class="text-4xl font-black text-white mb-8 italic">مستقبلي 2026</h1>
-            <input type="text" id="nameInput" placeholder="أدخل اسمك يا بطل..." 
-                class="w-full p-5 rounded-2xl bg-white/10 border-2 border-white/20 text-white focus:bg-white focus:text-slate-900 outline-none text-center font-bold mb-4 shadow-2xl">
-            <button onclick="login()" class="w-full p-5 rounded-2xl bg-blue-600 text-white font-black text-xl hover:bg-blue-500 transition-all shadow-xl">ابدأ رحلة النجاح 🚀</button>
+    <section id="loginPage" class="fixed inset-0 z-[5000] ai-gradient flex items-center justify-center p-6">
+        <div class="max-w-md w-full text-center animate__animated animate__fadeIn">
+            <div class="relative inline-block mb-6">
+                <div class="absolute inset-0 bg-white blur-3xl opacity-30 rounded-full animate-pulse"></div>
+                <span class="text-8xl relative z-10">🤖</span>
+            </div>
+            <h1 class="text-4xl font-black text-white mb-2">مستقبلي AI</h1>
+            <p class="text-blue-100 mb-8 font-medium italic underline">بذكاء بكالوريا 2026</p>
+            <input type="text" id="nameInput" placeholder="أدخل اسمك يا بطل" 
+                class="w-full p-5 rounded-2xl bg-white/20 border-2 border-white/30 text-white placeholder:text-white/60 focus:bg-white focus:text-slate-900 outline-none text-center font-bold mb-4 shadow-2xl transition-all">
+            <button onclick="login()" class="w-full p-5 rounded-2xl bg-white text-blue-600 font-black text-xl hover:bg-blue-50 transition-all shadow-xl">تحليل بياناتي والدخول ⚡</button>
         </div>
     </section>
 
-    <div id="dashboard" class="hidden-section flex flex-col lg:flex-row min-h-screen">
+    <div id="dashboard" class="hidden-section flex flex-col lg:flex-row min-h-screen bg-slate-50">
         
-        <aside class="w-full lg:w-72 bg-white dark:bg-slate-800 p-6 shadow-xl lg:sticky lg:top-0 lg:h-screen">
-            <div class="flex items-center justify-between mb-10">
-                <h2 class="text-2xl font-black text-blue-600 italic">مستقبلي</h2>
-                <button onclick="toggleDark()" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-700">🌙</button>
-            </div>
+        <aside class="w-full lg:w-80 bg-white p-6 shadow-2xl lg:sticky lg:top-0 lg:h-screen z-20">
+            <div class="text-2xl font-black text-transparent bg-clip-text ai-gradient mb-8">AI مستقبلي</div>
             
-            <nav class="space-y-3">
-                <button class="w-full text-right p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 font-bold">🏠 الرئيسية</button>
-                <div class="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-2xl">
-                    <p class="text-[10px] uppercase font-bold text-slate-400 mb-2">عداد الباك</p>
-                    <div id="countdown" class="text-sm font-black text-red-500">جاري الحساب...</div>
+            <div class="mb-8 p-5 bg-blue-50 rounded-3xl border border-blue-100">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="w-2 h-2 bg-green-500 rounded-full ai-status-pulse"></span>
+                    <span class="text-[10px] font-bold text-blue-600 uppercase">AI Advisor Active</span>
                 </div>
-            </nav>
-
-            <div class="mt-10 p-4 border-t border-slate-100 dark:border-slate-700">
-                <p class="text-xs text-slate-400 mb-2 font-bold">حكمة اليوم:</p>
-                <p id="quote" class="text-xs italic font-medium leading-relaxed italic">"النجاح هو مجموع مجهودات صغيرة تتكرر كل يوم."</p>
+                <p id="aiAdvice" class="text-xs font-bold leading-relaxed text-slate-600 italic text-right">"جاري تحليل نمط دراستك..."</p>
             </div>
+
+            <nav class="space-y-4">
+                <div class="p-4 bg-slate-900 text-white rounded-2xl">
+                    <p class="text-[10px] opacity-60 font-bold mb-1">العد التنازلي للبكالوريا</p>
+                    <div id="countdown" class="text-lg font-black font-mono">-- : -- : --</div>
+                </div>
+                <button onclick="logout()" class="w-full p-4 rounded-2xl text-red-500 font-bold hover:bg-red-50">تسجيل الخروج</button>
+            </nav>
         </aside>
 
         <main class="flex-1 p-4 md:p-8 space-y-8">
-            <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <h2 class="text-3xl font-black">أهلاً، <span id="userName" class="text-blue-600"></span> 🔥</h2>
-                <div class="flex gap-2">
-                    <button onclick="addSubject()" class="bg-blue-600 text-white px-5 py-2 rounded-xl font-bold shadow-lg">+ مادة</button>
-                    <button onclick="logout()" class="bg-red-50 text-red-500 px-5 py-2 rounded-xl font-bold">خروج</button>
+            <header class="flex justify-between items-center">
+                <h2 class="text-3xl font-black">أهلاً <span id="userName" class="text-transparent bg-clip-text ai-gradient"></span></h2>
+                <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-100">
+                    <span class="text-xs font-bold text-slate-400">نفسية الطالب:</span>
+                    <span class="text-sm font-black text-green-500" id="aiMood">مستقر ✅</span>
                 </div>
             </header>
 
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-                <div class="glass-card p-8 bg-white dark:bg-slate-800 shadow-xl border-t-8 border-blue-600 text-center">
-                    <p class="text-xs font-bold text-slate-400 mb-4 tracking-widest uppercase">مؤقت التركيز</p>
-                    <div class="text-6xl font-black mb-8 font-mono" id="timer">25:00</div>
-                    <div class="flex gap-2 justify-center">
-                        <button id="startBtn" onclick="toggleTimer()" class="px-8 py-3 bg-blue-600 text-white rounded-xl font-bold shadow-lg">ابدأ</button>
-                        <button onclick="resetTimer()" class="p-3 bg-slate-100 dark:bg-slate-700 rounded-xl">🔄</button>
+                <div class="glass-card p-6 bg-white shadow-xl flex flex-col border-b-4 border-purple-500">
+                    <h3 class="font-black text-purple-600 mb-4 flex items-center gap-2">🤖 مساعدك الذكي</h3>
+                    <div id="aiChatBox" class="ai-chat-box space-y-4 mb-4 p-2 text-sm">
+                        <div class="bg-purple-50 p-3 rounded-2xl text-purple-800">أهلاً بك! أنا AI مستقبلي، كيف يمكنني مساعدتك في المراجعة اليوم؟</div>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="aiInput" placeholder="اسألني عن نصيحة.." class="flex-1 p-3 rounded-xl bg-slate-100 outline-none text-xs">
+                        <button onclick="askAI()" class="bg-purple-600 text-white p-3 rounded-xl">🚀</button>
                     </div>
                 </div>
 
-                <div class="xl:col-span-2 glass-card p-8 bg-white dark:bg-slate-800 shadow-xl">
-                    <h3 class="font-black text-xl mb-4">قائمة المهام اليومية ✅</h3>
-                    <div class="flex gap-2 mb-6">
-                        <input type="text" id="taskInput" placeholder="واش راح تدير دوكا؟" class="flex-1 p-3 rounded-xl bg-slate-50 dark:bg-slate-700 outline-none">
-                        <button onclick="addTask()" class="bg-blue-600 text-white px-6 rounded-xl font-bold">إضافة</button>
+                <div class="xl:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass-card p-8 bg-white border-t-8 border-blue-500 text-center">
+                        <p class="text-xs font-bold text-slate-400 mb-2 uppercase">مؤقت التركيز</p>
+                        <div class="text-6xl font-black mb-6 font-mono" id="timer">25:00</div>
+                        <button id="timerBtn" onclick="toggleTimer()" class="w-full py-4 ai-gradient text-white rounded-2xl font-black shadow-lg">ابدأ الجلسة</button>
                     </div>
-                    <div id="taskList" class="space-y-3 max-h-48 overflow-y-auto">
+
+                    <div class="glass-card p-8 bg-white flex flex-col justify-center items-center">
+                        <div class="w-20 h-20 rounded-full border-8 border-blue-600 flex items-center justify-center mb-4">
+                            <span class="font-black text-xl" id="productivityScore">0</span>
                         </div>
+                        <p class="font-black text-slate-700">مستوى الإنتاجية AI</p>
+                        <p class="text-[10px] text-slate-400 mt-1">يتحسن كلما أكملت مهامك</p>
+                    </div>
                 </div>
             </div>
 
             <div>
-                <h3 class="text-2xl font-black mb-6 italic">برنامج المراجعة الشخصي</h3>
-                <div id="subjectGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-black italic">خارطة الطريق الدراسية</h3>
+                    <button onclick="addSubject()" class="ai-gradient text-white px-6 py-2 rounded-xl font-bold shadow-md">إضافة مادة</button>
+                </div>
+                <div id="subjectGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     </div>
             </div>
         </main>
     </div>
 
     <script>
-        // --- البيانات واللوجيك ---
-        let timerSeconds = 25 * 60, timerId = null;
-        let subjects = JSON.parse(localStorage.getItem('subjects')) || [];
-        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-
+        // --- الأساسيات ---
         function login() {
             const name = document.getElementById('nameInput').value;
-            if(!name) return alert("اكتب اسمك يا بطل!");
+            if(!name) return alert("الذكاء الاصطناعي يحتاج لاسمك للتحليل!");
             localStorage.setItem('user', name);
             renderApp();
         }
@@ -109,127 +122,107 @@
                 document.getElementById('loginPage').style.display = 'none';
                 document.getElementById('dashboard').classList.remove('hidden-section');
                 document.getElementById('userName').innerText = localStorage.getItem('user');
-                loadSubjects();
-                loadTasks();
+                updateAIAdvice();
                 startCountdown();
+                loadSubjects();
             }, 500);
         }
 
-        // --- نظام المهام (To-Do) ---
-        function addTask() {
-            const input = document.getElementById('taskInput');
+        // --- AI Chat Logic (Simulation) ---
+        const aiResponses = {
+            "قلق": "لا تقلق، القلق جزء من الرحلة. قسم مادتك إلى أجزاء صغيرة جداً وابدأ الآن.",
+            "برنامج": "أنصحك بالبدء بالرياضيات صباحاً لأن العقل يكون في ذروة نشاطه المنطقي.",
+            "تعبت": "خذ استراحة لـ 15 دقيقة، اشرب كوب ماء، وابتعد عن الشاشات تماماً.",
+            "default": "أنا هنا لدعمك! ركز على الجودة وليس عدد الساعات فقط."
+        };
+
+        function askAI() {
+            const input = document.getElementById('aiInput');
+            const box = document.getElementById('aiChatBox');
             if(!input.value) return;
-            tasks.push({ id: Date.now(), text: input.value, done: false });
+
+            // رسالة الطالب
+            box.innerHTML += `<div class="bg-slate-200 p-3 rounded-2xl self-end text-right ml-8 mb-2">${input.value}</div>`;
+            
+            // رد الـ AI
+            let response = aiResponses["default"];
+            if(input.value.includes("قلق")) response = aiResponses["قلق"];
+            if(input.value.includes("برنامج")) response = aiResponses["برنامج"];
+            if(input.value.includes("تعب")) response = aiResponses["تعبت"];
+
+            setTimeout(() => {
+                box.innerHTML += `<div class="bg-purple-50 p-3 rounded-2xl text-purple-800 mr-8 mb-2 animate__animated animate__fadeIn">🤖 ${response}</div>`;
+                box.scrollTop = box.scrollHeight;
+                updateProductivity(2);
+            }, 600);
             input.value = '';
-            saveAndRenderTasks();
         }
 
-        function toggleTask(id) {
-            tasks = tasks.map(t => t.id === id ? {...t, done: !t.done} : t);
-            saveAndRenderTasks();
+        // --- AI Advice Engine ---
+        function updateAIAdvice() {
+            const advices = [
+                "بناءً على التوقيت، أنصحك بمراجعة مادة أدبية الآن.",
+                "ذاكرتك في أفضل حالاتها، جرب حل تمرين فيزياء.",
+                "لا تنسَ شرب الماء، الـ AI يلاحظ انخفاض نشاطك!",
+                "باقي 124 يوم، لو درست مادتين يومياً ستكمل المنهج 3 مرات!"
+            ];
+            document.getElementById('aiAdvice').innerText = advices[Math.floor(Math.random() * advices.length)];
         }
 
-        function loadTasks() {
-            const list = document.getElementById('taskList');
-            list.innerHTML = tasks.map(t => `
-                <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded-xl animate__animated animate__fadeIn">
-                    <span class="${t.done ? 'done' : ''} font-bold">${t.text}</span>
-                    <div class="flex gap-2">
-                        <button onclick="toggleTask(${t.id})" class="text-green-500 font-bold text-xs">${t.done ? 'إلغاء' : 'تم'}</button>
-                        <button onclick="deleteTask(${t.id})" class="text-red-500 font-bold text-xs">حذف</button>
-                    </div>
-                </div>
-            `).join('');
+        // --- Productivity Tracker ---
+        let score = 0;
+        function updateProductivity(pts) {
+            score += pts;
+            if(score > 100) score = 100;
+            document.getElementById('productivityScore').innerText = score + "%";
+            if(score > 50) document.getElementById('aiMood').innerText = "نشيط جداً ⚡";
         }
 
-        function deleteTask(id) {
-            tasks = tasks.filter(t => t.id !== id);
-            saveAndRenderTasks();
-        }
-
-        function saveAndRenderTasks() {
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-            loadTasks();
-        }
-
-        // --- نظام المواد ---
-        function addSubject() {
-            const name = prompt("اسم المادة:");
-            const lesson = prompt("واش راح تراجع؟");
-            if(name && lesson) {
-                subjects.push({ id: Date.now(), name, lesson });
-                localStorage.setItem('subjects', JSON.stringify(subjects));
-                loadSubjects();
-            }
-        }
-
-        function loadSubjects() {
-            const grid = document.getElementById('subjectGrid');
-            grid.innerHTML = subjects.map(s => `
-                <div class="glass-card p-6 bg-white dark:bg-slate-800 animate__animated animate__zoomIn">
-                    <div class="flex justify-between items-start mb-4 text-2xl">📚
-                        <button onclick="deleteSubject(${s.id})" class="text-xs text-red-400">حذف</button>
-                    </div>
-                    <h4 class="text-xl font-black mb-1">${s.name}</h4>
-                    <p class="text-slate-400 text-sm italic font-medium">${s.lesson}</p>
-                </div>
-            `).join('');
-        }
-
-        function deleteSubject(id) {
-            subjects = subjects.filter(s => s.id !== id);
-            localStorage.setItem('subjects', JSON.stringify(subjects));
-            loadSubjects();
-        }
-
-        // --- المؤقت والتحسينات ---
+        // --- Timer & Countdown ---
+        let timerSeconds = 25 * 60, timerId = null;
         function toggleTimer() {
-            const btn = document.getElementById('startBtn');
+            const btn = document.getElementById('timerBtn');
             if(timerId) {
-                clearInterval(timerId); timerId = null;
-                btn.innerText = "واصل"; btn.className = "px-8 py-3 bg-orange-500 text-white rounded-xl font-bold shadow-lg";
+                clearInterval(timerId); timerId = null; btn.innerText = "واصل";
             } else {
                 timerId = setInterval(() => {
                     timerSeconds--;
-                    updateTimerDisplay();
-                    if(timerSeconds <= 0) {
-                        clearInterval(timerId);
-                        new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg').play();
-                        alert("انتهت الجلسة! خذ استراحة.");
-                    }
+                    const m = Math.floor(timerSeconds/60), s = timerSeconds%60;
+                    document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
+                    if(timerSeconds <= 0) { clearInterval(timerId); alert("AI Alert: وقت الراحة!"); updateProductivity(10); }
                 }, 1000);
-                btn.innerText = "توقف"; btn.className = "px-8 py-3 bg-red-600 text-white rounded-xl font-bold shadow-lg";
+                btn.innerText = "توقف";
             }
         }
 
-        function updateTimerDisplay() {
-            const m = Math.floor(timerSeconds / 60);
-            const s = timerSeconds % 60;
-            document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
-        }
-
-        function resetTimer() {
-            clearInterval(timerId); timerId = null;
-            timerSeconds = 25 * 60; updateTimerDisplay();
-            document.getElementById('startBtn').innerText = "ابدأ";
-            document.getElementById('startBtn').className = "px-8 py-3 bg-blue-600 text-white rounded-xl font-bold shadow-lg";
-        }
-
         function startCountdown() {
-            const examDate = new Date("June 8, 2026 08:00:00").getTime();
+            const exam = new Date("June 8, 2026 08:00:00").getTime();
             setInterval(() => {
-                const now = new Date().getTime();
-                const diff = examDate - now;
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                document.getElementById('countdown').innerText = `${days} يوم و ${hours} ساعة`;
+                const diff = exam - new Date().getTime();
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                document.getElementById('countdown').innerText = `${d}ي : ${h}سا : ${m}د`;
             }, 1000);
         }
 
-        function toggleDark() { document.body.classList.toggle('dark'); }
-        function logout() { localStorage.clear(); location.reload(); }
+        function addSubject() {
+            const n = prompt("المادة:"), l = prompt("الدرس:");
+            if(n && l) {
+                const grid = document.getElementById('subjectGrid');
+                grid.innerHTML += `<div class="glass-card p-6 bg-white shadow-lg animate__animated animate__fadeInUp">
+                    <h4 class="font-black text-blue-600 mb-2">${n}</h4>
+                    <p class="text-xs text-slate-500 italic">${l}</p>
+                    <div class="mt-4 h-1 w-full bg-slate-100 rounded-full overflow-hidden">
+                        <div class="h-full bg-blue-600" style="width: 20%"></div>
+                    </div>
+                </div>`;
+                updateProductivity(5);
+                updateAIAdvice();
+            }
+        }
 
-        // التأكد من تسجيل الدخول عند فتح الصفحة
+        function logout() { localStorage.clear(); location.reload(); }
         if(localStorage.getItem('user')) renderApp();
     </script>
 </body>
