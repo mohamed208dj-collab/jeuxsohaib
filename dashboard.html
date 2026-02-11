@@ -3,167 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZENITH ELITE | 2026</title>
-    
+    <title>ONYX | النخبة</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Tajawal:wght@200;500;900&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;400;900&family=Tajawal:wght@200;500;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #030405;
-            --accent: #d4af37; /* لون ذهبي ملكي */
-            --glass: rgba(255, 255, 255, 0.02);
-        }
-
         body {
-            font-family: 'Tajawal', sans-serif;
-            background-color: var(--bg);
+            background-color: #000;
             color: #fff;
-            overflow-x: hidden;
-            letter-spacing: 0.05em;
+            font-family: 'Tajawal', sans-serif;
+            overflow: hidden;
         }
 
-        /* خلفية سينمائية */
-        .void-bg {
+        /* توهج خلفي سينمائي */
+        .ambient-glow {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 20% 30%, #1a1e2e 0%, transparent 40%),
-                        radial-gradient(circle at 80% 70%, #1a1525 0%, transparent 40%);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vw; height: 80vh;
+            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
             z-index: -1;
         }
 
-        /* تأثير الزجاج السائل */
-        .liquid-glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(40px) saturate(150%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 40px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        /* الكرة الذكية - قلب النظام */
+        .ai-core {
+            width: 200px; height: 200px;
+            background: #fff;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.2;
+            animation: pulse 8s infinite alternate;
         }
 
-        .gold-text {
-            background: linear-gradient(to bottom right, #d4af37, #f7e7ce);
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.1; }
+            100% { transform: scale(1.5); opacity: 0.3; }
+        }
+
+        /* بطاقات "ميركوري" الزجاجية */
+        .mercury-card {
+            background: rgba(255, 255, 255, 0.01);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 40px;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .mercury-card:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-10px) scale(1.01);
+        }
+
+        .text-mercury {
+            background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.4) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-family: 'Cinzel', serif;
         }
 
-        /* زر فخم */
-        .btn-elite {
+        /* زر الأكشن */
+        .action-btn {
             background: #fff;
             color: #000;
+            padding: 1.5rem 3rem;
+            border-radius: 100px;
             font-weight: 900;
-            letter-spacing: 2px;
-            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            border-radius: 15px;
-            text-transform: uppercase;
+            transition: 0.4s;
+            overflow: hidden;
+            position: relative;
         }
 
-        .btn-elite:hover {
-            letter-spacing: 5px;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
-            transform: scale(1.02);
+        .action-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px rgba(255,255,255,0.2);
         }
 
-        /* أنيميشن ناعمة جداً */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
-        .floating { animation: float 6s ease-in-out infinite; }
+        /* إخفاء السكرول */
+        ::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="p-6 md:p-12">
+<body class="flex items-center justify-center min-h-screen p-6">
 
-    <div class="void-bg"></div>
+    <div class="ambient-glow"></div>
+    
+    <div class="fixed inset-0 flex items-center justify-center z-0">
+        <div class="ai-core"></div>
+    </div>
 
-    <div class="max-w-6xl mx-auto">
-        <header class="flex justify-between items-center mb-20">
-            <div class="text-3xl font-black gold-text tracking-tighter">ZENITH ELITE</div>
-            <div class="text-[10px] tracking-[0.5em] opacity-40 font-bold">EST. 2026</div>
-        </header>
+    <div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-10 relative z-10">
+        
+        <aside class="lg:col-span-3 flex flex-col justify-between py-10">
+            <div>
+                <h1 class="text-4xl font-black text-mercury tracking-tighter mb-2">ONYX</h1>
+                <p class="text-[10px] tracking-[0.6em] text-white/30 uppercase">Intelligence OS</p>
+            </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            
-            <div class="lg:col-span-7 space-y-12">
-                <section>
-                    <h1 class="text-7xl font-light mb-4 leading-tight">مرحباً <span class="font-black">أمين</span>.</h1>
-                    <p class="text-slate-500 text-lg font-light tracking-widest uppercase">نظامك الشخصي للتميز الدراسي</p>
-                </section>
-
-                <div class="liquid-glass p-12 relative overflow-hidden group">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 blur-3xl group-hover:opacity-10 transition-all"></div>
-                    <p class="text-[10px] tracking-[0.3em] text-slate-500 mb-8 font-bold">AI STRATEGY ADVISOR</p>
-                    <p id="ai-quote" class="text-2xl font-medium leading-relaxed italic opacity-90">
-                        "الذكاء ليس في كثرة القراءة، بل في جودة التركيز. ابدأ بالرياضيات، عقلك الآن في قمة المنطق."
-                    </p>
+            <div class="space-y-10">
+                <div>
+                    <p class="text-[10px] text-white/20 mb-4 uppercase tracking-widest">المستوى الحالي</p>
+                    <div class="text-5xl font-thin tracking-tighter">LVL. 09</div>
                 </div>
-
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="liquid-glass p-8 text-center">
-                        <p class="text-xs opacity-40 mb-2 uppercase">مستوى التقدم</p>
-                        <p class="text-4xl font-light font-plus">74<span class="text-sm opacity-30">%</span></p>
+                <div>
+                    <p class="text-[10px] text-white/20 mb-4 uppercase tracking-widest">نقاط الخبرة</p>
+                    <div class="w-full h-[1px] bg-white/10 overflow-hidden">
+                        <div class="w-2/3 h-full bg-white"></div>
                     </div>
-                    <div class="liquid-glass p-8 text-center">
-                        <p class="text-xs opacity-40 mb-2 uppercase">المهام المكتملة</p>
-                        <p class="text-4xl font-light">12<span class="text-sm opacity-30">/15</span></p>
+                </div>
+            </div>
+        </aside>
+
+        <main class="lg:col-span-6 space-y-10">
+            <div class="mercury-card p-12 text-center">
+                <p class="text-[10px] text-white/30 uppercase tracking-[0.5em] mb-12">Session Focus</p>
+                <div id="timer" class="text-[100px] font-thin tracking-tighter mb-12 leading-none">25:00</div>
+                <button onclick="toggleTimer()" id="mainBtn" class="action-btn text-xs tracking-[0.2em]">ACTIVATE ENGINE</button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6">
+                <div class="mercury-card p-8">
+                    <p class="text-[10px] text-white/20 mb-4">AI ANALYTICS</p>
+                    <p class="text-sm font-light leading-relaxed">بناءً على نشاطك: مراجعة الفيزياء الآن ترفع نسبة نجاحك بـ 4%.</p>
+                </div>
+                <div class="mercury-card p-8">
+                    <p class="text-[10px] text-white/20 mb-4">STATUS</p>
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        <span class="text-xs font-bold tracking-widest uppercase">Optimum</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <aside class="lg:col-span-3 py-10 space-y-12">
+            <div class="text-right">
+                <p class="text-[10px] text-white/20 mb-6 uppercase tracking-widest">المهام القادمة</p>
+                <div class="space-y-8">
+                    <div class="opacity-40 hover:opacity-100 transition cursor-pointer">
+                        <p class="text-xs font-bold mb-1">تحليل الدالة الأسية</p>
+                        <p class="text-[10px] text-white/30 tracking-widest font-thin">MATHEMATICS</p>
+                    </div>
+                    <div class="opacity-100 border-r-2 border-white pr-4 transition cursor-pointer">
+                        <p class="text-xs font-bold mb-1">قوانين الميكانيك</p>
+                        <p class="text-[10px] text-white/30 tracking-widest font-thin">PHYSICS</p>
+                    </div>
+                    <div class="opacity-40 hover:opacity-100 transition cursor-pointer">
+                        <p class="text-xs font-bold mb-1">المقال الفلسفي</p>
+                        <p class="text-[10px] text-white/30 tracking-widest font-thin">PHILOSOPHY</p>
                     </div>
                 </div>
             </div>
 
-            <div class="lg:col-span-5 space-y-8">
-                <div class="liquid-glass p-12 text-center relative border-t-2 border-white/5">
-                    <p class="text-[10px] tracking-[0.5em] text-slate-500 mb-12">DEEP FOCUS SESSION</p>
-                    <div class="text-[8rem] font-thin leading-none mb-12 tracking-tighter" id="timer">25:00</div>
-                    <button onclick="toggleTimer()" id="timerBtn" class="w-full py-5 btn-elite text-xs">
-                        Start Session
-                    </button>
-                </div>
-
-                <div class="p-6 space-y-6">
-                    <h4 class="text-xs tracking-[0.4em] text-slate-600 font-bold uppercase">المهمة القادمة</h4>
-                    <div class="flex items-center justify-between group cursor-pointer">
-                        <span class="text-xl font-light opacity-50 group-hover:opacity-100 transition-all">مراجعة الفيزياء النووية</span>
-                        <div class="w-2 h-2 rounded-full bg-white opacity-20 group-hover:opacity-100"></div>
-                    </div>
-                    <div class="h-px bg-white/5 w-full"></div>
-                    <div class="flex items-center justify-between group cursor-pointer">
-                        <span class="text-xl font-light opacity-50 group-hover:opacity-100 transition-all">حل بكالوريا تجريبية</span>
-                        <div class="w-2 h-2 rounded-full bg-white opacity-20 group-hover:opacity-100"></div>
-                    </div>
-                </div>
+            <div class="mercury-card p-6 border-none bg-white/5">
+                <p class="text-[10px] text-white/20 mb-4 uppercase">COUNTDOWN</p>
+                <p class="text-2xl font-black text-mercury">123 DAYS</p>
             </div>
-        </div>
-
-        <footer class="mt-32 flex justify-between items-center opacity-20 text-[10px] tracking-widest">
-            <div>BAC 2026 SURVEILLANCE SYSTEM</div>
-            <div id="date-display">WEDNESDAY, FEB 11</div>
-        </footer>
+        </aside>
     </div>
 
     <script>
-        // كود التحكم في الوقت (Minimal & High Performance)
-        let time = 25 * 60;
-        let timer = null;
+        let time = 1500;
+        let active = false;
+        let interval;
 
         function toggleTimer() {
-            const btn = document.getElementById('timerBtn');
-            if (timer) {
-                clearInterval(timer);
-                timer = null;
-                btn.innerText = "Resume Session";
-            } else {
-                timer = setInterval(() => {
+            active = !active;
+            const btn = document.getElementById('mainBtn');
+            if(active) {
+                btn.innerText = "SHUT DOWN";
+                btn.style.background = "transparent";
+                btn.style.color = "#fff";
+                btn.style.border = "1px solid rgba(255,255,255,0.2)";
+                interval = setInterval(() => {
                     time--;
-                    let m = Math.floor(time / 60);
-                    let s = time % 60;
-                    document.getElementById('timer').innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-                    if (time <= 0) clearInterval(timer);
+                    updateDisplay();
                 }, 1000);
-                btn.innerText = "Pause";
+            } else {
+                clearInterval(interval);
+                btn.innerText = "ACTIVATE ENGINE";
+                btn.style.background = "#fff";
+                btn.style.color = "#000";
             }
+        }
+
+        function updateDisplay() {
+            let m = Math.floor(time / 60);
+            let s = time % 60;
+            document.getElementById('timer').innerText = `${m}:${s < 10 ? '0'+s : s}`;
         }
     </script>
 </body>
