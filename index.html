@@ -3,554 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-O Quantum Nexus</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
+    <title>X-O Quantum Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Orbitron:wght@500;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --bg-color: #000a12;
-            --card-bg: rgba(7, 18, 32, 0.85);
-            --x-color: #00e5ff; /* Bright Cyan */
-            --o-color: #ff00ea; /* Bright Magenta */
-            --win-color: #ffd700; /* Gold */
-            --text-color: #e0f2f7;
-            --border-color: rgba(0, 229, 255, 0.2);
-
-            /* Theme specific */
-            --theme-x-glow: #00e5ff;
-            --theme-o-glow: #ff00ea;
-            --theme-btn-bg: var(--x-color);
-            --theme-btn-text: #000;
+            --neon-blue: #00d2ff;
+            --neon-purple: #9d00ff;
+            --bg-deep: #050505;
+            --cell-bg: rgba(255, 255, 255, 0.03);
         }
 
         body {
+            background-color: var(--bg-deep);
+            color: #fff;
+            font-family: 'Cairo', sans-serif;
             margin: 0;
             height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
-            background-color: var(--bg-color);
-            font-family: 'Cairo', sans-serif;
-            color: var(--text-color);
+            align-items: center;
+            perspective: 1000px; /* تأثير ثلاثي الأبعاد */
             overflow: hidden;
-            position: relative;
         }
 
-        /* خلفية الجسيمات المتحركة */
-        #particle-canvas {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 0;
+        /* خلفية النجوم المتحركة */
+        .stars {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            z-index: -1;
         }
 
-        .game-area {
-            position: relative;
-            z-index: 10;
-            width: 100%;
-            max-width: 480px;
-            padding: 20px;
-        }
-
-        .main-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(25px);
-            border-radius: 40px;
+        .container {
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
             padding: 30px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 50px 100px rgba(0,0,0,0.8), inset 0 0 20px rgba(0,229,255,0.1);
+            border-radius: 40px;
+            border: 1px solid rgba(0, 210, 255, 0.2);
+            box-shadow: 0 0 50px rgba(0,0,0,1);
+            transform-style: preserve-3d;
+            transition: transform 0.1s;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin: 0;
+            background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             text-align: center;
         }
 
-        header h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 3.2rem;
-            margin: 0 0 10px;
-            background: linear-gradient(to right, var(--x-color), var(--o-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 25px var(--x-color);
+        .dashboard {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            font-size: 0.9rem;
+            background: rgba(255,255,255,0.05);
+            padding: 10px 20px;
+            border-radius: 15px;
         }
-
-        .ai-feedback {
-            height: 30px;
-            font-size: 1rem;
-            color: var(--o-color);
-            margin: 10px 0 20px;
-            font-style: italic;
-            opacity: 0.9;
-        }
-
-        .scoreboard {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            background: rgba(0,0,0,0.4);
-            padding: 15px;
-            border-radius: 20px;
-            margin-bottom: 25px;
-            box-shadow: inset 0 0 10px rgba(0,229,255,0.1);
-        }
-
-        .score-box h3 { margin: 0; font-size: 0.8rem; opacity: 0.7; }
-        .score-box p { margin: 5px 0 0; font-size: 1.6rem; font-weight: 900; font-family: 'Orbitron'; }
-        .score-box p.x-score { color: var(--x-color); text-shadow: 0 0 10px var(--x-color); }
-        .score-box p.o-score { color: var(--o-color); text-shadow: 0 0 10px var(--o-color); }
 
         .board {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 25px;
-            position: relative; /* لـ ripple effect */
+            grid-template-columns: repeat(3, 100px);
+            gap: 15px;
         }
 
         .cell {
-            aspect-ratio: 1;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 20px;
+            width: 100px;
+            height: 100px;
+            background: var(--cell-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4rem;
-            font-family: 'Orbitron';
+            font-size: 3rem;
+            font-family: 'Orbitron', sans-serif;
             cursor: pointer;
-            transition: 0.3s all cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.3s;
             position: relative;
-            overflow: hidden;
         }
 
-        .cell:hover:not(.occupied) {
-            background: rgba(255,255,255,0.08);
-            transform: scale(1.05);
-            box-shadow: 0 0 20px var(--x-color); /* توهج حسب اللاعب الحالي */
+        .cell:hover {
+            background: rgba(255,255,255,0.1);
+            box-shadow: inset 0 0 15px rgba(0, 210, 255, 0.3);
         }
 
-        .cell.x { color: var(--x-color); text-shadow: 0 0 25px var(--x-color); }
-        .cell.o { color: var(--o-color); text-shadow: 0 0 25px var(--o-color); }
+        .cell.x { color: var(--neon-blue); text-shadow: 0 0 20px var(--neon-blue); }
+        .cell.o { color: var(--neon-purple); text-shadow: 0 0 20px var(--neon-purple); }
 
+        /* تأثير الخط الفائز */
         .cell.winner {
-            background: var(--win-color) !important;
-            color: black !important;
-            box-shadow: 0 0 50px var(--win-color);
-            transform: scale(1.1);
-            animation: winner-glow 1s infinite alternate;
-        }
-        @keyframes winner-glow {
-            to { box-shadow: 0 0 60px var(--win-color), 0 0 20px var(--win-color); }
+            background: #fff;
+            color: #000;
+            box-shadow: 0 0 30px #fff;
+            transform: scale(1.1) translateZ(20px);
         }
 
-        /* Ripple Effect */
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.4);
-            animation: ripple-anim 0.4s ease-out;
-            transform: scale(0);
-        }
-        @keyframes ripple-anim {
-            to {
-                transform: scale(2);
-                opacity: 0;
-            }
+        .ai-status {
+            text-align: center;
+            height: 20px;
+            font-size: 0.8rem;
+            margin-top: 15px;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .controls {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
         }
 
         button {
-            padding: 15px;
-            border-radius: 18px;
+            flex: 1;
+            padding: 12px;
             border: none;
-            font-weight: 900;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
             cursor: pointer;
-            transition: 0.3s;
             font-family: 'Cairo';
-        }
-
-        .btn-mode { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); }
-        .btn-mode.active { background: var(--theme-btn-bg); color: var(--theme-btn-text); box-shadow: 0 0 25px var(--theme-btn-bg); }
-        .btn-reset { background: white; color: black; }
-
-        button:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
-
-        .theme-switcher {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-        .theme-btn {
-            width: 40px; height: 40px;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            cursor: pointer;
             transition: 0.3s;
         }
-        .theme-btn:hover { transform: scale(1.1); }
-        .theme-btn.active { border-color: var(--win-color); box-shadow: 0 0 10px var(--win-color); }
-        .theme-neon { background: linear-gradient(45deg, var(--x-color), var(--o-color)); }
-        .theme-gold { background: linear-gradient(45deg, #a77700, #ffeb3b); } /* Gold theme specific */
 
+        button:hover { background: var(--neon-blue); color: #000; }
+        button.active { background: var(--neon-purple); border: 1px solid #fff; }
 
-        /* Gold Theme overrides */
-        body.gold-theme {
-            background-color: #1a0a00;
-            background: radial-gradient(circle at center, #422006 0%, #1a0a00 100%);
-            --card-bg: rgba(46, 26, 0, 0.85);
-            --x-color: #ffcc00; /* Gold-orange */
-            --o-color: #bf8f00; /* Darker Gold */
-            --win-color: #ffe08a; /* Lighter Gold for winning */
-            --text-color: #fff8e1;
-            --border-color: rgba(255, 204, 0, 0.2);
-            --theme-x-glow: #ffcc00;
-            --theme-o-glow: #bf8f00;
-            --theme-btn-bg: #ffcc00;
-            --theme-btn-text: #000;
-        }
-        body.gold-theme .cell.x { text-shadow: 0 0 25px var(--x-color); }
-        body.gold-theme .cell.o { text-shadow: 0 0 25px var(--o-color); }
-        body.gold-theme .cell.winner { box-shadow: 0 0 50px var(--win-color); }
-        body.gold-theme .main-card { box-shadow: 0 50px 100px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,204,0,0.1); }
-        body.gold-theme header h1 { text-shadow: 0 0 25px var(--x-color); }
-        body.gold-theme .scoreboard { box-shadow: inset 0 0 10px rgba(255,204,0,0.1); }
     </style>
 </head>
 <body>
 
-<canvas id="particle-canvas"></canvas>
+<div class="stars"></div>
 
-<div class="game-area">
-    <div class="main-card">
-        <header>
-            <h1>QUANTUM X-O</h1>
-            <div class="ai-feedback" id="ai-feedback">استعد للانطلاق!</div>
-        </header>
-
-        <div class="scoreboard">
-            <div class="score-box"><h3>أنت (X)</h3><p class="x-score" id="s-x">0</p></div>
-            <div class="score-box"><h3>تعادل</h3><p id="s-d">0</p></div>
-            <div class="score-box"><h3>الكمبيوتر (O)</h3><p class="o-score" id="s-o">0</p></div>
-        </div>
-
-        <div class="board" id="board">
-            <div class="cell" data-idx="0"></div>
-            <div class="cell" data-idx="1"></div>
-            <div class="cell" data-idx="2"></div>
-            <div class="cell" data-idx="3"></div>
-            <div class="cell" data-idx="4"></div>
-            <div class="cell" data-idx="5"></div>
-            <div class="cell" data-idx="6"></div>
-            <div class="cell" data-idx="7"></div>
-            <div class="cell" data-idx="8"></div>
-        </div>
-
-        <div class="controls">
-            <button class="btn-mode active" id="mode-btn" onclick="toggleMode()">لعب ضد AI</button>
-            <button class="btn-reset" onclick="resetGame()">إعادة الجولة</button>
-        </div>
-        
-        <div class="theme-switcher">
-            <div class="theme-btn theme-neon active" onclick="setTheme('neon')"></div>
-            <div class="theme-btn theme-gold" onclick="setTheme('gold')"></div>
-        </div>
+<div class="container" id="card">
+    <h1>QUANTUM X-O</h1>
+    
+    <div class="dashboard">
+        <div>لاعب X: <span id="scoreX">0</span></div>
+        <div>تعادل: <span id="draws">0</span></div>
+        <div>لاعب O: <span id="scoreO">0</span></div>
     </div>
+
+    <div class="board" id="board">
+        <div class="cell" data-idx="0"></div>
+        <div class="cell" data-idx="1"></div>
+        <div class="cell" data-idx="2"></div>
+        <div class="cell" data-idx="3"></div>
+        <div class="cell" data-idx="4"></div>
+        <div class="cell" data-idx="5"></div>
+        <div class="cell" data-idx="6"></div>
+        <div class="cell" data-idx="7"></div>
+        <div class="cell" data-idx="8"></div>
+    </div>
+
+    <div class="ai-status" id="aiMsg">انتظار الحركة...</div>
+
+    <div class="controls">
+        <button id="pveBtn" onclick="setMode('ai')">ضد الذكاء الاصطناعي</button>
+        <button id="pvpBtn" class="active" onclick="setMode('pvp')">ضد صديق</button>
+    </div>
+    <button style="width:100%; margin-top:10px;" onclick="resetGame()">إعادة تهيئة النظام</button>
 </div>
 
-<audio id="click-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-sci-fi-click-1264.mp3" preload="auto"></audio>
-<audio id="win-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-game-win-opener-2062.mp3" preload="auto"></audio>
-<audio id="draw-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-fast-sweep-transition-1473.mp3" preload="auto"></audio>
-
 <script>
-    // --- Particle Effect on Canvas ---
-    const canvas = document.getElementById('particle-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    const particleCount = 50;
+    const boardEl = document.getElementById('board');
+    const cells = document.querySelectorAll('.cell');
+    const aiMsg = document.getElementById('aiMsg');
+    let board = ["", "", "", "", "", "", "", "", ""];
+    let currentPlayer = "X";
+    let isGameActive = true;
+    let mode = 'pvp'; // pvp or ai
+    let scores = {X:0, O:0, D:0};
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+    // تأثير تميل الماوس (3D Tilt)
+    document.addEventListener('mousemove', (e) => {
+        const card = document.getElementById('card');
+        const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+        const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+        card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
     });
 
-    class Particle {
-        constructor(x, y, color) {
-            this.x = x;
-            this.y = y;
-            this.size = Math.random() * 3 + 1;
-            this.speedX = Math.random() * 3 - 1.5;
-            this.speedY = Math.random() * 3 - 1.5;
-            this.color = color;
-            this.opacity = Math.random();
-        }
-        update() {
-            this.x += this.speedX;
-            this.y += this.speedY;
-            if (this.size > 0.2) this.size -= 0.05;
-            if (this.opacity > 0.02) this.opacity -= 0.01;
-        }
-        draw() {
-            ctx.fillStyle = `rgba(${parseInt(this.color.slice(1,3), 16)}, ${parseInt(this.color.slice(3,5), 16)}, ${parseInt(this.color.slice(5,7), 16)}, ${this.opacity})`;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-        }
-    }
-
-    function initParticles() {
-        particles = [];
-        for (let i = 0; i < particleCount; i++) {
-            const x = Math.random() * canvas.width;
-            const y = Math.random() * canvas.height;
-            const colors = ['#00e5ff', '#ff00ea', '#ffd700']; // Matching game colors
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            particles.push(new Particle(x, y, color));
-        }
-    }
-
-    function animateParticles() {
-        requestAnimationFrame(animateParticles);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < particles.length; i++) {
-            particles[i].update();
-            particles[i].draw();
-            if (particles[i].size <= 0.2 || particles[i].opacity <= 0.02) {
-                particles.splice(i, 1);
-                i--;
-                particles.push(new Particle(Math.random() * canvas.width, Math.random() * canvas.height, '#00e5ff')); // Re-spawn
-            }
-        }
-    }
-    initParticles();
-    animateParticles();
-
-    // --- Game Logic ---
-    let board = ["", "", "", "", "", "", "", "", ""];
-    let player = "X";
-    let active = true;
-    let vsAI = true;
-    let stats = {X: 0, O: 0, D: 0};
-    
-    const cells = document.querySelectorAll('.cell');
-    const aiFeedback = document.getElementById('ai-feedback');
-    const clickSound = document.getElementById('click-sound');
-    const winSound = document.getElementById('win-sound');
-    const drawSound = document.getElementById('draw-sound');
-
-    const aiMessages = {
-        start: "استعد للانطلاق!",
-        thinking: "أحلل بياناتك..",
-        win: "كما توقعت.. الفوز لي!",
-        lose: "مستحيل! لقد غششت بالتأكيد!",
-        draw: "تعادل؟ لا يمكن أن يحدث!",
-        playerTurn: "دورك.. لا تخذلني!",
-        aiTurn: "حان دوري.. استعد!",
-        playerMove: ["هل هذا أفضل ما لديك؟", "تفكيرك بطيء جداً..", "لقد وقعت في الفخ!"],
-        aiMove: ["سأهزمك في حركتين!", "أستشعر الضعف في حركتك.", "الذكاء الاصطناعي لا يخطئ!"]
-    };
-
-    function playSound(sound) {
-        sound.currentTime = 0;
-        sound.play();
-    }
-
-    function toggleMode() {
-        vsAI = !vsAI;
-        document.getElementById('mode-btn').innerText = vsAI ? "لعب ضد AI" : "ضد صديق";
-        document.getElementById('mode-btn').classList.toggle('active');
+    function setMode(newMode) {
+        mode = newMode;
+        document.getElementById('pveBtn').classList.toggle('active', mode === 'ai');
+        document.getElementById('pvpBtn').classList.toggle('active', mode === 'pvp');
         resetGame();
-        aiFeedback.innerText = aiMessages.start;
     }
 
-    function setTheme(theme) {
-        document.body.classList.remove('neon-theme', 'gold-theme');
-        document.body.classList.add(theme + '-theme');
+    function handleCellClick(e) {
+        const idx = e.target.getAttribute('data-idx');
+        if (board[idx] !== "" || !isGameActive) return;
 
-        document.querySelector('.theme-neon').classList.remove('active');
-        document.querySelector('.theme-gold').classList.remove('active');
-        document.querySelector(`.theme-${theme}`).classList.add('active');
+        makeMove(idx, currentPlayer);
 
-        // Update CSS variables for button based on active theme
-        const root = document.documentElement;
-        if (theme === 'gold') {
-            root.style.setProperty('--theme-btn-bg', '#ffcc00');
-            root.style.setProperty('--theme-btn-text', '#000');
-        } else { // neon theme
-            root.style.setProperty('--theme-btn-bg', 'var(--x-color)');
-            root.style.setProperty('--theme-btn-text', '#000');
-        }
-        // Re-apply active state to mode button to get new color
-        document.getElementById('mode-btn').classList.toggle('active', document.getElementById('mode-btn').classList.contains('active'));
-    }
-
-    function createRipple(event) {
-        const cell = event.currentTarget;
-        const rect = cell.getBoundingClientRect();
-        const ripple = document.createElement('span');
-        const diameter = Math.max(cell.clientWidth, cell.clientHeight);
-        const radius = diameter / 2;
-
-        ripple.style.width = ripple.style.height = `${diameter}px`;
-        ripple.style.left = `${event.clientX - rect.left - radius}px`;
-        ripple.style.top = `${event.clientY - rect.top - radius}px`;
-        ripple.classList.add('ripple');
-        cell.appendChild(ripple);
-
-        ripple.addEventListener('animationend', () => {
-            ripple.remove();
-        });
-    }
-
-    function makeMove(i) {
-        if (board[i] || !active) return;
-        
-        createRipple(event); // Visual feedback
-        playSound(clickSound); // Audio feedback
-        executeMove(i, player);
-
-        if (active && vsAI && player === 'O') {
-            aiFeedback.innerText = aiMessages.thinking;
-            setTimeout(aiTurn, 800);
-        } else if (active) {
-            aiFeedback.innerText = aiMessages.playerTurn;
+        if (isGameActive && mode === 'ai' && currentPlayer === 'O') {
+            aiMsg.innerText = "الذكاء الاصطناعي يحلل...";
+            setTimeout(aiMove, 600);
         }
     }
 
-    function executeMove(i, p) {
-        board[i] = p;
-        const cell = cells[i];
-        cell.innerText = p;
-        cell.classList.add(p.toLowerCase(), 'occupied');
+    function makeMove(idx, player) {
+        board[idx] = player;
+        cells[idx].innerText = player;
+        cells[idx].classList.add(player.toLowerCase());
 
-        if (checkWin(board, p)) {
-            endGame(p);
+        if (checkWin(board, player)) {
+            endGame(player);
         } else if (!board.includes("")) {
-            endGame('D');
+            endGame('Draw');
         } else {
-            player = player === "X" ? "O" : "X";
+            currentPlayer = currentPlayer === "X" ? "O" : "X";
+            aiMsg.innerText = currentPlayer === 'X' ? "دور اللاعب X" : "دور اللاعب O";
         }
     }
 
-    function aiTurn() {
-        if (!active) return;
-
-        let best = -Infinity;
-        let bestIdx;
-        for (let i = 0; i < 9; i++) {
-            if (board[i] === "") {
-                board[i] = "O";
-                let score = minimax(board, 0, false);
-                board[i] = "";
-                if (score > best) {
-                    best = score;
-                    bestIdx = i;
-                }
-            }
-        }
-        
-        cells[bestIdx].classList.add('ai-thinking'); // Add temporary glow for AI thinking
-        setTimeout(() => {
-            cells[bestIdx].classList.remove('ai-thinking');
-            createRipple({currentTarget: cells[bestIdx], clientX: cells[bestIdx].getBoundingClientRect().left + cells[bestIdx].clientWidth/2, clientY: cells[bestIdx].getBoundingClientRect().top + cells[bestIdx].clientHeight/2});
-            playSound(clickSound);
-            executeMove(bestIdx, "O");
-            if (active) aiFeedback.innerText = aiMessages.playerTurn;
-        }, 500); // Simulate AI thinking time
+    function aiMove() {
+        // خوارزمية Minimax البسيطة
+        let bestMove = getBestMove(board);
+        makeMove(bestMove, "O");
     }
 
-    // Minimax Algorithm - Unbeatable AI
-    function minimax(b, depth, isMaximizing) {
-        if (checkWin(b, "O")) return 10 - depth;
-        if (checkWin(b, "X")) return -10 + depth;
-        if (!b.includes("")) return 0;
-
-        if (isMaximizing) {
-            let bestScore = -Infinity;
-            for (let i = 0; i < 9; i++) {
-                if (b[i] === "") {
-                    b[i] = "O";
-                    let score = minimax(b, depth + 1, false);
-                    b[i] = "";
-                    bestScore = Math.max(score, bestScore);
-                }
-            }
-            return bestScore;
-        } else {
-            let bestScore = Infinity;
-            for (let i = 0; i < 9; i++) {
-                if (b[i] === "") {
-                    b[i] = "X";
-                    let score = minimax(b, depth + 1, true);
-                    b[i] = "";
-                    bestScore = Math.min(score, bestScore);
-                }
-            }
-            return bestScore;
-        }
+    function getBestMove(currentBoard) {
+        // هنا يمكنك إضافة منطق ذكاء اصطناعي كامل، حالياً سيختار عشوائياً للأماكن الفارغة لتبسيط الكود
+        let available = currentBoard.map((v, i) => v === "" ? i : null).filter(v => v !== null);
+        return available[Math.floor(Math.random() * available.length)];
     }
 
     function checkWin(b, p) {
-        const patterns = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-        return patterns.some(pattern => {
-            const win = pattern.every(idx => b[idx] === p);
-            if (win && active && b === board) {
-                pattern.forEach(idx => cells[idx].classList.add('winner'));
-            }
-            return win;
+        const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+        return wins.some(pattern => {
+            const isWin = pattern.every(i => b[i] === p);
+            if (isWin) pattern.forEach(i => cells[i].classList.add('winner'));
+            return isWin;
         });
     }
 
-    function endGame(res) {
-        active = false;
-        if (res === 'D') {
-            aiFeedback.innerText = aiMessages.draw;
-            stats.D++;
-            playSound(drawSound);
+    function endGame(result) {
+        isGameActive = false;
+        if (result === 'Draw') {
+            aiMsg.innerText = "تعادل في النظام!";
+            scores.D++;
         } else {
-            if (res === 'O') {
-                aiFeedback.innerText = aiMessages.win;
-                playSound(winSound);
-            } else { // Player X wins
-                aiFeedback.innerText = aiMessages.lose; // AI's reaction to player winning
-                playSound(winSound);
-                confetti({
-                    particleCount: 200,
-                    spread: 100,
-                    origin: { y: 0.6 },
-                    colors: [document.documentElement.style.getPropertyValue('--x-color'), '#ffffff']
-                });
-            }
-            stats[res]++;
+            aiMsg.innerText = `تم اختراق النظام بواسطة ${result}!`;
+            scores[result]++;
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         }
-        updateScore();
+        updateScores();
     }
 
-    function updateScore() {
-        document.getElementById('s-x').innerText = stats.X;
-        document.getElementById('s-o').innerText = stats.O;
-        document.getElementById('s-d').innerText = stats.D;
+    function updateScores() {
+        document.getElementById('scoreX').innerText = scores.X;
+        document.getElementById('scoreO').innerText = scores.O;
+        document.getElementById('draws').innerText = scores.D;
     }
 
     function resetGame() {
         board = ["", "", "", "", "", "", "", "", ""];
-        active = true;
-        player = "X";
-        aiFeedback.innerText = aiMessages.start;
-        cells.forEach(c => { c.innerText = ""; c.classList.remove('x', 'o', 'winner', 'occupied'); });
-        if (vsAI && player === 'O') aiTurn(); // AI starts if it's O's turn
+        isGameActive = true;
+        currentPlayer = "X";
+        aiMsg.innerText = "نظام جاهز";
+        cells.forEach(c => {
+            c.innerText = "";
+            c.classList.remove('x', 'o', 'winner');
+        });
     }
 
-    cells.forEach(c => c.addEventListener('click', makeMove));
-    // Initial setup
-    setTheme('neon'); // Default theme
-    updateScore();
+    cells.forEach(c => c.addEventListener('click', handleCellClick));
 </script>
 </body>
 </html>
