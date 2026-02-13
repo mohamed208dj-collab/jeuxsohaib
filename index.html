@@ -3,308 +3,450 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-O Ethereal Edition</title>
+    <title>X-O Infinite Quantum Nexus</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Orbitron:wght@500;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --cyan: #00f2fe;
-            --magenta: #fc00ff;
-            --gold: #ffcc00;
-            --bg: #050505;
+            --player-x-color: #00e5ff; /* Cyan */
+            --player-o-color: #ff00ea; /* Magenta */
+            --win-color: #ffcc00; /* Gold */
+            --bg-deep: #000a12;
+            --card-glass: rgba(10, 20, 30, 0.8);
+            --border-glow: rgba(0, 229, 255, 0.3);
+            --terminal-text: #00ff7f; /* Bright green for log */
         }
 
         body {
             margin: 0;
             height: 100vh;
-            background: var(--bg);
             display: flex;
             align-items: center;
             justify-content: center;
+            background-color: var(--bg-deep);
             font-family: 'Cairo', sans-serif;
+            color: white;
             overflow: hidden;
-            perspective: 1500px;
+            perspective: 2000px; /* لتمكين 3D بشكل أعمق */
         }
 
-        /* خلفية البلازما المتحركة */
-        .plasma-bg {
+        /* خلفية الكوكب والنجوم المتحركة */
+        .cosmic-background {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #1a0a30 0%, #000a12 100%);
+            overflow: hidden;
             z-index: -1;
-            filter: blur(80px);
-            opacity: 0.6;
-            animation: pulseBg 10s infinite alternate;
+        }
+        .planet {
+            position: absolute;
+            width: 800px; height: 800px;
+            background: radial-gradient(circle at 30% 30%, #4a0e88, #1a0a30);
+            border-radius: 50%;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotateX(60deg);
+            box-shadow: 0 0 200px rgba(74, 14, 136, 0.5);
+            animation: planet-rotate 40s linear infinite;
+        }
+        @keyframes planet-rotate {
+            from { transform: translate(-50%, -50%) rotateX(60deg) rotateZ(0deg); }
+            to { transform: translate(-50%, -50%) rotateX(60deg) rotateZ(360deg); }
+        }
+        .star-field {
+            position: absolute;
+            width: 2000px; height: 2000px;
+            background-image: radial-gradient(white 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: stars-move 100s linear infinite;
+        }
+        @keyframes stars-move {
+            from { transform: translate(0,0); }
+            to { transform: translate(-2000px, -2000px); }
         }
 
-        @keyframes pulseBg {
-            0% { transform: scale(1) rotate(0deg); }
-            100% { transform: scale(1.2) rotate(5deg); }
-        }
 
-        .main-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50px;
-            padding: 40px;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.9);
+        .game-console {
+            position: relative;
+            z-index: 10;
+            width: 95%;
+            max-width: 500px;
             transform-style: preserve-3d;
-            transition: transform 0.1s ease-out;
-            text-align: center;
-            width: 90%;
-            max-width: 450px;
+            transition: transform 0.1s ease-out; /* لتاثير الميلان 3D */
         }
 
-        .main-card::before {
+        .console-panel {
+            background: var(--card-glass);
+            backdrop-filter: blur(35px);
+            border-radius: 30px;
+            padding: 40px;
+            border: 2px solid var(--border-glow);
+            box-shadow: 0 0 100px rgba(0,0,0,0.8), inset 0 0 50px rgba(0, 229, 255, 0.2);
+            text-align: center;
+            position: relative;
+        }
+
+        .console-panel::before { /* تأثير وهج الحدود المتحرك */
             content: '';
             position: absolute;
-            inset: 0;
-            border-radius: 50px;
-            padding: 2px;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
+            inset: -5px;
+            border-radius: 35px;
+            background: linear-gradient(45deg, transparent, var(--player-x-color), var(--player-o-color), transparent);
+            filter: blur(20px);
+            opacity: 0.7;
+            animation: border-glow 10s linear infinite;
+            z-index: -1;
+        }
+        @keyframes border-glow {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.02) rotate(360deg); }
         }
 
-        h1 {
+        header h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 3rem;
-            margin: 0 0 10px;
-            background: linear-gradient(to bottom, #fff, #888);
+            font-size: 3.5rem;
+            margin: 0 0 15px;
+            background: linear-gradient(to right, var(--player-x-color), var(--player-o-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: 5px;
+            text-shadow: 0 0 40px var(--player-x-color);
+            letter-spacing: 2px;
         }
 
-        .status-badge {
-            display: inline-block;
-            padding: 8px 25px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 50px;
-            border: 1px solid rgba(255,255,255,0.1);
+        .terminal-log {
+            min-height: 40px;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid var(--terminal-text);
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin-bottom: 25px;
+            font-family: 'Orbitron', monospace;
             font-size: 0.9rem;
-            margin-bottom: 30px;
-            color: var(--cyan);
-            box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+            color: var(--terminal-text);
+            text-align: left;
+            overflow: hidden;
+            white-space: nowrap;
         }
 
-        .board {
+        .stats-display {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 15px;
             margin-bottom: 30px;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .stat-unit {
+            background: rgba(255,255,255,0.05);
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+        .stat-unit h4 { margin: 0; font-size: 0.8rem; opacity: 0.7; }
+        .stat-unit p { margin: 5px 0 0; font-size: 1.5rem; font-weight: 900; }
+        .stat-x p { color: var(--player-x-color); }
+        .stat-o p { color: var(--player-o-color); }
+        .stat-draw p { color: #aaa; }
+
+
+        /* 3D Board */
+        .board-3d {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+            transform-style: preserve-3d;
         }
 
-        .cell {
+        .cube-cell {
             aspect-ratio: 1;
             background: rgba(255, 255, 255, 0.02);
-            border-radius: 25px;
-            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.08);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 4rem;
             font-family: 'Orbitron';
             cursor: pointer;
-            transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: transform 0.3s ease-out, background 0.3s, border-color 0.3s;
+            transform-style: preserve-3d;
+            transform: rotateX(0deg) rotateY(0deg) translateZ(0px); /* Default 3D */
             position: relative;
         }
 
-        .cell:hover {
-            background: rgba(255, 255, 255, 0.08);
-            transform: translateZ(30px);
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        .cube-cell:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--player-x-color); /* يتغير حسب اللاعب */
+            transform: translateZ(30px) scale(1.05);
+            box-shadow: 0 0 30px var(--player-x-color);
         }
 
-        .cell::after {
-            content: '';
-            position: absolute;
-            width: 100%; height: 100%;
-            border-radius: 25px;
-            box-shadow: 0 0 0px var(--cyan);
-            transition: 0.5s;
+        .cube-cell .content {
+            transform: translateZ(20px); /* لجعل المحتوى يبرز أكثر */
+            transition: transform 0.3s;
         }
 
-        .cell.x { color: var(--cyan); text-shadow: 0 0 30px var(--cyan); }
-        .cell.o { color: var(--magenta); text-shadow: 0 0 30px var(--magenta); }
+        .cube-cell.x .content { color: var(--player-x-color); text-shadow: 0 0 35px var(--player-x-color); }
+        .cube-cell.o .content { color: var(--player-o-color); text-shadow: 0 0 35px var(--player-o-color); }
 
-        .cell.win-glow {
-            background: var(--gold) !important;
+        .cube-cell.winner-fx {
+            background: var(--win-color) !important;
             color: black !important;
             text-shadow: none;
-            box-shadow: 0 0 50px var(--gold);
-            transform: scale(1.1) translateZ(50px);
+            box-shadow: 0 0 80px var(--win-color);
+            transform: translateZ(80px) scale(1.2) rotateY(360deg);
+            animation: winner-pulse 1s infinite alternate;
+        }
+        @keyframes winner-pulse {
+            from { box-shadow: 0 0 80px var(--win-color); }
+            to { box-shadow: 0 0 120px var(--win-color), 0 0 40px var(--win-color); }
         }
 
-        .controls {
+        /* Controls */
+        .control-panel {
             display: flex;
             gap: 15px;
             justify-content: center;
         }
-
-        .btn {
-            background: white;
-            color: black;
+        .control-btn {
+            background: var(--player-x-color);
+            color: var(--bg-deep);
             padding: 15px 30px;
-            border-radius: 20px;
+            border-radius: 15px;
             font-weight: 900;
             border: none;
             cursor: pointer;
             transition: 0.3s;
             font-family: 'Cairo';
+            box-shadow: 0 0 20px var(--player-x-color);
         }
-
-        .btn-sec {
-            background: rgba(255,255,255,0.05);
+        .control-btn.secondary {
+            background: rgba(255,255,255,0.1);
             color: white;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: none;
         }
-
-        .btn:hover {
+        .control-btn:hover {
             transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.6), 0 0 30px var(--player-x-color);
+        }
+        .control-btn.secondary:hover {
+            box-shadow: 0 15px 30px rgba(0,0,0,0.6), 0 0 15px rgba(255,255,255,0.3);
         }
 
-        /* أنيميشن الدخول */
-        .pop { animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        @keyframes popIn {
-            0% { transform: scale(0) rotate(-180deg); opacity: 0; }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; }
-        }
     </style>
 </head>
 <body>
 
-<div class="plasma-bg"></div>
+<div class="cosmic-background">
+    <div class="planet"></div>
+    <div class="star-field"></div>
+</div>
 
-<div class="main-card" id="card">
-    <div class="status-badge" id="status">المعالج متصل.. جاهز للجلد</div>
-    <h1>NEURON</h1>
-    
-    <div class="board" id="board">
-        <div class="cell" data-i="0"></div>
-        <div class="cell" data-i="1"></div>
-        <div class="cell" data-i="2"></div>
-        <div class="cell" data-i="3"></div>
-        <div class="cell" data-i="4"></div>
-        <div class="cell" data-i="5"></div>
-        <div class="cell" data-i="6"></div>
-        <div class="cell" data-i="7"></div>
-        <div class="cell" data-i="8"></div>
-    </div>
+<div class="game-console" id="game-console">
+    <div class="console-panel">
+        <header>
+            <h1>QUANTUM NEXUS</h1>
+            <div class="terminal-log" id="terminal-log">
+                &gt; [SYSTEM] Initializing Quantum Matrix...
+            </div>
+        </header>
 
-    <div class="controls">
-        <button class="btn" onclick="reset()">REBOOT</button>
-        <button class="btn btn-sec" id="ai-toggle" onclick="toggleAI()">AI: ON</button>
+        <div class="stats-display">
+            <div class="stat-unit stat-x"><h4>PLAYER X</h4><p id="s-x">0</p></div>
+            <div class="stat-unit stat-draw"><h4>DRAW</h4><p id="s-d">0</p></div>
+            <div class="stat-unit stat-o"><h4>PLAYER O (AI)</h4><p id="s-o">0</p></div>
+        </div>
+
+        <div class="board-3d" id="board-3d">
+            <div class="cube-cell" data-idx="0"><div class="content"></div></div>
+            <div class="cube-cell" data-idx="1"><div class="content"></div></div>
+            <div class="cube-cell" data-idx="2"><div class="content"></div></div>
+            <div class="cube-cell" data-idx="3"><div class="content"></div></div>
+            <div class="cube-cell" data-idx="4"><div class="content"></div></div>
+            <div class="cube-cell" data-idx="5"><div class="content"></div></div>
+            <div class="cube-cell" data-idx="6"><div class="content"></div></div>
+            <div class="cube-cell" data-idx="7"><div class="content"></div></div>
+            <div class="cube-cell" data-idx="8"><div class="content"></div></div>
+        </div>
+
+        <div class="control-panel">
+            <button class="control-btn" onclick="resetGame()">RESET SYSTEM</button>
+            <button class="control-btn secondary" id="mode-toggle" onclick="toggleMode()">AI: ON</button>
+        </div>
     </div>
 </div>
 
 <script>
-    const card = document.getElementById('card');
-    const cells = document.querySelectorAll('.cell');
-    const status = document.getElementById('status');
-    let board = ["", "", "", "", "", "", "", "", ""];
-    let player = "X";
-    let active = true;
-    let vsAI = true;
-
-    // --- 3D Tilt Effect ---
+    // --- 3D Tilt Effect for Console ---
+    const gameConsole = document.getElementById('game-console');
     document.addEventListener('mousemove', (e) => {
-        let x = (window.innerWidth / 2 - e.pageX) / 20;
-        let y = (window.innerHeight / 2 - e.pageY) / 20;
-        card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+        const xAxis = (window.innerWidth / 2 - e.pageX) / 40; // Smaller rotation
+        const yAxis = (window.innerHeight / 2 - e.pageY) / 40;
+        gameConsole.style.transform = `rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;
     });
 
     // --- Game Logic ---
-    function toggleAI() {
+    let board = ["", "", "", "", "", "", "", "", ""];
+    let currentPlayer = "X";
+    let isGameActive = true;
+    let vsAI = true;
+    let scores = JSON.parse(localStorage.getItem('xo-quantum-scores')) || {X: 0, O: 0, D: 0};
+
+    const cells = document.querySelectorAll('.cube-cell');
+    const terminalLog = document.getElementById('terminal-log');
+    
+    // Initial UI update from localStorage
+    updateUI();
+    logMessage("[SYSTEM] Quantum Matrix Initialized. Awaiting Command...");
+
+    function logMessage(msg) {
+        terminalLog.innerHTML = `&gt; ${msg}`;
+        // You can add more complex scrolling/typing effects here
+    }
+
+    function toggleMode() {
         vsAI = !vsAI;
-        document.getElementById('ai-toggle').innerText = vsAI ? "AI: ON" : "PVP: ON";
-        reset();
+        document.getElementById('mode-toggle').innerText = vsAI ? "AI: ON" : "AI: OFF (PVP)";
+        logMessage(`[SYSTEM] AI Mode: ${vsAI ? 'ENABLED' : 'DISABLED'}.`);
+        resetGame();
     }
 
-    function reset() {
-        board = ["", "", "", "", "", "", "", "", ""];
-        active = true;
-        player = "X";
-        status.innerText = "النظام مُصفر.. ابدأ";
-        cells.forEach(c => {
-            c.innerText = "";
-            c.classList.remove('x', 'o', 'win-glow', 'pop');
-        });
-    }
+    cells.forEach(cell => cell.addEventListener('click', (e) => {
+        const idx = e.currentTarget.dataset.idx;
+        if (board[idx] !== "" || !isGameActive) {
+            logMessage("[ERROR] Invalid move. Cell occupied or game ended.");
+            return;
+        }
 
-    cells.forEach(c => c.addEventListener('click', (e) => {
-        const i = e.target.dataset.i;
-        if (board[i] || !active) return;
+        makeMove(idx, currentPlayer);
 
-        makeMove(i, "X");
-        
-        if (active && vsAI) {
-            status.innerText = "الكمبيوتر يحلل المصفوفة...";
+        if (isGameActive && vsAI && currentPlayer === 'O') { // AI's turn
+            logMessage("[AI] Calculating optimal strategy...");
             setTimeout(() => {
-                const best = minimax(board, "O").index;
-                makeMove(best, "O");
-            }, 500);
+                const bestMove = getAIMove(board);
+                makeMove(bestMove, "O");
+            }, 800); // Simulate AI thinking
         }
     }));
 
-    function makeMove(i, p) {
-        board[i] = p;
-        cells[i].innerHTML = `<span class="pop">${p}</span>`;
-        cells[i].classList.add(p.toLowerCase());
+    function makeMove(idx, player) {
+        board[idx] = player;
+        const cellContent = cells[idx].querySelector('.content');
+        cellContent.innerText = player;
+        cells[idx].classList.add(player.toLowerCase());
+        logMessage(`[PLAYER ${player}] Moved to cell ${parseInt(idx) + 1}.`);
 
-        if (checkWin(board, p)) {
-            status.innerText = `اللاعب ${p} دمر النظام!`;
-            active = false;
-            confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
+        // Change hover glow color based on next player
+        document.documentElement.style.setProperty('--player-x-color', currentPlayer === 'X' ? '#00e5ff' : '#ff00ea');
+
+        if (checkWin(board, player)) {
+            endGame(player);
         } else if (!board.includes("")) {
-            status.innerText = "تعادل في البيانات 🤝";
-            active = false;
+            endGame('Draw');
         } else {
-            player = player === "X" ? "O" : "X";
-            status.innerText = `دور اللاعب: ${player}`;
+            currentPlayer = player === "X" ? "O" : "X";
+            logMessage(`[SYSTEM] Current turn: PLAYER ${currentPlayer}.`);
         }
     }
 
-    function checkWin(b, p) {
-        const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-        return wins.some(w => {
-            const win = w.every(idx => b[idx] === p);
-            if (win && b === board) w.forEach(idx => cells[idx].classList.add('win-glow'));
-            return win;
-        });
+    // Minimax Algorithm (Unbeatable AI)
+    function getAIMove(currentBoard) {
+        let bestMove = minimax(currentBoard, "O").index;
+        return bestMove;
     }
 
-    // Unbeatable AI (Minimax)
-    function minimax(b, p) {
-        const avail = b.map((v, i) => v === "" ? i : null).filter(v => v !== null);
-        if (checkWin(b, "X")) return {score: -10};
-        if (checkWin(b, "O")) return {score: 10};
-        if (avail.length === 0) return {score: 0};
+    function minimax(newBoard, player) {
+        const availSpots = newBoard.map((val, idx) => val === "" ? idx : null).filter(val => val !== null);
+
+        if (checkWin(newBoard, "X")) return {score: -10};
+        if (checkWin(newBoard, "O")) return {score: 10};
+        if (availSpots.length === 0) return {score: 0};
 
         const moves = [];
-        for (let i of avail) {
-            let move = {index: i};
-            b[i] = p;
-            move.score = minimax(b, p === "O" ? "X" : "O").score;
-            b[i] = "";
+        for (let i = 0; i < availSpots.length; i++) {
+            const move = {};
+            move.index = availSpots[i];
+            newBoard[availSpots[i]] = player;
+
+            if (player === "O") {
+                move.score = minimax(newBoard, "X").score;
+            } else {
+                move.score = minimax(newBoard, "O").score;
+            }
+
+            newBoard[availSpots[i]] = ""; // Reset board after checking
             moves.push(move);
         }
 
         let bestMove;
-        if (p === "O") {
+        if (player === "O") {
             let bestScore = -Infinity;
-            moves.forEach((m, i) => { if(m.score > bestScore) { bestScore = m.score; bestMove = i; } });
-        } else {
+            for (let i = 0; i < moves.length; i++) {
+                if (moves[i].score > bestScore) {
+                    bestScore = moves[i].score;
+                    bestMove = i;
+                }
+            }
+        } else { // player === "X"
             let bestScore = Infinity;
-            moves.forEach((m, i) => { if(m.score < bestScore) { bestScore = m.score; bestMove = i; } });
+            for (let i = 0; i < moves.length; i++) {
+                if (moves[i].score < bestScore) {
+                    bestScore = moves[i].score;
+                    bestMove = i;
+                }
+            }
         }
         return moves[bestMove];
+    }
+
+    function checkWin(b, p) {
+        const patterns = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+        return patterns.some(pattern => {
+            const win = pattern.every(idx => b[idx] === p);
+            if (win && isGameActive && b === board) { // Apply winner effect only to active game board
+                pattern.forEach(idx => cells[idx].classList.add('winner-fx'));
+            }
+            return win;
+        });
+    }
+
+    function endGame(result) {
+        isGameActive = false;
+        if (result === 'Draw') {
+            logMessage("[SYSTEM] Draw declared. No dominant force detected.");
+            scores.D++;
+        } else {
+            logMessage(`[SYSTEM] PLAYER ${result} has achieved Quantum Dominance!`);
+            scores[result]++;
+            confetti({
+                particleCount: 300,
+                spread: 120,
+                origin: { y: 0.6 },
+                colors: [result === 'X' ? '#00e5ff' : '#ff00ea', '#ffcc00', '#ffffff']
+            });
+        }
+        localStorage.setItem('xo-quantum-scores', JSON.stringify(scores));
+        updateUI();
+    }
+
+    function updateUI() {
+        document.getElementById('s-x').innerText = scores.X;
+        document.getElementById('s-o').innerText = scores.O;
+        document.getElementById('s-d').innerText = scores.D;
+    }
+
+    function resetGame() {
+        board = ["", "", "", "", "", "", "", "", ""];
+        isGameActive = true;
+        currentPlayer = "X";
+        logMessage("[SYSTEM] Matrix Reset. New game initiated.");
+        cells.forEach(cell => {
+            cell.querySelector('.content').innerText = "";
+            cell.classList.remove('x', 'o', 'winner-fx');
+        });
+        document.documentElement.style.setProperty('--player-x-color', '#00e5ff'); // Reset hover glow
     }
 </script>
 </body>
