@@ -3,220 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>X-O NEURAL NEXUS V2</title>
+    <title>X-O NEURAL PRIME</title>
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Cairo:wght@600;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Cairo:wght@700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --p1: #00f2fe; --p2: #fc00ff; --bg: #05050a; --glass: rgba(255, 255, 255, 0.03); }
+        :root { --p1: #00f2fe; --p2: #fc00ff; --bg: #05050a; }
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; outline: none; }
-        body { margin: 0; background: var(--bg); color: white; font-family: 'Cairo', sans-serif; overflow: hidden; height: 100vh; display: flex; align-items: center; justify-content: center; }
+        body { 
+            margin: 0; background: var(--bg); color: white; font-family: 'Cairo', sans-serif; 
+            height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden;
+        }
 
-        /* خلفية جزيئات ناعمة */
-        #bg-canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.4; }
+        /* خلفية نيون ناعمة */
+        .bg-glow {
+            position: fixed; width: 300px; height: 300px; background: var(--p1);
+            filter: blur(150px); border-radius: 50%; opacity: 0.2; z-index: -1;
+            animation: move 10s infinite alternate;
+        }
+        @keyframes move { from { transform: translate(-50%, -50%); } to { transform: translate(50%, 50%); } }
 
-        .nexus-box { width: 95%; max-width: 450px; z-index: 10; transition: transform 0.1s; }
-
+        .container { width: 90%; max-width: 400px; z-index: 10; }
+        
         .glass-card {
-            background: var(--glass); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 35px; padding: 25px; box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 35px;
+            padding: 25px; box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         }
 
-        .hud-top { display: flex; justify-content: space-between; margin-bottom: 20px; font-family: 'Orbitron'; font-size: 0.8rem; }
-        .ping-pill { background: rgba(0,0,0,0.5); padding: 5px 12px; border-radius: 15px; border: 1px solid #1a1a2a; }
+        .id-section { background: rgba(0,0,0,0.4); padding: 20px; border-radius: 25px; margin: 15px 0; border: 1px dashed #333; }
+        .id-text { font-family: 'Orbitron'; font-size: 2rem; color: var(--p1); letter-spacing: 5px; cursor: pointer; display: block; margin: 10px 0; }
 
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
         .cell {
-            aspect-ratio: 1; background: rgba(255, 255, 255, 0.02); border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;
-            font-size: 3rem; font-family: 'Orbitron'; cursor: pointer; transition: 0.3s;
+            aspect-ratio: 1; background: rgba(255, 255, 255, 0.05); border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem; font-family: 'Orbitron'; cursor: pointer; transition: 0.2s;
         }
-        .cell.x { color: var(--p1); text-shadow: 0 0 20px var(--p1); }
-        .cell.o { color: var(--p2); text-shadow: 0 0 20px var(--p2); }
-        .cell.win { background: white !important; color: black !important; transform: scale(1.05); box-shadow: 0 0 40px white; }
+        .cell.x { color: var(--p1); text-shadow: 0 0 15px var(--p1); }
+        .cell.o { color: var(--p2); text-shadow: 0 0 15px var(--p2); }
+        .cell.win { background: white !important; color: black !important; }
 
-        /* شاشة الربط الرقمي */
-        .overlay { position: fixed; inset: 0; background: var(--bg); z-index: 1000; display: flex; align-items: center; justify-content: center; text-align: center; }
-        .setup-card { background: #0a0a15; padding: 35px; border-radius: 40px; border: 1px solid #1a1a35; width: 90%; max-width: 380px; }
-        .id-badge { background: #000; border: 2px dashed #333; padding: 15px; border-radius: 20px; margin: 20px 0; cursor: pointer; }
-        .id-badge span { font-family: 'Orbitron'; font-size: 2rem; color: var(--p1); letter-spacing: 5px; }
+        input {
+            width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #222;
+            background: #000; color: white; text-align: center; font-size: 1.1rem; margin-bottom: 10px;
+        }
+        .btn {
+            width: 100%; padding: 15px; border-radius: 15px; border: none;
+            background: linear-gradient(45deg, var(--p1), var(--p2));
+            color: white; font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        .btn:active { transform: scale(0.98); }
 
-        input { width: 100%; padding: 18px; border-radius: 20px; border: 1px solid #1a1a2a; background: #000; color: white; text-align: center; font-size: 1.2rem; font-family: 'Orbitron'; margin-bottom: 15px; }
-        .btn-connect { width: 100%; padding: 18px; border-radius: 20px; border: none; background: linear-gradient(90deg, var(--p1), var(--p2)); color: white; font-weight: 900; cursor: pointer; box-shadow: 0 10px 25px rgba(0, 242, 254, 0.3); }
-
+        .status { text-align: center; font-size: 0.8rem; margin-top: 10px; color: #666; }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-<canvas id="bg-canvas"></canvas>
+<div class="bg-glow"></div>
 
-<div id="setup-screen" class="overlay">
-    <div class="setup-card">
-        <h1 style="font-family:'Orbitron'; letter-spacing:5px;">NEURAL LINK</h1>
-        <div class="id-badge" onclick="copyID()">
-            <p style="color:#555; margin:0; font-size:0.7rem;">كودك الخاص (اضغط للنسخ)</p>
-            <span id="my-id">------</span>
+<div id="setup" class="container">
+    <div class="glass-card" style="text-align: center;">
+        <h2 style="margin: 0; font-family: 'Orbitron'; letter-spacing: 3px;">NEURAL LINK</h2>
+        <div class="id-section" onclick="copyID()">
+            <small style="color: #666;">كود غرفتك (اضغط للنسخ)</small>
+            <span id="my-id" class="id-text">------</span>
         </div>
-        <input type="number" id="join-id" placeholder="أدخل كود صديقك">
-        <button class="btn-connect" onclick="connectPeer()">إقامة مزامنة عصبية</button>
-        <p id="conn-status" style="font-size:0.7rem; color:#444; margin-top:10px;">بانتظار السيرفر...</p>
+        <input type="number" id="peer-id-input" placeholder="أدخل كود صديقك هنا">
+        <button class="btn" onclick="connectToPeer()">اتصال الآن</button>
+        <div class="status" id="conn-status">جاري تهيئة النظام...</div>
     </div>
 </div>
 
-<div class="nexus-box hidden" id="game-ui">
+<div id="game" class="container hidden">
     <div class="glass-card">
-        <div class="hud-top">
-            <div id="score-display">X: 0 | O: 0</div>
-            <div class="ping-pill" id="ping">PING: --ms</div>
+        <div style="display: flex; justify-content: space-between; font-family: 'Orbitron'; font-size: 0.8rem; border-bottom: 1px solid #222; padding-bottom: 10px;">
+            <span id="score">X: 0 | O: 0</span>
+            <span id="my-symbol-text"></span>
         </div>
-
-        <div id="turn-info" style="text-align:center; font-family:'Orbitron'; color:var(--p1); margin-bottom:15px; font-size:0.7rem;">> SYSTEM_ONLINE</div>
-
+        <div id="turn-display" style="text-align: center; margin: 15px 0; font-weight: 900;">بانتظار دور اللاعب...</div>
         <div class="grid" id="board">
             <div class="cell" data-i="0"></div><div class="cell" data-i="1"></div><div class="cell" data-i="2"></div>
             <div class="cell" data-i="3"></div><div class="cell" data-i="4"></div><div class="cell" data-i="5"></div>
             <div class="cell" data-i="6"></div><div class="cell" data-i="7"></div><div class="cell" data-i="8"></div>
         </div>
-        
-        <div style="display:flex; gap:10px; margin-top:20px;">
-            <input type="text" id="chat-in" placeholder="رسالة سريعة..." style="margin:0; font-size:0.8rem; padding:12px;">
-            <button onclick="sendMsg()" style="background:var(--p1); border:none; padding:0 15px; border-radius:15px; cursor:pointer;">✉</button>
-        </div>
     </div>
 </div>
 
 <script>
-    // نظام الأصوات الجديد (Cyber-Soft)
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    function playSound(freq, type = 'sine', duration = 0.1) {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = type;
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + duration);
-    }
+    // إعدادات السيرفرات لضمان الاتصال عبر شبكات مختلفة
+    const config = {
+        'iceServers': [
+            { 'urls': 'stun:stun.l.google.com:19302' },
+            { 'urls': 'stun:stun1.l.google.com:19302' }
+        ]
+    };
 
-    // تهيئة PeerJS بكود رقمي
-    const myNumID = Math.floor(100000 + Math.random() * 899999).toString();
-    const peer = new Peer('XON-' + myNumID); 
-    let conn, mySym = "", board = Array(9).fill(""), turn = "X", active = true;
+    const myNumber = Math.floor(100000 + Math.random() * 900000).toString();
+    const peer = new Peer('X' + myNumber, { config: config });
+
+    let conn, mySym, board = Array(9).fill(""), turn = "X", active = true;
 
     peer.on('open', id => {
-        document.getElementById('my-id').innerText = myNumID;
-        document.getElementById('conn-status').innerText = "متصل بالسيرفر العالمي ✅";
-    });
-
-    peer.on('error', err => {
-        alert("خطأ في الاتصال: " + err.type);
-        document.getElementById('conn-status').innerText = "خطأ: حاول مرة أخرى";
+        document.getElementById('my-id').innerText = myNumber;
+        document.getElementById('conn-status').innerText = "جاهز للإرسال ✅";
     });
 
     // استقبال الاتصال
     peer.on('connection', c => {
         conn = c;
         mySym = "X";
-        initGame();
+        start();
     });
 
-    function connectPeer() {
-        const tid = document.getElementById('join-id').value;
-        if(!tid) return;
-        document.getElementById('conn-status').innerText = "جاري البحث عن الصديق...";
-        conn = peer.connect('XON-' + tid);
+    function connectToPeer() {
+        const target = document.getElementById('peer-id-input').value;
+        if(!target) return;
+        document.getElementById('conn-status').innerText = "جاري البحث عن الكود...";
+        conn = peer.connect('X' + target);
         mySym = "O";
-        conn.on('open', initGame);
-        conn.on('error', () => alert("لم يتم العثور على هذا الكود!"));
+        conn.on('open', start);
     }
 
-    function initGame() {
-        document.getElementById('setup-screen').classList.add('hidden');
-        document.getElementById('game-ui').classList.remove('hidden');
-        playSound(440, 'sine', 0.5);
+    function start() {
+        document.getElementById('setup').classList.add('hidden');
+        document.getElementById('game').classList.remove('hidden');
+        document.getElementById('my-symbol-text').innerText = "أنت: " + mySym;
         
         conn.on('data', data => {
-            if(data.type === 'move') syncMove(data.i, data.p);
-            if(data.type === 'chat') alert("صاحبك يقول: " + data.m);
-            if(data.type === 'ping') conn.send({type:'pong', t:data.t});
-            if(data.type === 'pong') document.getElementById('ping').innerText = `PING: ${Date.now()-data.t}ms`;
+            if(data.type === 'move') handleMove(data.i, data.p);
         });
-        setInterval(() => { if(conn) conn.send({type:'ping', t:Date.now()}); }, 2000);
     }
 
-    function syncMove(i, p) {
+    function handleMove(i, p) {
+        if(board[i]) return;
         board[i] = p;
         const cell = document.querySelector(`[data-i="${i}"]`);
-        cell.innerText = p; cell.classList.add(p.toLowerCase());
-        playSound(p === 'X' ? 600 : 800, 'triangle');
+        cell.innerText = p;
+        cell.classList.add(p.toLowerCase());
         
         if(checkWin(p)) {
             active = false;
-            confetti({ particleCount: 150 });
-            playSound(1000, 'sine', 1);
-            setTimeout(reset, 4000);
+            confetti();
+            setTimeout(reset, 3000);
         } else if(!board.includes("")) {
-            active = false; setTimeout(reset, 4000);
+            setTimeout(reset, 3000);
         } else {
-            turn = turn === 'X' ? 'O' : 'X';
+            turn = (turn === "X") ? "O" : "X";
             updateUI();
         }
     }
 
     document.querySelectorAll('.cell').forEach(c => {
         c.onclick = () => {
-            if(board[c.dataset.i] || turn !== mySym || !active) return;
-            syncMove(c.dataset.i, mySym);
+            if(!active || turn !== mySym || board[c.dataset.i]) return;
+            handleMove(c.dataset.i, mySym);
             conn.send({type: 'move', i: c.dataset.i, p: mySym});
             if(window.navigator.vibrate) window.navigator.vibrate(20);
         };
     });
 
     function checkWin(p) {
-        const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-        return wins.some(w => {
-            const isWin = w.every(idx => board[idx] === p);
-            if(isWin) w.forEach(idx => document.querySelector(`[data-i="${idx}"]`).classList.add('win'));
-            return isWin;
+        const w = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+        return w.some(combo => {
+            const win = combo.every(idx => board[idx] === p);
+            if(win) combo.forEach(idx => document.querySelector(`[data-i="${idx}"]`).classList.add('win'));
+            return win;
         });
     }
 
     function updateUI() {
-        document.getElementById('turn-info').innerText = turn === mySym ? "> YOUR TURN" : "> PEER PROCESSING...";
-        document.getElementById('turn-info').style.color = turn === 'X' ? 'var(--p1)' : 'var(--p2)';
+        const el = document.getElementById('turn-display');
+        el.innerText = (turn === mySym) ? "دورك الآن!" : "انتظر دور خصمك...";
+        el.style.color = (turn === mySym) ? "var(--p1)" : "#555";
     }
 
     function reset() {
-        board.fill(""); active = true; turn = "X";
+        board.fill(""); turn = "X"; active = true;
         document.querySelectorAll('.cell').forEach(c => { c.innerText = ""; c.className = "cell"; });
         updateUI();
     }
 
     function copyID() {
-        navigator.clipboard.writeText(myNumID);
-        alert("تم نسخ الكود: " + myNumID);
+        navigator.clipboard.writeText(myNumber);
+        alert("تم نسخ الكود: " + myNumber);
     }
-
-    function sendMsg() {
-        const m = document.getElementById('chat-in').value;
-        if(m && conn) { conn.send({type:'chat', m:m}); document.getElementById('chat-in').value=""; }
-    }
-
-    // محرك خلفية جزيئات ناعمة
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-    let parts = Array(50).fill().map(() => ({x:Math.random()*canvas.width, y:Math.random()*canvas.height, s:Math.random()*2, v:Math.random()*0.5}));
-    function anim() {
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        parts.forEach(p => { p.y -= p.v; if(p.y<0) p.y=canvas.height; ctx.fillStyle="#fff"; ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill(); });
-        requestAnimationFrame(anim);
-    }
-    anim();
 </script>
 </body>
 </html>
