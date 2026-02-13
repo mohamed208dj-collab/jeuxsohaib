@@ -3,124 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>X-O TELEGRAM SYNC</title>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Cairo:wght@700&display=swap" rel="stylesheet">
+    <title>LOVE WHEEL | تحدي الحبيبين</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&family=Pacifico&display=swap" rel="stylesheet">
     <style>
-        :root { --tg-bg: #0e1621; --p1: #00f2fe; --p2: #fc00ff; --tg-blue: #24a1de; }
-        body { margin: 0; background: var(--tg-bg); color: white; font-family: 'Cairo', sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border-radius: 30px; padding: 25px; width: 90%; max-width: 380px; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
-        .input-css { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #2b3b4d; background: #17212b; color: white; text-align: center; font-family: 'Orbitron'; margin-bottom: 12px; font-size: 1.2rem; }
-        .btn-play { width: 100%; padding: 16px; border-radius: 15px; border: none; background: var(--tg-blue); color: white; font-weight: 900; cursor: pointer; font-size: 1.1rem; }
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
-        .cell { aspect-ratio: 1; background: #17212b; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-family: 'Orbitron'; cursor: pointer; border: 1px solid #2b3b4d; transition: 0.2s; }
-        .cell.x { color: var(--p1); text-shadow: 0 0 10px var(--p1); }
-        .cell.o { color: var(--p2); text-shadow: 0 0 10px var(--p2); }
-        .status { margin-bottom: 15px; font-size: 0.9rem; color: var(--tg-blue); font-weight: bold; }
+        :root { --main-pink: #ff2e63; --soft-pink: #eaeaea; --bg: #1a080e; }
+        body { margin: 0; background: var(--bg); color: white; font-family: 'Cairo', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
+        
+        .setup-box { background: rgba(255, 46, 99, 0.1); padding: 30px; border-radius: 20px; border: 1px solid var(--main-pink); text-align: center; width: 85%; }
+        
+        /* تصميم العجلة */
+        .wheel-container { position: relative; width: 300px; height: 300px; border: 8px solid var(--main-pink); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); box-shadow: 0 0 30px var(--main-pink); }
+        .wheel-center { width: 20px; height: 20px; background: white; border-radius: 50%; z-index: 10; position: absolute; }
+        .arrow { width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-bottom: 30px solid white; position: absolute; top: -40px; z-index: 20; }
+
+        .btn-spin { margin-top: 40px; padding: 15px 40px; background: var(--main-pink); border: none; border-radius: 50px; color: white; font-weight: bold; font-size: 1.2rem; cursor: pointer; box-shadow: 0 5px 15px rgba(255, 46, 99, 0.4); }
+        .btn-spin:disabled { opacity: 0.5; }
+
+        .result-box { margin-top: 20px; font-size: 1.3rem; color: #ffeb3b; text-align: center; min-height: 50px; padding: 0 20px; }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-<div id="setup" class="glass">
-    <h2 style="font-family:'Orbitron'; color:var(--tg-blue);">XO CLOUD</h2>
-    <p style="font-size:0.8rem; color:#888;">أدخل كود مشترك مع صاحبك</p>
-    <input type="text" id="room-input" class="input-css" placeholder="مثلاً: 5566">
-    <button class="btn-play" onclick="initGame()">دخول اللعبة</button>
+<div id="setup" class="setup-box">
+    <h1 style="font-family: 'Pacifico'; color: var(--main-pink);">Love Wheel</h1>
+    <p>أدخلا كود الربط الخاص بكما</p>
+    <input type="text" id="roomInput" style="width: 100%; padding: 12px; border-radius: 10px; border: none; text-align: center;" placeholder="مثلاً: love2024">
+    <button class="btn-spin" style="margin-top: 20px;" onclick="connect()">دخول</button>
 </div>
 
-<div id="game-ui" class="glass hidden">
-    <div id="status-text" class="status">بانتظار المزامنة...</div>
-    <div class="grid" id="grid">
-        <div class="cell" data-i="0"></div><div class="cell" data-i="1"></div><div class="cell" data-i="2"></div>
-        <div class="cell" data-i="3"></div><div class="cell" data-i="4"></div><div class="cell" data-i="5"></div>
-        <div class="cell" data-i="6"></div><div class="cell" data-i="7"></div><div class="cell" data-i="8"></div>
+<div id="game" class="hidden" style="text-align: center;">
+    <div class="arrow"></div>
+    <div id="wheel" class="wheel-container">
+        <div style="position: absolute; width: 100%; height: 2px; background: rgba(255,255,255,0.2); transform: rotate(45deg);"></div>
+        <div style="position: absolute; width: 100%; height: 2px; background: rgba(255,255,255,0.2); transform: rotate(90deg);"></div>
+        <div style="position: absolute; width: 100%; height: 2px; background: rgba(255,255,255,0.2); transform: rotate(135deg);"></div>
+        <span style="font-size: 0.8rem; opacity: 0.5;">❤️ صراحة | جرأة | هدية ❤️</span>
     </div>
-    <div id="p-info" style="margin-top:15px; font-size:0.7rem; opacity:0.6;"></div>
+    
+    <div id="result" class="result-box"></div>
+    <button id="spinBtn" class="btn-spin" onclick="spin()">إبدأ الحظ</button>
+    <p id="info" style="font-size: 0.7rem; opacity: 0.5; margin-top: 20px;"></p>
 </div>
 
 <script>
-    // ⚠️ استبدل هذه ببيانات Firebase الخاصة بك لكي تعمل أونلاين
-    const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        databaseURL: "https://YOUR_PROJECT.firebaseio.com"
-    };
-
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    // ⚠️ حط معلومات Supabase تاعك هنا
+    const SB_URL = 'رابط_مشروعك';
+    const SB_KEY = 'anon_key_تاعك';
     
-    let roomRef, mySym, board = Array(9).fill(""), turn = "X", active = true;
+    const supabase = exports.supabasejs.createClient(SB_URL, SB_KEY);
+    let channel, roomId;
+    
+    // قائمة المهام
+    const tasks = [
+        "أوصف شريكك بكلمة واحدة",
+        "ماهي أجمل ذكرى بينكما؟",
+        "تحدي: أرسل صورة مضحكة الآن",
+        "ما هو أكثر شيء تحبه في الطرف الآخر؟",
+        "سؤال صراحة: متى كانت أول مرة أعجبت به؟",
+        "تحدي: غني مقطع من أغنية رومانسية",
+        "أطلب طلب من الطرف الآخر الآن"
+    ];
 
-    async function initGame() {
-        const rid = document.getElementById('room-input').value;
-        if(!rid) return;
+    async function connect() {
+        roomId = document.getElementById('roomInput').value;
+        if(!roomId) return;
 
-        roomRef = db.ref('rooms/' + rid);
-        
-        roomRef.once('value', snapshot => {
-            const data = snapshot.val();
-            // أول واحد يدخل هو X والثاني هو O
-            if(!data || !data.p1) {
-                mySym = "X";
-                roomRef.update({ p1: "online", board: board, turn: "X" });
-            } else {
-                mySym = "O";
-                roomRef.update({ p2: "online" });
-            }
-            startSync();
-        });
-    }
-
-    function startSync() {
-        document.getElementById('setup').classList.add('hidden');
-        document.getElementById('game-ui').classList.remove('hidden');
-        document.getElementById('p-info').innerText = "أنت: " + mySym;
-
-        // مراقبة التغييرات في السيرفر فوراً
-        roomRef.on('value', snapshot => {
-            const data = snapshot.val();
-            if(!data) return;
-            board = data.board;
-            turn = data.turn;
-            updateUI();
-        });
-    }
-
-    function updateUI() {
-        board.forEach((val, i) => {
-            const cell = document.querySelector(`[data-i="${i}"]`);
-            cell.innerText = val || "";
-            cell.className = "cell" + (val ? " " + val.toLowerCase() : "");
-        });
-        
-        const status = document.getElementById('status-text');
-        if(checkWin("X") || checkWin("O")) {
-            status.innerText = "انتهت اللعبة!";
-            active = false;
-            confetti();
-        } else {
-            status.innerText = (turn === mySym) ? "دورك الآن!" : "انتظر صاحبك...";
-        }
-    }
-
-    document.querySelectorAll('.cell').forEach(cell => {
-        cell.onclick = () => {
-            const i = cell.dataset.i;
-            if(!active || turn !== mySym || board[i]) return;
-            
-            board[i] = mySym;
-            roomRef.update({
-                board: board,
-                turn: (mySym === "X") ? "O" : "X"
+        channel = supabase.channel('love_' + roomId);
+        channel
+            .on('broadcast', { event: 'spin' }, (payload) => {
+                applySpin(payload.payload.rotation, payload.payload.taskIndex);
+            })
+            .subscribe((status) => {
+                if(status === 'SUBSCRIBED') {
+                    document.getElementById('setup').classList.add('hidden');
+                    document.getElementById('game').classList.remove('hidden');
+                    document.getElementById('info').innerText = "تم الربط بنجاح ❤️";
+                }
             });
-        };
-    });
+    }
 
-    function checkWin(p) {
-        const w = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-        return w.some(c => c.every(idx => board[idx] === p));
+    function spin() {
+        const rotation = Math.floor(Math.random() * 360) + 1440; // 4 دورات على الأقل
+        const taskIndex = Math.floor(Math.random() * tasks.length);
+        
+        // إرسال للطرف الآخر
+        channel.send({
+            type: 'broadcast',
+            event: 'spin',
+            payload: { rotation, taskIndex }
+        });
+
+        applySpin(rotation, taskIndex);
+    }
+
+    function applySpin(deg, index) {
+        const wheel = document.getElementById('wheel');
+        const btn = document.getElementById('spinBtn');
+        const result = document.getElementById('result');
+        
+        btn.disabled = true;
+        result.innerText = "جاري الاختيار...";
+        wheel.style.transform = `rotate(${deg}deg)`;
+
+        setTimeout(() => {
+            result.innerText = tasks[index];
+            btn.disabled = false;
+            // تصفير الزاوية برفق لضمان استمرار الدوران في المرات القادمة
+            wheel.style.transition = 'none';
+            wheel.style.transform = `rotate(${deg % 360}deg)`;
+            setTimeout(() => wheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)', 50);
+        }, 4000);
     }
 </script>
 </body>
