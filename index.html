@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>X-O TELEGRAM SUPA-REALTIME</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>X-O TELEGRAM SYNC</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Cairo:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root { --tg-theme-bg: #17212b; --p1: #00f2fe; --p2: #fc00ff; --tg-blue: #24a1de; }
-        body { margin: 0; background: #0e1621; color: white; font-family: 'Cairo', sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); border-radius: 30px; padding: 25px; width: 90%; max-width: 380px; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
-        .input-css { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #2b3b4d; background: #17212b; color: white; text-align: center; font-family: 'Orbitron'; margin-bottom: 12px; font-size: 1.2rem; box-sizing: border-box; }
+        :root { --tg-bg: #0e1621; --p1: #00f2fe; --p2: #fc00ff; --tg-blue: #24a1de; }
+        body { margin: 0; background: var(--tg-bg); color: white; font-family: 'Cairo', sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border-radius: 30px; padding: 25px; width: 90%; max-width: 380px; border: 1px solid rgba(255,255,255,0.1); text-align: center; }
+        .input-css { width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #2b3b4d; background: #17212b; color: white; text-align: center; font-family: 'Orbitron'; margin-bottom: 12px; font-size: 1.2rem; }
         .btn-play { width: 100%; padding: 16px; border-radius: 15px; border: none; background: var(--tg-blue); color: white; font-weight: 900; cursor: pointer; font-size: 1.1rem; }
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
         .cell { aspect-ratio: 1; background: #17212b; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-family: 'Orbitron'; cursor: pointer; border: 1px solid #2b3b4d; transition: 0.2s; }
@@ -24,15 +25,14 @@
 <body>
 
 <div id="setup" class="glass">
-    <h2 style="font-family:'Orbitron'; color:var(--tg-blue);">ULTRA SYNC</h2>
+    <h2 style="font-family:'Orbitron'; color:var(--tg-blue);">XO CLOUD</h2>
     <p style="font-size:0.8rem; color:#888;">أدخل كود مشترك مع صاحبك</p>
-    <input type="text" id="room-input" class="input-css" placeholder="مثلاً: dz2024">
-    <button class="btn-play" onclick="initGame()">دخول الغرفة</button>
-    <p id="msg" style="font-size:0.7rem; color:red; margin-top:10px;"></p>
+    <input type="text" id="room-input" class="input-css" placeholder="مثلاً: 5566">
+    <button class="btn-play" onclick="initGame()">دخول اللعبة</button>
 </div>
 
 <div id="game-ui" class="glass hidden">
-    <div id="status-text" class="status">بانتظار الحركة...</div>
+    <div id="status-text" class="status">بانتظار المزامنة...</div>
     <div class="grid" id="grid">
         <div class="cell" data-i="0"></div><div class="cell" data-i="1"></div><div class="cell" data-i="2"></div>
         <div class="cell" data-i="3"></div><div class="cell" data-i="4"></div><div class="cell" data-i="5"></div>
@@ -42,54 +42,66 @@
 </div>
 
 <script>
-    // ⚠️ هنا "الصح": ضع روابط Supabase الخاصة بك لتعمل اللعبة أونلاين
-    const SB_URL = 'https://YOUR_PROJECT_URL.supabase.co'; 
-    const SB_KEY = 'YOUR_ANON_KEY';
+    // ⚠️ استبدل هذه ببيانات Firebase الخاصة بك لكي تعمل أونلاين
+    const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        databaseURL: "https://YOUR_PROJECT.firebaseio.com"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
     
-    const supabase = exports.supabasejs.createClient(SB_URL, SB_KEY);
-    
-    let roomId, mySym, board = Array(9).fill(""), turn = "X", active = true;
+    let roomRef, mySym, board = Array(9).fill(""), turn = "X", active = true;
 
     async function initGame() {
-        roomId = document.getElementById('room-input').value;
-        if(!roomId) return;
+        const rid = document.getElementById('room-input').value;
+        if(!rid) return;
 
-        // الربط بالـ Realtime Channel
-        const channel = supabase.channel('room-' + roomId);
-
-        channel
-            .on('broadcast', { event: 'move' }, (payload) => {
-                if (payload.payload.sender !== mySym) {
-                    syncMove(payload.payload.index, payload.payload.symbol);
-                }
-            })
-            .subscribe(async (status) => {
-                if (status === 'SUBSCRIBED') {
-                    mySym = confirm("أوكي لـ X، إلغاء لـ O") ? "X" : "O";
-                    document.getElementById('setup').classList.add('hidden');
-                    document.getElementById('game-ui').classList.remove('hidden');
-                    document.getElementById('p-info').innerText = "أنت: " + mySym;
-                    updateUI();
-                }
-            });
-
-        window.gameChannel = channel;
+        roomRef = db.ref('rooms/' + rid);
+        
+        roomRef.once('value', snapshot => {
+            const data = snapshot.val();
+            // أول واحد يدخل هو X والثاني هو O
+            if(!data || !data.p1) {
+                mySym = "X";
+                roomRef.update({ p1: "online", board: board, turn: "X" });
+            } else {
+                mySym = "O";
+                roomRef.update({ p2: "online" });
+            }
+            startSync();
+        });
     }
 
-    function syncMove(i, sym) {
-        if(board[i] || !active) return;
-        board[i] = sym;
-        const cell = document.querySelector(`[data-i="${i}"]`);
-        cell.innerText = sym;
-        cell.classList.add(sym.toLowerCase());
+    function startSync() {
+        document.getElementById('setup').classList.add('hidden');
+        document.getElementById('game-ui').classList.remove('hidden');
+        document.getElementById('p-info').innerText = "أنت: " + mySym;
 
-        if(checkWin(sym)) {
+        // مراقبة التغييرات في السيرفر فوراً
+        roomRef.on('value', snapshot => {
+            const data = snapshot.val();
+            if(!data) return;
+            board = data.board;
+            turn = data.turn;
+            updateUI();
+        });
+    }
+
+    function updateUI() {
+        board.forEach((val, i) => {
+            const cell = document.querySelector(`[data-i="${i}"]`);
+            cell.innerText = val || "";
+            cell.className = "cell" + (val ? " " + val.toLowerCase() : "");
+        });
+        
+        const status = document.getElementById('status-text');
+        if(checkWin("X") || checkWin("O")) {
+            status.innerText = "انتهت اللعبة!";
             active = false;
             confetti();
-            document.getElementById('status-text').innerText = "فاز اللاعب " + sym;
         } else {
-            turn = (sym === "X") ? "O" : "X";
-            updateUI();
+            status.innerText = (turn === mySym) ? "دورك الآن!" : "انتظر صاحبك...";
         }
     }
 
@@ -97,23 +109,14 @@
         cell.onclick = () => {
             const i = cell.dataset.i;
             if(!active || turn !== mySym || board[i]) return;
-
-            syncMove(i, mySym);
             
-            // إرسال الحركة لكل المشتركين في الغرفة
-            window.gameChannel.send({
-                type: 'broadcast',
-                event: 'move',
-                payload: { index: i, symbol: mySym, sender: mySym }
+            board[i] = mySym;
+            roomRef.update({
+                board: board,
+                turn: (mySym === "X") ? "O" : "X"
             });
         };
     });
-
-    function updateUI() {
-        const s = document.getElementById('status-text');
-        s.innerText = (turn === mySym) ? "دورك الآن!" : "انتظر صاحبك...";
-        s.style.color = (turn === mySym) ? "var(--p1)" : "white";
-    }
 
     function checkWin(p) {
         const w = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
