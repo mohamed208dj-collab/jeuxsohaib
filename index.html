@@ -3,222 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-O الأسطورية المطورة</title>
+    <title>لعبة X-O الملكية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
     <style>
         :root {
-            --bg-color: #050b18;
-            --card-bg: #111a2e;
-            --accent-x: #00d2ff;
-            --accent-o: #ff007a;
-            --win-color: #39ff14;
+            --bg: #050810;
+            --cyan: #00f2fe;
+            --pink: #fc00ff;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         body {
-            font-family: 'Cairo', sans-serif;
-            background: radial-gradient(circle, #111a2e 0%, #050b18 100%);
-            color: white;
+            margin: 0;
+            height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
+            background: radial-gradient(circle at center, #111a2e 0%, var(--bg) 100%);
+            color: white;
+            font-family: 'Cairo', sans-serif;
             overflow: hidden;
         }
 
+        .container {
+            backdrop-filter: blur(15px);
+            background: var(--glass);
+            padding: 40px;
+            border-radius: 35px;
+            border: 1px solid var(--border);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+            text-align: center;
+        }
+
         h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, var(--accent-x), var(--accent-o));
+            font-size: 3.5rem;
+            margin: 0 0 20px 0;
+            background: linear-gradient(45deg, var(--cyan), var(--pink));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+            font-weight: 900;
         }
 
         .status {
             font-size: 1.5rem;
-            margin-bottom: 20px;
-            height: 35px;
-            transition: all 0.3s ease;
+            margin-bottom: 25px;
+            font-weight: 700;
         }
 
-        .board {
+        .grid {
             display: grid;
-            grid-template-columns: repeat(3, 100px);
-            grid-template-rows: repeat(3, 100px);
+            grid-template-columns: repeat(3, 110px);
             gap: 15px;
-            perspective: 1000px;
+            margin-bottom: 30px;
         }
 
         .cell {
-            width: 100px;
-            height: 100px;
-            background: var(--card-bg);
-            border-radius: 15px;
+            width: 110px;
+            height: 110px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3.5rem;
+            font-size: 4rem;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s all cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .cell:hover {
-            transform: scale(1.05) rotateY(10deg);
-            background: #1e293b;
+            background: rgba(255, 255, 255, 0.08);
+            transform: scale(1.05) translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
-        /* أنيميشن ظهور الرموز */
+        .cell.x { color: var(--cyan); text-shadow: 0 0 20px var(--cyan); }
+        .cell.o { color: var(--pink); text-shadow: 0 0 20px var(--pink); }
+
+        /* أنيميشن دخول الحرف */
         .cell span {
-            animation: zoomIn 0.3s forwards;
-            display: inline-block;
+            animation: popIn 0.4s forwards;
         }
 
-        @keyframes zoomIn {
-            from { opacity: 0; transform: scale(0) rotate(-45deg); }
-            to { opacity: 1; transform: scale(1) rotate(0); }
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
-        .cell.x { color: var(--accent-x); text-shadow: 0 0 20px var(--accent-x); }
-        .cell.o { color: var(--accent-o); text-shadow: 0 0 20px var(--accent-o); }
-
-        /* تأثير الفوز */
         .cell.winner {
-            background: var(--win-color);
-            color: #000;
-            box-shadow: 0 0 30px var(--win-color);
-            transform: scale(1.1);
+            background: white !important;
+            color: black !important;
+            box-shadow: 0 0 40px white;
             text-shadow: none;
-            z-index: 10;
         }
 
-        .controls {
-            margin-top: 40px;
-        }
-
-        button {
-            padding: 12px 35px;
-            font-size: 1.2rem;
-            background: transparent;
-            color: white;
-            border: 2px solid white;
+        .btn-restart {
+            padding: 12px 40px;
+            border: none;
             border-radius: 50px;
+            background: white;
+            color: black;
+            font-weight: 900;
+            font-size: 1.1rem;
             cursor: pointer;
             transition: 0.3s;
-            overflow: hidden;
-            position: relative;
         }
 
-        button:hover {
-            background: white;
-            color: var(--bg-color);
+        .btn-restart:hover {
+            transform: scale(1.1);
             box-shadow: 0 0 20px white;
-        }
-
-        /* أنيميشن الاهتزاز عند التعادل */
-        .shake {
-            animation: shake 0.5s ease;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
         }
     </style>
 </head>
 <body>
 
-    <h1>لعبة X-O</h1>
-    <div class="status" id="status">دور اللاعب: <span style="color:var(--accent-x)">X</span></div>
+    <div class="container">
+        <h1>X - O</h1>
+        <div class="status" id="status">جولة اللاعب: <span id="turn" style="color:var(--cyan)">X</span></div>
 
-    <div class="board" id="board">
-        <div class="cell" data-index="0"></div>
-        <div class="cell" data-index="1"></div>
-        <div class="cell" data-index="2"></div>
-        <div class="cell" data-index="3"></div>
-        <div class="cell" data-index="4"></div>
-        <div class="cell" data-index="5"></div>
-        <div class="cell" data-index="6"></div>
-        <div class="cell" data-index="7"></div>
-        <div class="cell" data-index="8"></div>
-    </div>
+        <div class="grid" id="grid">
+            <div class="cell" data-idx="0"></div>
+            <div class="cell" data-idx="1"></div>
+            <div class="cell" data-idx="2"></div>
+            <div class="cell" data-idx="3"></div>
+            <div class="cell" data-idx="4"></div>
+            <div class="cell" data-idx="5"></div>
+            <div class="cell" data-idx="6"></div>
+            <div class="cell" data-idx="7"></div>
+            <div class="cell" data-idx="8"></div>
+        </div>
 
-    <div class="controls">
-        <button onclick="resetGame()">تحدي جديد</button>
+        <button class="btn-restart" onclick="reset()">إعادة التحدي</button>
     </div>
 
     <script>
-        const statusElement = document.getElementById('status');
         const cells = document.querySelectorAll('.cell');
-        let currentPlayer = 'X';
-        let gameState = ["", "", "", "", "", "", "", "", ""];
-        let gameActive = true;
+        const turnText = document.getElementById('turn');
+        const statusText = document.getElementById('status');
+        let player = "X";
+        let board = ["", "", "", "", "", "", "", "", ""];
+        let active = true;
 
-        const winPatterns = [
-            [0,1,2], [3,4,5], [6,7,8],
-            [0,3,6], [1,4,7], [2,5,8],
-            [0,4,8], [2,4,6]
-        ];
+        const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 
-        function handleCellClick(e) {
-            const cell = e.target;
-            const index = cell.getAttribute('data-index');
+        function handleCell(e) {
+            const i = e.target.getAttribute('data-idx');
+            if (board[i] !== "" || !active) return;
 
-            if (gameState[index] !== "" || !gameActive) return;
+            board[i] = player;
+            e.target.innerHTML = `<span>${player}</span>`;
+            e.target.classList.add(player.toLowerCase());
 
-            gameState[index] = currentPlayer;
-            cell.innerHTML = `<span>${currentPlayer}</span>`;
-            cell.classList.add(currentPlayer.toLowerCase());
+            if (checkWin()) {
+                statusText.innerHTML = `👑 الملك <span style="color:var(--${player === 'X' ? 'cyan' : 'pink'})">${player}</span> فاز بالمعركة!`;
+                active = false;
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                return;
+            }
 
-            checkWinner();
+            if (!board.includes("")) {
+                statusText.innerText = "تعادل الأبطال! 🤝";
+                active = false;
+                return;
+            }
+
+            player = player === "X" ? "O" : "X";
+            turnText.innerText = player;
+            turnText.style.color = `var(--${player === 'X' ? 'cyan' : 'pink'})`;
         }
 
-        function checkWinner() {
-            let win = false;
-            for (let pattern of winPatterns) {
-                const [a, b, c] = pattern;
-                if (gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
-                    win = true;
-                    pattern.forEach(i => cells[i].classList.add('winner'));
-                    break;
+        function checkWin() {
+            for (let w of wins) {
+                if (board[w[0]] && board[w[0]] === board[w[1]] && board[w[0]] === board[w[2]]) {
+                    w.forEach(idx => cells[idx].classList.add('winner'));
+                    return true;
                 }
             }
-
-            if (win) {
-                statusElement.innerHTML = `🎉 مبروك! فوز أسطوري لـ <span style="color:var(--accent-${currentPlayer.toLowerCase()})">${currentPlayer}</span>`;
-                gameActive = false;
-                return;
-            }
-
-            if (!gameState.includes("")) {
-                statusElement.innerText = "تعادل قفصي! 🤝";
-                document.getElementById('board').classList.add('shake');
-                setTimeout(() => document.getElementById('board').classList.remove('shake'), 500);
-                gameActive = false;
-                return;
-            }
-
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-            const color = currentPlayer === 'X' ? 'var(--accent-x)' : 'var(--accent-o)';
-            statusElement.innerHTML = `دور اللاعب: <span style="color:${color}">${currentPlayer}</span>`;
+            return false;
         }
 
-        function resetGame() {
-            currentPlayer = 'X';
-            gameState = ["", "", "", "", "", "", "", "", ""];
-            gameActive = true;
-            statusElement.innerHTML = `دور اللاعب: <span style="color:var(--accent-x)">X</span>`;
-            cells.forEach(cell => {
-                cell.innerHTML = "";
-                cell.classList.remove('x', 'o', 'winner');
-            });
+        function reset() {
+            board = ["", "", "", "", "", "", "", "", ""];
+            active = true;
+            player = "X";
+            statusText.innerHTML = `جولة اللاعب: <span id="turn" style="color:var(--cyan)">X</span>`;
+            cells.forEach(c => { c.innerHTML = ""; c.classList.remove('x', 'o', 'winner'); });
         }
 
-        cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+        cells.forEach(c => c.addEventListener('click', handleCell));
     </script>
 </body>
 </html>
-    
