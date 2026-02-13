@@ -3,102 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Love Wheel | تجربة اللعبة</title>
+    <title>Love Wheel PRO</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Pacifico&display=swap" rel="stylesheet">
     <style>
-        :root { --main-red: #ff2e63; --gold: #ffd700; --bg: #1a080e; }
-        body { margin: 0; background: var(--bg); color: white; font-family: 'Cairo', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
-        
-        .container { text-align: center; z-index: 10; }
-        
-        /* مؤشر العجلة */
-        .arrow { width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-bottom: 30px solid var(--gold); position: absolute; top: -40px; left: 50%; transform: translateX(-50%); z-index: 20; filter: drop-shadow(0 0 10px var(--gold)); }
-
-        /* العجلة */
-        .wheel-wrapper { position: relative; width: 280px; height: 280px; margin-top: 50px; }
-        .wheel { 
-            width: 100%; height: 100%; border: 8px solid #333; border-radius: 50%; 
-            position: relative; transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1); 
-            background: conic-gradient(
-                #ff2e63 0deg 60deg, #ff4d6d 60deg 120deg, 
-                #ff758f 120deg 180deg, #c9184a 180deg 240deg, 
-                #a4133c 240deg 300deg, #800f2f 300deg 360deg
-            );
-            box-shadow: 0 0 50px rgba(255, 46, 99, 0.3);
+        :root { --main: #ff2e63; --gold: #ffd700; --dark: #120408; }
+        body { 
+            margin: 0; background: var(--dark); color: white; font-family: 'Cairo', sans-serif;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; overflow: hidden;
+            background-image: radial-gradient(circle at 50% 50%, #2d0a15 0%, #120408 100%);
         }
 
-        .wheel::after { content: '❤️'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2rem; background: var(--bg); border-radius: 50%; padding: 10px; border: 4px solid var(--main-red); }
+        /* قلوب متحركة في الخلفية */
+        .bg-heart { position: absolute; color: rgba(255, 46, 99, 0.1); font-size: 20px; animation: float 10s linear infinite; z-index: 1; }
+        @keyframes float { from { transform: translateY(100vh) rotate(0deg); opacity: 1; } to { transform: translateY(-10vh) rotate(360deg); opacity: 0; } }
 
-        .btn-spin { margin-top: 40px; padding: 15px 50px; background: linear-gradient(45deg, var(--main-red), #ff758f); border: none; border-radius: 50px; color: white; font-weight: bold; font-size: 1.3rem; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(255, 46, 99, 0.4); border-bottom: 4px solid #800f2f; }
-        .btn-spin:active { transform: translateY(4px); border-bottom: 0; }
+        .app-card { position: relative; z-index: 10; text-align: center; width: 100%; }
+        .title { font-family: 'Pacifico'; font-size: 2.8rem; color: var(--main); margin-bottom: 5px; text-shadow: 0 0 20px rgba(255, 46, 99, 0.6); }
 
-        .result-display { margin-top: 30px; min-height: 80px; width: 85%; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; border: 1px dashed var(--main-red); }
-        
-        .title { font-family: 'Pacifico'; font-size: 3rem; color: var(--main-red); margin: 0; text-shadow: 0 0 15px rgba(255,46,99,0.5); }
+        /* حاوية العجلة الميكانيكية */
+        .wheel-box { position: relative; width: 300px; height: 300px; margin: 20px auto; filter: drop-shadow(0 0 30px rgba(255, 46, 99, 0.4)); }
+        .pointer { 
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+            width: 40px; height: 50px; z-index: 100; clip-path: polygon(50% 100%, 0 0, 100% 0);
+            background: var(--gold); box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        #wheel {
+            width: 100%; height: 100%; border-radius: 50%; border: 10px solid #222;
+            background: conic-gradient(
+                #ff2e63 0deg 45deg, #120408 45deg 90deg,
+                #ff4d6d 90deg 135deg, #120408 135deg 180deg,
+                #ff758f 180deg 225deg, #120408 225deg 270deg,
+                #c9184a 270deg 315deg, #120408 315deg 360deg
+            );
+            transition: transform 5s cubic-bezier(0.2, 0, 0.1, 1);
+            position: relative;
+        }
+
+        /* الأيقونات داخل العجلة */
+        .wheel-icon { position: absolute; width: 100%; height: 100%; font-size: 1.5rem; }
+
+        .btn-spin {
+            background: linear-gradient(135deg, var(--main), #c9184a);
+            color: white; border: none; padding: 18px 60px; border-radius: 50px;
+            font-size: 1.4rem; font-weight: 900; cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 46, 99, 0.5);
+            transition: 0.3s; margin-top: 30px; border-bottom: 5px solid #800f2f;
+        }
+        .btn-spin:active { transform: scale(0.95) translateY(5px); border-bottom: none; }
+
+        .msg-box {
+            margin-top: 25px; width: 85%; max-width: 320px; min-height: 90px;
+            background: rgba(255, 255, 255, 0.05); border-radius: 25px;
+            display: flex; align-items: center; justify-content: center;
+            padding: 20px; border: 2px solid rgba(255, 46, 99, 0.2);
+            font-size: 1.1rem; line-height: 1.6; color: #ffe0e6;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 46, 99, 0.2); } 70% { box-shadow: 0 0 0 15px rgba(255, 46, 99, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 46, 99, 0); } }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1 class="title">Love Game</h1>
-    <p style="opacity: 0.7;">أدر العجلة واكتشف تحديك</p>
+<div id="hearts-container"></div>
 
-    <div class="wheel-wrapper">
-        <div class="arrow"></div>
-        <div id="wheel" class="wheel"></div>
+<div class="app-card">
+    <h1 class="title">Love Wheel</h1>
+    
+    <div class="wheel-box">
+        <div class="pointer"></div>
+        <div id="wheel">
+            <div style="position:absolute; top:10%; left:50%; transform:translateX(-50%)">❓</div>
+            <div style="position:absolute; bottom:10%; left:50%; transform:translateX(-50%)">💖</div>
+            <div style="position:absolute; left:10%; top:50%; transform:translateY(-50%)">🔥</div>
+            <div style="position:absolute; right:10%; top:50%; transform:translateY(-50%)">🎁</div>
+        </div>
     </div>
 
-    <div id="result" class="result-display">اضغط على الزر للبدء...</div>
-    
-    <button id="spinBtn" class="btn-spin" onclick="spinWheel()">دوران ✨</button>
+    <center>
+        <div id="result" class="msg-box">مستعد؟ إضغط لتدوير عجلة الحب ✨</div>
+        <button id="spinBtn" class="btn-spin" onclick="spin()">إبدأ الحظ</button>
+    </center>
 </div>
 
+<audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
+<audio id="winSound" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
+
 <script>
+    // إنشاء قلوب عشوائية في الخلفية
+    const hearts = ['❤️', '💖', '✨', '🌸', '💕'];
+    for(let i=0; i<15; i++) {
+        const h = document.createElement('div');
+        h.className = 'bg-heart';
+        h.innerText = hearts[Math.floor(Math.random()*hearts.length)];
+        h.style.left = Math.random() * 100 + 'vw';
+        h.style.animationDelay = Math.random() * 5 + 's';
+        document.getElementById('hearts-container').appendChild(h);
+    }
+
     const tasks = [
-        "ما هو أول انطباع أخذته عن شريكك؟ 🤔",
-        "تحدي: قل كلمة حلوة لشريكك الآن ❤️",
-        "صراحة: ما هو التصرف الذي يجعلك تبتسم تلقائياً؟ 😊",
-        "تحدي: قم بتقليد حركة يقوم بها شريكك دوماً 🎬",
-        "ما هي الأغنية التي تذكرك بشريكك؟ 🎵",
-        "صراحة: ما هو الحلم الذي تتمنى تحقيقه معاً؟ 🏠",
-        "تحدي: اطلب طلباً بسيطاً من شريكك وسينفذه الآن 🎁",
-        "صراحة: ما هو أكثر شيء تفتخر به في علاقتكما؟ 🤝"
+        "لو أتيحت لك فرصة السفر مع شريكك الآن، إلى أين ستذهب؟ ✈️",
+        "تحدي: أرسل رسالة صوتية (5 ثوانٍ) تعبر فيها عن حبك 🎙️",
+        "ما هو أكثر شيء تفتخر به في شخصية شريكك؟ 🌟",
+        "تحدي: قم بوصف أول لقاء بينكما بالتفصيل ☕",
+        "صراحة: ما هي العادة التي يحبها شريكك وأنت تجدها غريبة؟ 😂",
+        "تحدي: اختر صورة لشريكك وضعها كخلفية لهاتفك لمدة يوم 📱",
+        "ما هو تاريخ اليوم الذي لن تنساه أبداً مع شريكك؟ 📅",
+        "تحدي: قل ثلاث صفات تجعل شريكك مميزاً عن الجميع 💎"
     ];
 
     let currentRotation = 0;
 
-    function spinWheel() {
+    function spin() {
         const btn = document.getElementById('spinBtn');
         const wheel = document.getElementById('wheel');
         const result = document.getElementById('result');
-        
-        btn.disabled = true;
-        result.innerText = "جاري الاختيار...";
+        const clickSnd = document.getElementById('clickSound');
+        const winSnd = document.getElementById('winSound');
 
-        // حساب الدوران (على الأقل 5 دورات كاملة + زاوية عشوائية)
-        const randomExtra = Math.floor(Math.random() * 360);
-        currentRotation += 1800 + randomExtra; 
+        btn.disabled = true;
+        clickSnd.play();
+        
+        const randomDeg = Math.floor(Math.random() * 360) + 2160; // 6 دورات
+        currentRotation += randomDeg;
         
         wheel.style.transform = `rotate(${currentRotation}deg)`;
 
         setTimeout(() => {
-            // اختيار السؤال بناءً على الزاوية النهائية
             const index = Math.floor(((currentRotation % 360)) / (360 / tasks.length));
-            // تعكيس الترتيب لأن العجلة تدور عكس المؤشر
-            const actualIndex = (tasks.length - 1) - index;
+            const finalIndex = (tasks.length - 1) - index;
             
-            result.innerText = tasks[actualIndex] || tasks[0];
+            result.innerText = tasks[finalIndex] || tasks[0];
             btn.disabled = false;
-            
-            // احتفال بسيط
+            winSnd.play();
+
             confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.8 },
-                colors: ['#ff2e63', '#ffffff', '#ffd700']
+                particleCount: 150,
+                spread: 100,
+                origin: { y: 0.7 },
+                colors: ['#ff2e63', '#ffd700', '#ffffff']
             });
-        }, 4000);
+        }, 5000);
     }
 </script>
 </body>
