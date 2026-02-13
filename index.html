@@ -3,224 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>X-O Quantum Omega</title>
+    <title>X-O TITAN : Cyber-Reality</title>
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Orbitron:wght@600;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Cairo:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root { --x: #00f2fe; --o: #fc00ff; --accent: #00f2fe; --bg: #010103; }
+        :root { --main: #00f2fe; --sec: #fc00ff; --bg: #010105; }
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-        body { margin: 0; height: 100vh; background: var(--bg); display: flex; align-items: center; justify-content: center; font-family: 'Cairo', sans-serif; overflow: hidden; color: white; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); color: white; font-family: 'Cairo', sans-serif; overflow: hidden; }
 
-        /* خلفية الكون المتحركة */
-        .space-bg { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle at center, #0a0a1a 0%, #010103 100%); }
-        .star { position: absolute; background: white; border-radius: 50%; animation: twinkle var(--d) infinite; }
-        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        #canvas-bg { position: fixed; inset: 0; z-index: -1; }
 
-        .game-container { width: 95%; max-width: 480px; position: relative; z-index: 10; }
-
-        /* اللوحة الرئيسية */
-        .omega-card {
-            background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(40px);
-            border-radius: 40px; padding: 25px; border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 50px 100px rgba(0,0,0,0.9); transition: 0.4s;
+        .titan-interface {
+            width: 95%; max-width: 500px; display: flex; flex-direction: column; gap: 15px;
+            perspective: 2000px; z-index: 10;
         }
 
-        .score-board { display: flex; justify-content: space-around; margin-bottom: 15px; font-family: 'Orbitron'; }
-        .score { text-align: center; padding: 10px; border-radius: 15px; background: rgba(0,0,0,0.3); min-width: 80px; border: 1px solid #222; }
-        .score.active-x { border-color: var(--x); box-shadow: 0 0 10px var(--x); }
-        .score.active-o { border-color: var(--o); box-shadow: 0 0 10px var(--o); }
-
-        .terminal {
-            background: rgba(0,0,0,0.5); border-radius: 12px; padding: 10px; margin-bottom: 15px;
-            font-family: 'Orbitron'; font-size: 0.7rem; color: var(--accent); border-right: 3px solid var(--accent);
+        .hud-top {
+            background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px);
+            border-radius: 20px; padding: 15px; border: 1px solid rgba(0, 242, 254, 0.2);
+            display: flex; justify-content: space-between; align-items: center;
         }
 
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .rank-tag { font-family: 'Orbitron'; font-size: 0.6rem; color: var(--main); letter-spacing: 2px; }
+
+        .game-core {
+            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(40px);
+            border-radius: 40px; padding: 30px; border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 50px 100px rgba(0,0,0,0.9); position: relative;
+        }
+
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
         .cell {
-            aspect-ratio: 1; background: rgba(255, 255, 255, 0.03); border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.08); display: flex; align-items: center;
-            justify-content: center; font-size: 3rem; font-family: 'Orbitron'; cursor: pointer;
-            transition: 0.2s; position: relative;
+            aspect-ratio: 1; background: rgba(0,0,0,0.4); border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center;
+            justify-content: center; font-size: 3.5rem; font-family: 'Orbitron'; cursor: pointer;
+            transition: 0.3s; position: relative;
         }
-        .cell:hover { background: rgba(255,255,255,0.07); transform: scale(1.02); }
-        .cell.winner { background: white !important; color: black !important; box-shadow: 0 0 30px white; }
+        .cell:hover { border-color: var(--main); box-shadow: 0 0 20px rgba(0, 242, 254, 0.2); }
+        .cell.x { color: var(--main); text-shadow: 0 0 30px var(--main); }
+        .cell.o { color: var(--sec); text-shadow: 0 0 30px var(--sec); }
+        .cell.win { background: white !important; color: black !important; transform: scale(1.05); }
 
-        /* نظام الدردشة */
-        .chat-area { margin-top: 15px; display: flex; gap: 10px; }
-        .chat-input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid #222; border-radius: 12px; padding: 10px; color: white; font-size: 0.8rem; }
-        .chat-msg { position: absolute; top: -40px; left: 50%; transform: translateX(-50%); background: var(--accent); color: black; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.7rem; white-space: nowrap; animation: fadeUp 2s forwards; z-index: 100; }
-        @keyframes fadeUp { from { opacity: 1; top: -40px; } to { opacity: 0; top: -60px; } }
+        .chat-hud {
+            display: flex; gap: 10px; margin-top: 10px;
+        }
+        .chat-hud input { flex: 1; background: #000; border: 1px solid #222; border-radius: 10px; padding: 10px; color: white; font-family: 'Cairo'; }
 
-        /* شاشة الدخول */
-        .lobby-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
-        .lobby-box { background: #0a0a14; padding: 30px; border-radius: 30px; border: 1px solid #1a1a2a; text-align: center; width: 100%; max-width: 350px; }
-        .btn-link { background: var(--x); color: black; border: none; padding: 15px 30px; border-radius: 15px; font-weight: 900; cursor: pointer; width: 100%; margin-top: 10px; }
+        /* شاشة الربط */
+        .overlay { position: fixed; inset: 0; background: #000; z-index: 1000; display: flex; align-items: center; justify-content: center; text-align: center; }
+        .setup-box { background: #08080f; padding: 40px; border-radius: 35px; border: 1px solid #1a1a2a; width: 90%; max-width: 400px; }
+        .code-display { font-family: 'Orbitron'; color: var(--main); font-size: 1.5rem; margin: 15px 0; cursor: pointer; text-decoration: underline; }
+        
+        .btn-action { width: 100%; padding: 15px; border-radius: 15px; border: none; background: var(--main); color: #000; font-weight: 900; cursor: pointer; margin-top: 15px; }
         
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-<div class="space-bg" id="stars"></div>
+<canvas id="canvas-bg"></canvas>
 
-<div id="lobby" class="lobby-overlay">
-    <div class="lobby-box">
-        <h1 style="font-family:'Orbitron'; letter-spacing:5px;">OMEGA LINK</h1>
-        <p style="font-size: 0.8rem; color: #666;">كودك (انسخه وابعثه لصاحبك):</p>
-        <div id="my-id" style="color:var(--x); font-family:'Orbitron'; font-size:1.2rem; cursor:pointer; margin:10px 0;">GENERATING...</div>
-        <input type="text" id="peer-id" placeholder="أدخل كود صاحبك" style="width:100%; padding:12px; border-radius:10px; border:1px solid #222; background:#000; color:white; text-align:center;">
-        <button class="btn-link" onclick="connect()">بدء المعركة</button>
+<div id="setup" class="overlay">
+    <div class="setup-box">
+        <h1 style="font-family:'Orbitron';">NEURAL_SYNC</h1>
+        <p style="font-size:0.8rem; color:#555;">ID الخاص بك (اضغط للنسخ)</p>
+        <div id="my-id" class="code-display">WAITING...</div>
+        <input type="text" id="target-id" placeholder="أدخل ID الخصم" style="width:100%; padding:15px; background:#000; border:1px solid #222; color:white; border-radius:15px; text-align:center;">
+        <button class="btn-action" onclick="initConnect()">تزامن عصبي</button>
     </div>
 </div>
 
-<div class="game-container hidden" id="main-game">
-    <div class="omega-card">
-        <div class="score-board">
-            <div class="score" id="score-x">X: <span id="val-x">0</span></div>
-            <div class="score" id="score-o">O: <span id="val-o">0</span></div>
-        </div>
-        
-        <div class="terminal" id="status">> LINK_STABLE: YOU ARE <span id="my-sym">?</span></div>
+<div class="titan-interface hidden" id="game-ui">
+    <div class="hud-top">
+        <div class="rank-tag" id="rank-name">RANK: RECRUIT</div>
+        <div style="font-family:'Orbitron'; font-size:0.8rem;">WIN RATE: <span id="win-rate">0%</span></div>
+    </div>
 
-        <div id="chat-bubble-container"></div>
-
+    <div class="game-core">
+        <div id="status-line" style="font-family:'Orbitron'; color:var(--main); margin-bottom:15px; font-size:0.7rem;">> SYSTEM ONLINE</div>
         <div class="grid" id="grid">
             <div class="cell" data-i="0"></div><div class="cell" data-i="1"></div><div class="cell" data-i="2"></div>
             <div class="cell" data-i="3"></div><div class="cell" data-i="4"></div><div class="cell" data-i="5"></div>
             <div class="cell" data-i="6"></div><div class="cell" data-i="7"></div><div class="cell" data-i="8"></div>
         </div>
+    </div>
 
-        <div class="chat-area">
-            <input type="text" id="msg-input" class="chat-input" placeholder="اكتب رسالة أو اضحك (😂)...">
-            <button onclick="sendChat()" style="background:var(--accent); border:none; border-radius:12px; padding:0 15px; cursor:pointer;">✉</button>
-        </div>
+    <div class="chat-hud">
+        <input type="text" id="chat-msg" placeholder="أرسل رسالة للخصم...">
+        <button onclick="sendMsg()" style="background:var(--main); border:none; padding:0 20px; border-radius:10px; cursor:pointer;">✉</button>
     </div>
 </div>
 
 <script>
     const peer = new Peer();
     let conn, mySym = "", board = Array(9).fill(""), turn = "X", active = true;
-    let scores = {X: 0, O: 0};
+    let stats = { wins: 0, total: 0 };
 
-    // توليد النجوم
-    const starsContainer = document.getElementById('stars');
-    for(let i=0; i<100; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        star.style.width = star.style.height = Math.random() * 3 + 'px';
-        star.style.setProperty('--d', Math.random() * 3 + 2 + 's');
-        starsContainer.appendChild(star);
+    // محرك الجزيئات التفاعلي
+    const canvas = document.getElementById('canvas-bg');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.vx = (Math.random() - 0.5) * 0.5;
+            this.vy = (Math.random() - 0.5) * 0.5;
+            this.size = Math.random() * 2;
+        }
+        update() {
+            this.x += this.vx; this.y += this.vy;
+            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+        }
+        draw() {
+            ctx.fillStyle = 'rgba(0, 242, 254, 0.3)';
+            ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
+        }
     }
+    for(let i=0; i<100; i++) particles.push(new Particle());
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animate);
+    }
+    animate();
 
     peer.on('open', id => document.getElementById('my-id').innerText = id);
     document.getElementById('my-id').onclick = function() {
         navigator.clipboard.writeText(this.innerText);
-        alert("تم نسخ الكود! ابعثه لصاحبك");
+        alert("تم النسخ!");
     };
 
-    peer.on('connection', c => { conn = c; mySym = "X"; setupPeer(); });
+    peer.on('connection', c => { conn = c; mySym = "X"; start(); });
 
-    function connect() {
-        const tid = document.getElementById('peer-id').value;
+    function initConnect() {
+        const tid = document.getElementById('target-id').value;
         if(!tid) return;
         conn = peer.connect(tid);
         mySym = "O";
-        conn.on('open', setupPeer);
+        conn.on('open', start);
     }
 
-    function setupPeer() {
-        document.getElementById('lobby').classList.add('hidden');
-        document.getElementById('main-game').classList.remove('hidden');
-        document.getElementById('my-sym').innerText = mySym;
-        updateScoreUI();
-
+    function start() {
+        document.getElementById('setup').classList.add('hidden');
+        document.getElementById('game-ui').classList.remove('hidden');
+        document.getElementById('status-line').innerText = `> LINKED AS ${mySym}`;
+        
         conn.on('data', data => {
-            if(data.type === 'move') syncMove(data.i, data.p);
-            if(data.type === 'chat') showChat(data.m, false);
+            if(data.type === 'move') process(data.i, data.p);
+            if(data.type === 'chat') alert("خصمك يقول: " + data.m);
         });
     }
 
     document.querySelectorAll('.cell').forEach(c => {
-        c.addEventListener('click', () => {
+        c.onclick = () => {
             const i = c.dataset.i;
             if(board[i] || turn !== mySym || !active) return;
-            syncMove(i, mySym);
+            process(i, mySym);
             conn.send({type: 'move', i: i, p: mySym});
-        });
+        };
     });
 
-    function syncMove(i, p) {
+    function process(i, p) {
         board[i] = p;
         const el = document.querySelector(`[data-i="${i}"]`);
-        el.innerText = p; el.style.color = p === 'X' ? 'var(--x)' : 'var(--o)';
+        el.innerText = p; el.classList.add(p.toLowerCase());
         
         if(checkWin(p)) {
-            scores[p]++;
-            end(p);
+            active = false;
+            if(p === mySym) { stats.wins++; stats.total++; updateStats(); }
+            else { stats.total++; updateStats(); }
+            confetti({ particleCount: 150 });
+            setTimeout(reset, 4000);
         } else if(!board.includes("")) {
-            end("D");
+            active = false; stats.total++; updateStats();
+            setTimeout(reset, 4000);
         } else {
             turn = turn === "X" ? "O" : "X";
-            updateStatus();
+            document.getElementById('status-line').innerText = turn === mySym ? "> YOUR TURN" : "> PEER THINKING...";
         }
-    }
-
-    function updateStatus() {
-        const color = turn === 'X' ? 'var(--x)' : 'var(--o)';
-        document.documentElement.style.setProperty('--accent', color);
-        document.getElementById('status').innerText = turn === mySym ? "> دورك الآن" : `> انتظار الخصم (${turn})...`;
-        updateScoreUI();
-    }
-
-    function updateScoreUI() {
-        document.getElementById('val-x').innerText = scores.X;
-        document.getElementById('val-o').innerText = scores.O;
-        document.getElementById('score-x').className = `score ${turn==='X'?'active-x':''}`;
-        document.getElementById('score-o').className = `score ${turn==='O'?'active-o':''}`;
-    }
-
-    function sendChat() {
-        const input = document.getElementById('msg-input');
-        if(!input.value) return;
-        showChat(input.value, true);
-        conn.send({type: 'chat', m: input.value});
-        input.value = "";
-    }
-
-    function showChat(m, isMe) {
-        const b = document.createElement('div');
-        b.className = 'chat-msg';
-        b.style.background = isMe ? 'white' : (mySym === 'X' ? 'var(--o)' : 'var(--x)');
-        b.innerText = m;
-        document.getElementById('chat-bubble-container').appendChild(b);
-        setTimeout(() => b.remove(), 2000);
     }
 
     function checkWin(p) {
         const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
         return wins.some(w => {
             const win = w.every(idx => board[idx] === p);
-            if(win) w.forEach(idx => document.querySelector(`[data-i="${idx}"]`).classList.add('winner'));
+            if(win) w.forEach(idx => document.querySelector(`[data-i="${idx}"]`).classList.add('win'));
             return win;
         });
     }
 
-    function end(res) {
-        active = false;
-        if(res !== 'D') confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-        document.getElementById('status').innerText = res === 'D' ? "> تعادل!" : `> انتهت: فوز ${res}`;
-        setTimeout(() => {
-            board.fill(""); turn = "X"; active = true;
-            document.querySelectorAll('.cell').forEach(c => { c.innerText = ""; c.className = "cell"; });
-            updateStatus();
-        }, 4000);
+    function updateStats() {
+        const rate = ((stats.wins / stats.total) * 100).toFixed(0);
+        document.getElementById('win-rate').innerText = rate + "%";
+        const ranks = ["RECRUIT", "SOLDIER", "ELITE", "TITAN", "GRANDMASTER"];
+        const rIdx = Math.min(Math.floor(stats.wins / 2), 4);
+        document.getElementById('rank-name').innerText = "RANK: " + ranks[rIdx];
     }
 
-    // إرسال بالإنتر
-    document.getElementById('msg-input').onkeypress = e => { if(e.key === 'Enter') sendChat(); };
+    function sendMsg() {
+        const m = document.getElementById('chat-msg').value;
+        if(m && conn) { conn.send({type:'chat', m: m}); document.getElementById('chat-msg').value = ""; }
+    }
+
+    function reset() {
+        board.fill(""); active = true; turn = "X";
+        document.querySelectorAll('.cell').forEach(c => { c.innerText = ""; c.className = "cell"; });
+        document.getElementById('status-line').innerText = "> SYSTEM REBOOTED";
+    }
 </script>
 </body>
 </html>
