@@ -2,9 +2,9 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-O Cosmic Edition</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@900&family=Orbitron:wght@600;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>X-O Quantum Mobile & Desktop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Orbitron:wght@600;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
@@ -13,129 +13,102 @@
             --main-glow: #00f2fe;
         }
 
+        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             overflow: hidden; display: flex; align-items: center; justify-content: center;
-            background: #020205; font-family: 'Cairo', sans-serif;
+            background: #020205; font-family: 'Cairo', sans-serif; touch-action: manipulation;
         }
 
-        /* الخلفية المتحركة الفخمة */
-        .nebula-container {
+        /* الخلفية المتحركة (خفيفة على المعالج للهواتف) */
+        .nebula {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1b0c47 0%, #020205 100%);
-            z-index: -2;
+            background: radial-gradient(circle at center, #1b0c47 0%, #020205 100%);
+            z-index: -1;
         }
 
-        .nebula-layer {
-            position: absolute; width: 200%; height: 200%;
-            top: -50%; left: -50%;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(0, 242, 254, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(252, 0, 255, 0.1) 0%, transparent 40%);
-            animation: rotateNebula 20s infinite linear;
-            filter: blur(60px);
+        .nebula::after {
+            content: ''; position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
+            background: radial-gradient(circle at 20% 30%, rgba(0, 242, 254, 0.1), transparent 40%);
+            animation: rotate 20s infinite linear; filter: blur(50px);
         }
 
-        @keyframes rotateNebula {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .container {
+            perspective: 1000px; width: 100%; max-width: 420px; padding: 15px;
+            z-index: 10;
         }
 
-        /* الجزيئات العائمة */
-        .particles {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none;
-        }
-
-        .game-wrapper {
-            perspective: 1500px; width: 100%; display: flex; justify-content: center;
-        }
-
-        .main-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(25px);
-            border-radius: 50px; padding: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 40px 100px rgba(0,0,0,0.8), inset 0 0 40px rgba(255,255,255,0.05);
-            width: 90%; max-width: 460px;
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px; padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             transform-style: preserve-3d; transition: transform 0.1s ease-out;
             text-align: center;
         }
 
-        .header h1 {
-            font-family: 'Orbitron', sans-serif; font-size: 3.2rem; margin: 0;
-            background: linear-gradient(to right, #fff, #666);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            letter-spacing: 8px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+        h1 {
+            font-family: 'Orbitron', sans-serif; font-size: clamp(1.5rem, 8vw, 2.5rem);
+            margin: 0; color: #fff; letter-spacing: 5px;
         }
 
-        .status-terminal {
-            background: rgba(0,0,0,0.5); border-radius: 12px;
-            padding: 12px; margin: 25px 0;
-            font-family: 'Orbitron'; font-size: 0.85rem;
-            color: var(--main-glow); border-left: 3px solid var(--main-glow);
-            text-transform: uppercase; letter-spacing: 1px;
-            transition: 0.3s;
+        .status {
+            background: rgba(0,0,0,0.3); border-radius: 10px;
+            padding: 8px; margin: 15px 0; font-family: 'Orbitron';
+            font-size: 0.75rem; color: var(--main-glow);
+            border: 1px solid var(--main-glow);
         }
 
         .board {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
         }
 
         .cell {
             aspect-ratio: 1; background: rgba(255, 255, 255, 0.03);
-            border-radius: 22px; border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.08);
             display: flex; align-items: center; justify-content: center;
-            font-size: 4rem; font-family: 'Orbitron'; cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: clamp(2rem, 12vw, 3.5rem); font-family: 'Orbitron';
+            cursor: pointer; transition: 0.2s;
         }
 
-        .cell:hover {
-            background: rgba(255, 255, 255, 0.08);
-            transform: translateZ(40px) scale(1.05);
-            border-color: var(--main-glow);
-        }
+        /* تفاعل الهاتف */
+        .cell:active { transform: scale(0.9) translateZ(10px); background: rgba(255,255,255,0.1); }
 
-        .cell.x { color: var(--x-color); text-shadow: 0 0 25px var(--x-color); }
-        .cell.o { color: var(--o-color); text-shadow: 0 0 25px var(--o-color); }
+        .cell.x { color: var(--x-color); text-shadow: 0 0 15px var(--x-color); }
+        .cell.o { color: var(--o-color); text-shadow: 0 0 15px var(--o-color); }
+        .cell.winner { background: #fff !important; color: #000 !important; box-shadow: 0 0 30px #fff; }
 
-        .cell.winner {
-            background: #fff !important; color: #000 !important;
-            box-shadow: 0 0 50px #fff; transform: scale(1.1) translateZ(50px);
-        }
-
-        .controls {
-            display: flex; gap: 12px; margin-top: 35px;
-        }
-
-        .btn {
-            flex: 1; padding: 15px; border-radius: 20px; border: none;
+        .btns { display: flex; gap: 8px; margin-top: 20px; }
+        
+        button {
+            flex: 1; padding: 12px; border-radius: 12px; border: none;
             background: rgba(255,255,255,0.05); color: #fff;
-            font-family: 'Cairo'; font-weight: 700; cursor: pointer;
-            transition: 0.3s; border: 1px solid rgba(255,255,255,0.1);
+            font-family: 'Cairo'; font-size: 0.9rem; font-weight: bold;
         }
 
-        .btn.active {
-            background: #fff; color: #000; box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        button.active { background: #fff; color: #000; }
+
+        /* تعديلات للشاشات الصغيرة جداً */
+        @media (max-height: 600px) {
+            .card { padding: 15px; }
+            .board { gap: 5px; }
+            h1 { margin-bottom: 5px; }
         }
-
-        .btn:hover:not(.active) { background: rgba(255,255,255,0.15); }
-
     </style>
 </head>
 <body>
 
-<div class="nebula-container">
-    <div class="nebula-layer"></div>
-</div>
+<div class="nebula"></div>
 
-<div class="game-wrapper">
-    <div class="main-card" id="card">
-        <header class="header">
-            <h1>NEURON</h1>
-            <div class="status-terminal" id="status">> SYSTEM READY</div>
-        </header>
-
+<div class="container" id="wrapper">
+    <div class="card" id="card">
+        <h1>NEURON</h1>
+        <div class="status" id="status">> READY</div>
+        
         <div class="board" id="board">
             <div class="cell" data-i="0"></div>
             <div class="cell" data-i="1"></div>
@@ -148,9 +121,9 @@
             <div class="cell" data-i="8"></div>
         </div>
 
-        <div class="controls">
-            <button id="ai-btn" class="btn active" onclick="setMode('ai')">الذكاء الاصطناعي</button>
-            <button id="pvp-btn" class="btn" onclick="setMode('pvp')">لعب مع صديق</button>
+        <div class="btns">
+            <button id="ai-btn" class="active" onclick="setMode('ai')">الذكاء</button>
+            <button id="pvp-btn" onclick="setMode('pvp')">صديق</button>
         </div>
     </div>
 </div>
@@ -163,12 +136,14 @@
     const card = document.getElementById('card');
     const status = document.getElementById('status');
 
-    // تأثير حركة الكارت 3D مع الماوس
-    document.addEventListener('mousemove', (e) => {
-        let x = (window.innerWidth / 2 - e.pageX) / 30;
-        let y = (window.innerHeight / 2 - e.pageY) / 30;
-        card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
-    });
+    // تفعيل الميلان فقط في الحاسوب (Mouse)
+    if (window.matchMedia("(pointer: fine)").matches) {
+        document.addEventListener('mousemove', (e) => {
+            let x = (window.innerWidth / 2 - e.pageX) / 25;
+            let y = (window.innerHeight / 2 - e.pageY) / 25;
+            card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+        });
+    }
 
     function setMode(m) {
         mode = m;
@@ -178,18 +153,18 @@
     }
 
     document.querySelectorAll('.cell').forEach(cell => {
-        cell.addEventListener('click', () => {
+        cell.addEventListener('click', (e) => {
             const i = cell.dataset.i;
             if (board[i] || !active) return;
-
+            
             makeMove(i, player);
 
             if (active && mode === 'ai' && player === 'O') {
-                status.innerText = "> AI ANALYZING...";
+                status.innerText = "> AI THINKING...";
                 setTimeout(() => {
                     const best = minimax(board, "O").index;
                     makeMove(best, "O");
-                }, 600);
+                }, 500);
             }
         });
     });
@@ -208,13 +183,13 @@
             player = player === "X" ? "O" : "X";
             const color = player === "X" ? "#00f2fe" : "#fc00ff";
             document.documentElement.style.setProperty('--main-glow', color);
-            status.innerText = `> PLAYER ${player} TURN`;
+            status.innerText = `> TURN: ${player}`;
         }
     }
 
     function checkWin(b, p) {
-        const patterns = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-        return patterns.some(w => {
+        const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+        return wins.some(w => {
             const win = w.every(idx => b[idx] === p);
             if (win && b === board) {
                 w.forEach(idx => document.querySelector(`[data-i="${idx}"]`).classList.add('winner'));
@@ -225,14 +200,8 @@
 
     function endGame(res) {
         active = false;
-        if (res === "DRAW") {
-            status.innerText = "> DATA ERROR: STALEMATE";
-        } else {
-            status.innerText = `> VICTORY: PLAYER ${res}`;
-            confetti({ particleCount: 200, spread: 90, origin: { y: 0.6 } });
-        }
-        
-        // إعادة تعيين تلقائي بعد 3 ثواني
+        status.innerText = res === "DRAW" ? "> STALEMATE" : `> ${res} WINS!`;
+        if (res !== "DRAW") confetti({ particleCount: 150, spread: 60, origin: { y: 0.7 } });
         setTimeout(reset, 3000);
     }
 
@@ -241,7 +210,7 @@
         active = true;
         player = "X";
         document.documentElement.style.setProperty('--main-glow', '#00f2fe');
-        status.innerText = "> SYSTEM REBOOTED";
+        status.innerText = "> SYSTEM READY";
         document.querySelectorAll('.cell').forEach(c => {
             c.innerText = "";
             c.classList.remove('x', 'o', 'winner');
