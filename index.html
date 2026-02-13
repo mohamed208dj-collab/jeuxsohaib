@@ -3,49 +3,222 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مستقبلي | دخول مباشر</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <title>X-O الأسطورية المطورة</title>
     <style>
-        body { font-family: 'Tajawal', sans-serif; background: #0f172a; }
-        .main-btn {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        :root {
+            --bg-color: #050b18;
+            --card-bg: #111a2e;
+            --accent-x: #00d2ff;
+            --accent-o: #ff007a;
+            --win-color: #39ff14;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: radial-gradient(circle, #111a2e 0%, #050b18 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, var(--accent-x), var(--accent-o));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+        }
+
+        .status {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            height: 35px;
+            transition: all 0.3s ease;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 15px;
+            perspective: 1000px;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            cursor: pointer;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.05);
         }
-        .main-btn:hover {
-            transform: scale(1.05) translateY(-5px);
-            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.4);
+
+        .cell:hover {
+            transform: scale(1.05) rotateY(10deg);
+            background: #1e293b;
         }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+
+        /* أنيميشن ظهور الرموز */
+        .cell span {
+            animation: zoomIn 0.3s forwards;
+            display: inline-block;
+        }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0) rotate(-45deg); }
+            to { opacity: 1; transform: scale(1) rotate(0); }
+        }
+
+        .cell.x { color: var(--accent-x); text-shadow: 0 0 20px var(--accent-x); }
+        .cell.o { color: var(--accent-o); text-shadow: 0 0 20px var(--accent-o); }
+
+        /* تأثير الفوز */
+        .cell.winner {
+            background: var(--win-color);
+            color: #000;
+            box-shadow: 0 0 30px var(--win-color);
+            transform: scale(1.1);
+            text-shadow: none;
+            z-index: 10;
+        }
+
+        .controls {
+            margin-top: 40px;
+        }
+
+        button {
+            padding: 12px 35px;
+            font-size: 1.2rem;
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+            overflow: hidden;
+            position: relative;
+        }
+
+        button:hover {
+            background: white;
+            color: var(--bg-color);
+            box-shadow: 0 0 20px white;
+        }
+
+        /* أنيميشن الاهتزاز عند التعادل */
+        .shake {
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-6 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-black">
+<body>
 
-    <div class="animate__animated animate__backInDown glass-card p-12 rounded-[3.5rem] shadow-2xl w-full max-w-md text-center">
-        <div class="w-28 h-28 bg-gradient-to-tr from-blue-500 to-indigo-600 rounded-3xl flex items-center justify-center mx-auto mb-8 rotate-12 shadow-lg">
-            <span class="text-6xl -rotate-12">📚</span>
-        </div>
+    <h1>لعبة X-O</h1>
+    <div class="status" id="status">دور اللاعب: <span style="color:var(--accent-x)">X</span></div>
 
-        <h1 class="text-4xl font-black text-white mb-4 tracking-tight">مستقبلي للباك</h1>
-        <p class="text-blue-200/50 mb-12 text-lg">منصة المراجعة رقم #1 في الجزائر</p>
-
-        <a href="dashboard.html" class="main-btn w-full inline-flex items-center justify-center text-white font-bold py-5 px-8 rounded-2xl text-xl gap-3">
-            ابدأ المراجعة الآن
-            <svg class="w-6 h-6 animate__animated animate__fadeInLeft animate__infinite" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-            </svg>
-        </a>
-
-        <div class="mt-8 flex justify-center gap-4">
-            <span class="text-xs text-slate-500">✅ وصول مجاني</span>
-            <span class="text-xs text-slate-500">✅ ملخصات 2026</span>
-        </div>
+    <div class="board" id="board">
+        <div class="cell" data-index="0"></div>
+        <div class="cell" data-index="1"></div>
+        <div class="cell" data-index="2"></div>
+        <div class="cell" data-index="3"></div>
+        <div class="cell" data-index="4"></div>
+        <div class="cell" data-index="5"></div>
+        <div class="cell" data-index="6"></div>
+        <div class="cell" data-index="7"></div>
+        <div class="cell" data-index="8"></div>
     </div>
 
+    <div class="controls">
+        <button onclick="resetGame()">تحدي جديد</button>
+    </div>
+
+    <script>
+        const statusElement = document.getElementById('status');
+        const cells = document.querySelectorAll('.cell');
+        let currentPlayer = 'X';
+        let gameState = ["", "", "", "", "", "", "", "", ""];
+        let gameActive = true;
+
+        const winPatterns = [
+            [0,1,2], [3,4,5], [6,7,8],
+            [0,3,6], [1,4,7], [2,5,8],
+            [0,4,8], [2,4,6]
+        ];
+
+        function handleCellClick(e) {
+            const cell = e.target;
+            const index = cell.getAttribute('data-index');
+
+            if (gameState[index] !== "" || !gameActive) return;
+
+            gameState[index] = currentPlayer;
+            cell.innerHTML = `<span>${currentPlayer}</span>`;
+            cell.classList.add(currentPlayer.toLowerCase());
+
+            checkWinner();
+        }
+
+        function checkWinner() {
+            let win = false;
+            for (let pattern of winPatterns) {
+                const [a, b, c] = pattern;
+                if (gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
+                    win = true;
+                    pattern.forEach(i => cells[i].classList.add('winner'));
+                    break;
+                }
+            }
+
+            if (win) {
+                statusElement.innerHTML = `🎉 مبروك! فوز أسطوري لـ <span style="color:var(--accent-${currentPlayer.toLowerCase()})">${currentPlayer}</span>`;
+                gameActive = false;
+                return;
+            }
+
+            if (!gameState.includes("")) {
+                statusElement.innerText = "تعادل قفصي! 🤝";
+                document.getElementById('board').classList.add('shake');
+                setTimeout(() => document.getElementById('board').classList.remove('shake'), 500);
+                gameActive = false;
+                return;
+            }
+
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            const color = currentPlayer === 'X' ? 'var(--accent-x)' : 'var(--accent-o)';
+            statusElement.innerHTML = `دور اللاعب: <span style="color:${color}">${currentPlayer}</span>`;
+        }
+
+        function resetGame() {
+            currentPlayer = 'X';
+            gameState = ["", "", "", "", "", "", "", "", ""];
+            gameActive = true;
+            statusElement.innerHTML = `دور اللاعب: <span style="color:var(--accent-x)">X</span>`;
+            cells.forEach(cell => {
+                cell.innerHTML = "";
+                cell.classList.remove('x', 'o', 'winner');
+            });
+        }
+
+        cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+    </script>
 </body>
 </html>
+    
