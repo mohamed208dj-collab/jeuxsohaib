@@ -2,120 +2,110 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Love Wheel PRO | sohaib26</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Pacifico&display=swap" rel="stylesheet">
     <style>
         :root { --main: #ff2e63; --gold: #ffd700; --dark: #0a0406; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body { 
-            margin: 0; background: var(--dark); color: white; font-family: 'Cairo', sans-serif;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            min-height: 100vh; overflow: hidden;
+            background: var(--dark); color: white; font-family: 'Cairo', sans-serif;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; overflow-x: hidden;
             background: radial-gradient(circle at center, #250811 0%, #0a0406 100%);
         }
 
-        /* أنيميشن الخلفية */
-        .bg-heart {
-            position: absolute; color: rgba(255, 46, 99, 0.1);
-            font-size: 20px; animation: float 6s linear infinite; z-index: 1;
-        }
-        @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        .app-container { 
+            display: flex; flex-direction: column; align-items: center;
+            width: 100%; max-width: 450px; padding: 20px; flex-grow: 1;
         }
 
-        .dedication {
-            font-size: 1.8rem; color: var(--gold); margin-bottom: 5px;
-            text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .app-container { position: relative; z-index: 10; text-align: center; width: 100%; max-width: 500px; padding: 10px; }
-
-        .title { font-family: 'Pacifico'; font-size: 3.5rem; color: var(--main); margin: 0; filter: drop-shadow(0 0 10px var(--main)); }
+        .dedication { font-size: 1.4rem; color: var(--gold); margin-top: 10px; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
+        .title { font-family: 'Pacifico'; font-size: 2.8rem; color: var(--main); margin-bottom: 10px; }
 
         .wheel-wrapper {
-            position: relative; width: 320px; height: 320px; margin: 30px auto;
+            position: relative; width: 300px; height: 300px; margin: 20px 0;
         }
 
-        /* المؤشر مع أنيميشن اهتزاز */
         .pointer { 
-            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
-            width: 35px; height: 45px; z-index: 100;
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+            width: 30px; height: 40px; z-index: 100;
             background: var(--gold); clip-path: polygon(50% 100%, 0 0, 100% 0);
-            filter: drop-shadow(0 0 8px rgba(0,0,0,0.8));
+            filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
         }
-        .pointer.active { animation: wiggle 0.1s infinite; }
-        @keyframes wiggle { 0%, 100% { transform: translateX(-50%) rotate(0); } 50% { transform: translateX(-50%) rotate(-10deg); } }
 
         #wheelCanvas {
             width: 100%; height: 100%; border-radius: 50%;
-            border: 10px solid #1a1a1a; box-shadow: 0 0 50px rgba(255, 46, 99, 0.4);
+            border: 8px solid #1a1a1a; box-shadow: 0 0 30px rgba(255, 46, 99, 0.4);
             transition: transform 5s cubic-bezier(0.15, 0, 0.15, 1);
+        }
+
+        .result-box {
+            width: 100%; min-height: 70px; background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px; display: flex; align-items: center; justify-content: center;
+            padding: 15px; border: 1px solid var(--main); font-size: 1.1rem; margin: 15px 0;
+            text-align: center; color: #fff;
         }
 
         .btn-spin {
             background: linear-gradient(45deg, var(--main), #800f2f);
-            color: white; border: none; padding: 18px 60px;
-            border-radius: 50px; font-size: 1.5rem; font-weight: 900;
-            cursor: pointer; transition: 0.3s; margin-top: 25px;
-            box-shadow: 0 0 20px rgba(255, 46, 99, 0.4);
-            border-bottom: 4px solid #500a1d;
+            color: white; border: none; padding: 15px 45px;
+            border-radius: 50px; font-size: 1.4rem; font-weight: 900;
+            cursor: pointer; transition: 0.3s;
+            box-shadow: 0 5px 20px rgba(255, 46, 99, 0.4);
+            z-index: 100;
         }
 
-        .btn-spin:hover { transform: scale(1.1); box-shadow: 0 0 30px var(--main); }
-        .btn-spin:disabled { filter: grayscale(1); cursor: not-allowed; }
+        .btn-spin:active { transform: scale(0.9); }
+        .btn-spin:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .result-box {
-            margin-top: 20px; min-height: 80px; background: rgba(255, 255, 255, 0.08);
-            border-radius: 20px; display: flex; align-items: center; justify-content: center;
-            padding: 20px; border: 2px dashed var(--main); font-size: 1.3rem;
-            backdrop-filter: blur(5px); transition: 0.5s;
+        .footer { 
+            margin-top: auto; padding: 20px; width: 100%; 
+            text-align: center; border-top: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.3);
         }
+        .footer b { color: var(--main); font-size: 1.1rem; }
 
-        .footer { margin-top: 40px; font-size: 1rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; width: 100%; color: #aaa; }
-        .footer b { color: var(--main); text-shadow: 0 0 5px var(--main); }
+        /* أنيميشن بسيط للخلفية */
+        .heart-float {
+            position: fixed; color: rgba(255, 46, 99, 0.1);
+            z-index: -1; animation: move 10s linear infinite;
+        }
+        @keyframes move { from { bottom: -10%; } to { bottom: 110%; } }
     </style>
 </head>
 <body>
 
-<div id="bg"></div>
-
 <div class="app-container">
-    <div class="dedication">✨ أُحِـبُّـكِ أُمَـيْـمَـة ✨</div>
+    <div class="dedication">💖 أحـبـك أُمـيـمـة 💖</div>
     <h1 class="title">Love Wheel</h1>
     
     <div class="wheel-wrapper">
-        <div id="pointer" class="pointer"></div>
+        <div class="pointer"></div>
         <canvas id="wheelCanvas" width="500" height="500"></canvas>
     </div>
 
-    <div id="result" class="result-box">مستعدة للمفاجأة؟ اضغطي وادعي ربي 😂</div>
-    <button id="spinBtn" class="btn-spin" onclick="startSpin()">دوران الآن 🔥</button>
+    <div id="result" class="result-box">هل أنتِ جاهزة للتحدي يا أميمة؟ 🔥</div>
+    
+    <button id="spinBtn" class="btn-spin" onclick="startSpin()">اضغطي هنا للعب 🎰</button>
+</div>
 
-    <div class="footer">
-        تم التطوير باحترافية من طرف <b>sohaib26</b>
-    </div>
+<div class="footer">
+    تم التطوير باحترافية من قبل <b>sohaib26</b>
 </div>
 
 <script>
     const tasks = [
-        "سوي لي قهوة من يدك ☕",
-        "قولي 'أحبك صهيب' بصوت عالي 🗣️",
-        "صوري سيلفي بوجه مضحك 🤳",
-        "لكِ أمنية واحدة أنفذها الآن 🎁",
-        "غني مقطع من أغنيتك المفضلة 🎤",
-        "ارسمي قلب على كفك واكتبي اسمي ❤️",
-        "احكي لي سر ما أعرفه 😂",
-        "ممنوع الكلام لمدة دقيقة كاملة 🤫"
+        "سوي قهوة الآن ☕",
+        "قولي كلمة حلوة لصهيب 🙊",
+        "صوري سيلفي مضحك 🤳",
+        "نفذي لي طلب واحد 🙋‍♂️",
+        "غني مقطع صغير 🎤",
+        "ارسمي قلب باسمي ❤️",
+        "احكي موقف محرج 😂",
+        "ممنوع الكلام دقيقة 🤫"
     ];
 
     const canvas = document.getElementById('wheelCanvas');
@@ -135,23 +125,15 @@
             ctx.arc(centerX, centerY, radius, i * sliceAngle, (i + 1) * sliceAngle);
             ctx.fill();
 
-            // رسم رمز غامض بدل النص
+            // رسم رمز قلب صغير في كل قسم بدل النص لإخفاء التحدي
             ctx.save();
             ctx.translate(centerX, centerY);
             ctx.rotate(i * sliceAngle + sliceAngle / 2);
-            ctx.fillStyle = "rgba(255,255,255,0.5)";
+            ctx.fillStyle = "rgba(255,255,255,0.3)";
             ctx.font = "30px Cairo";
-            ctx.fillText("❓", radius / 1.5, 10); 
+            ctx.fillText("❤️", radius / 1.5, 10);
             ctx.restore();
         }
-        
-        // لمسة جمالية في المركز
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, 40, 0, Math.PI * 2);
-        ctx.fillStyle = "#1a1a1a";
-        ctx.fill();
-        ctx.strokeStyle = var(--main);
-        ctx.stroke();
     }
 
     let currentRotation = 0;
@@ -163,15 +145,12 @@
         
         const wheel = document.getElementById('wheelCanvas');
         const btn = document.getElementById('spinBtn');
-        const ptr = document.getElementById('pointer');
         const resultDiv = document.getElementById('result');
-
+        
         btn.disabled = true;
-        ptr.classList.add('active');
-        resultDiv.style.opacity = "0.5";
-        resultDiv.innerText = "جاري اختيار مصيرك... 😈";
+        resultDiv.innerText = "جاري الدوران... حظاً موفقاً! ✨";
 
-        const extraDegrees = Math.floor(Math.random() * 360) + 2160; // 6 دورات كاملة
+        const extraDegrees = Math.floor(Math.random() * 360) + 2160; 
         currentRotation += extraDegrees;
         
         wheel.style.transform = `rotate(${currentRotation}deg)`;
@@ -179,39 +158,25 @@
         setTimeout(() => {
             isSpinning = false;
             btn.disabled = false;
-            ptr.classList.remove('active');
-            resultDiv.style.opacity = "1";
             
             const actualDeg = currentRotation % 360;
             const sliceSize = 360 / tasks.length;
-            // تعديل الحساب ليتوافق مع السهم في الأعلى
+            // حساب الفائز بناءً على المؤشر في الأعلى
             const index = Math.floor((360 - (actualDeg % 360) + 270) % 360 / sliceSize);
             
-            resultDiv.innerHTML = `<b style="color:var(--gold)">النتيجة:</b> &nbsp; ${tasks[index]}`;
+            resultDiv.innerHTML = `<b>تحدي أميمة: ${tasks[index]}</b>`;
             
             confetti({
-                particleCount: 200, spread: 90, origin: { y: 0.7 },
-                colors: ['#ff2e63', '#ffd700', '#ffffff']
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.8 },
+                colors: ['#ff2e63', '#ffd700']
             });
         }, 5000);
     }
 
-    // إضافة قلوب متطايرة في الخلفية
-    function createHearts() {
-        const bg = document.getElementById('bg');
-        setInterval(() => {
-            const heart = document.createElement('div');
-            heart.className = 'bg-heart';
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
-            bg.appendChild(heart);
-            setTimeout(() => heart.remove(), 6000);
-        }, 500);
-    }
-
     drawWheel();
-    createHearts();
 </script>
+
 </body>
 </html>
