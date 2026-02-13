@@ -3,127 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>X-O Velocity</title>
+    <title>X-O Quantum Engine</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Orbitron:wght@600;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --cyan: #00f2fe;
-            --pink: #fc00ff;
-            --bg: #030305;
+            --accent: #00f2fe;
+            --x-color: #00f2fe;
+            --o-color: #fc00ff;
+            --bg: #010103;
         }
 
-        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; outline: none; }
-
+        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
         body {
             margin: 0; height: 100vh; background: var(--bg);
             display: flex; align-items: center; justify-content: center;
             font-family: 'Cairo', sans-serif; overflow: hidden;
-            background-image: radial-gradient(circle at 50% 50%, #0d0d1a 0%, #030305 100%);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(0, 242, 254, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(252, 0, 255, 0.05) 0px, transparent 50%);
         }
 
-        .container {
-            width: 100%; max-width: 400px; padding: 20px;
-            perspective: 1200px; z-index: 10;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+        .quantum-card {
+            width: 95%; max-width: 440px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 35px; padding: 30px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            transform-style: preserve-3d;
-            will-change: transform; /* تسريع الأداء */
+            border-radius: 40px; padding: 25px;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.8);
+            transform-style: preserve-3d; transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        h1 {
-            font-family: 'Orbitron', sans-serif; font-size: 2rem;
-            margin: 0 0 10px; color: #fff; text-align: center;
-            letter-spacing: 4px; opacity: 0.9;
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h1 { 
+            font-family: 'Orbitron', sans-serif; font-size: 2.2rem; margin: 0;
+            background: linear-gradient(to right, var(--x-color), var(--o-color));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
         }
 
-        .status-bar {
-            background: rgba(255,255,255,0.05); border-radius: 12px;
-            padding: 10px; margin-bottom: 25px; text-align: center;
-            font-family: 'Orbitron'; font-size: 0.8rem;
-            color: var(--cyan); border: 1px solid rgba(0, 242, 254, 0.2);
+        .terminal {
+            background: rgba(0,0,0,0.4); border-radius: 15px; padding: 10px 15px;
+            margin-bottom: 20px; border-right: 3px solid var(--accent);
+            font-family: 'Orbitron', monospace; font-size: 0.75rem; color: var(--accent);
+            transition: 0.3s; height: 40px; display: flex; align-items: center;
         }
 
-        .board {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+        .grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
+            position: relative;
         }
 
         .cell {
-            aspect-ratio: 1; background: rgba(255, 255, 255, 0.02);
-            border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.05);
+            aspect-ratio: 1; background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.06);
             display: flex; align-items: center; justify-content: center;
-            font-size: 3rem; font-family: 'Orbitron'; cursor: pointer;
-            transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative; overflow: hidden;
+            font-size: 3.5rem; font-family: 'Orbitron'; cursor: pointer;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #fff;
         }
 
-        /* تأثير التموج عند الضغط */
-        .cell::after {
-            content: ''; position: absolute; width: 100%; height: 100%;
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
-            transform: scale(0); transition: transform 0.4s; pointer-events: none;
+        .cell:hover { background: rgba(255, 255, 255, 0.07); transform: translateZ(20px); }
+        .cell.x { color: var(--x-color); text-shadow: 0 0 20px var(--x-color); }
+        .cell.o { color: var(--o-color); text-shadow: 0 0 20px var(--o-color); }
+
+        .cell.winner { 
+            background: #fff !important; color: #000 !important; 
+            box-shadow: 0 0 40px #fff; transform: scale(1.05) translateZ(30px);
         }
-        .cell:active::after { transform: scale(2); opacity: 0; }
 
-        .cell.x { color: var(--cyan); text-shadow: 0 0 15px var(--cyan); }
-        .cell.o { color: var(--pink); text-shadow: 0 0 15px var(--pink); }
-
-        .cell.win { background: #fff !important; color: #000 !important; box-shadow: 0 0 30px #fff; }
-
-        .nav { display: flex; gap: 10px; margin-top: 25px; }
-
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 25px; }
         .btn {
-            flex: 1; padding: 14px; border-radius: 15px; border: none;
-            background: rgba(255,255,255,0.05); color: #fff;
-            font-family: 'Cairo'; font-weight: bold; cursor: pointer;
-            transition: 0.3s; font-size: 0.9rem;
+            padding: 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05); color: #fff; font-family: 'Cairo';
+            font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 0.85rem;
         }
+        .btn.active { background: #fff; color: #000; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
 
-        .btn.active { background: #fff; color: #000; box-shadow: 0 5px 15px rgba(255,255,255,0.2); }
+        /* Animation for drawing X and O */
+        .draw-in { animation: draw 0.4s ease-out; }
+        @keyframes draw { from { opacity: 0; transform: scale(0.5) rotate(-45deg); } to { opacity: 1; transform: scale(1) rotate(0); } }
 
-        /* أنيميشن الدخول للـ X و O */
-        .pop { animation: popScale 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        @keyframes popScale { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .win-shake { animation: shake 0.4s ease-in-out; }
+        @keyframes shake {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="card" id="card">
-        <h1>NEURON</h1>
-        <div class="status-bar" id="status">> SYSTEM READY</div>
-        
-        <div class="board" id="board">
-            <div class="cell" data-i="0"></div><div class="cell" data-i="1"></div><div class="cell" data-i="2"></div>
-            <div class="cell" data-i="3"></div><div class="cell" data-i="4"></div><div class="cell" data-i="5"></div>
-            <div class="cell" data-i="6"></div><div class="cell" data-i="7"></div><div class="cell" data-i="8"></div>
-        </div>
+<div class="quantum-card" id="card">
+    <div class="header">
+        <h1>QUANTUM</h1>
+    </div>
+    
+    <div class="terminal" id="status">> SYSTEM_READY: AWAITING_INPUT</div>
 
-        <div class="nav">
-            <button class="btn active" id="ai-btn" onclick="setMode('ai')">الذكاء</button>
-            <button class="btn" id="pvp-btn" onclick="setMode('pvp')">صديق</button>
-        </div>
+    <div class="grid" id="grid">
+        <div class="cell" data-i="0"></div><div class="cell" data-i="1"></div><div class="cell" data-i="2"></div>
+        <div class="cell" data-i="3"></div><div class="cell" data-i="4"></div><div class="cell" data-i="5"></div>
+        <div class="cell" data-i="6"></div><div class="cell" data-i="7"></div><div class="cell" data-i="8"></div>
+    </div>
+
+    <div class="controls">
+        <button class="btn active" id="mode-ai" onclick="setMode('ai')">الذكاء: مستحيل</button>
+        <button class="btn" id="mode-pvp" onclick="setMode('pvp')">تحدي صديق</button>
+        <button class="btn" style="grid-column: span 2;" onclick="reset()">إعادة تهيئة النظام</button>
     </div>
 </div>
 
 <script>
     let board = Array(9).fill("");
     let player = "X", active = true, mode = 'ai';
-    const card = document.getElementById('card');
     const status = document.getElementById('status');
+    const card = document.getElementById('card');
 
-    // 3D Tilt مع تحسين الأداء (RequestAnimationFrame)
-    let lastMove = 0;
+    // تفعيل الـ 3D Tilt للكمبيوتر فقط
     if (window.matchMedia("(pointer: fine)").matches) {
         document.addEventListener('mousemove', (e) => {
-            if (Date.now() - lastMove < 16) return; // ليميت لـ 60 فريم
-            lastMove = Date.now();
             let x = (window.innerWidth / 2 - e.pageX) / 30;
             let y = (window.innerHeight / 2 - e.pageY) / 30;
             card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
@@ -132,9 +130,10 @@
 
     function setMode(m) {
         mode = m;
-        document.getElementById('ai-btn').classList.toggle('active', m === 'ai');
-        document.getElementById('pvp-btn').classList.toggle('active', m === 'pvp');
+        document.getElementById('mode-ai').classList.toggle('active', m === 'ai');
+        document.getElementById('mode-pvp').classList.toggle('active', m === 'pvp');
         reset();
+        status.innerText = `> MODE_SET: ${m.toUpperCase()}`;
     }
 
     document.querySelectorAll('.cell').forEach(cell => {
@@ -145,10 +144,11 @@
             makeMove(i, player);
 
             if (active && mode === 'ai' && player === 'O') {
-                status.innerText = "> ANALYZING...";
+                status.innerText = "> AI_CALCULATING...";
                 setTimeout(() => {
-                    makeMove(minimax(board, "O").index, "O");
-                }, 400);
+                    const aiMove = minimax(board, "O").index;
+                    makeMove(aiMove, "O");
+                }, 500);
             }
         });
     });
@@ -156,7 +156,7 @@
     function makeMove(i, p) {
         board[i] = p;
         const c = document.querySelector(`[data-i="${i}"]`);
-        c.innerHTML = `<span class="pop">${p}</span>`;
+        c.innerHTML = `<span class="draw-in">${p}</span>`;
         c.classList.add(p.toLowerCase());
         
         if (checkWin(board, p)) {
@@ -165,37 +165,46 @@
             endGame("DRAW");
         } else {
             player = player === "X" ? "O" : "X";
-            status.innerText = `> TURN: ${player}`;
-            status.style.color = player === "X" ? "var(--cyan)" : "var(--pink)";
+            const color = player === "X" ? "#00f2fe" : "#fc00ff";
+            document.documentElement.style.setProperty('--accent', color);
+            status.innerText = `> CURRENT_TURN: PLAYER_${player}`;
         }
     }
 
     function checkWin(b, p) {
-        const patterns = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-        return patterns.some(w => {
+        const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+        return wins.some(w => {
             const win = w.every(idx => b[idx] === p);
-            if (win && b === board) w.forEach(idx => document.querySelector(`[data-i="${idx}"]`).classList.add('win'));
+            if (win && b === board) {
+                w.forEach(idx => document.querySelector(`[data-i="${idx}"]`).classList.add('winner'));
+                card.classList.add('win-shake');
+                setTimeout(() => card.classList.remove('win-shake'), 400);
+            }
             return win;
         });
     }
 
     function endGame(res) {
         active = false;
-        status.innerText = res === "DRAW" ? "> STALEMATE" : `> VICTORY: ${res}`;
-        if (res !== "DRAW") confetti({ particleCount: 100, spread: 50, origin: { y: 0.8 } });
-        setTimeout(reset, 3000);
+        if (res === "DRAW") {
+            status.innerText = "> RESULT: SYSTEM_STALEMATE";
+        } else {
+            status.innerText = `> RESULT: PLAYER_${res}_DOMINANCE`;
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.8 }, colors: [res==='X'?'#00f2fe':'#fc00ff', '#ffffff'] });
+        }
+        setTimeout(reset, 4000);
     }
 
     function reset() {
         board.fill(""); active = true; player = "X";
-        status.innerText = "> SYSTEM READY";
-        status.style.color = "var(--cyan)";
+        document.documentElement.style.setProperty('--accent', '#00f2fe');
+        status.innerText = "> SYSTEM_REBOOTED: READY";
         document.querySelectorAll('.cell').forEach(c => {
             c.innerText = ""; c.className = 'cell';
         });
     }
 
-    // AI Minimax (خفيف وسريع)
+    // Unbeatable AI Algorithm
     function minimax(b, p) {
         const av = b.map((v, i) => v === "" ? i : null).filter(v => v !== null);
         if (checkWin(b, "X")) return {score: -10};
