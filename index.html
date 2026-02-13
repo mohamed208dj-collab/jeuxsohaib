@@ -3,133 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>X-O NEURAL SINGULARITY</title>
+    <title>X-O QUANTUM PRIME</title>
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Cairo:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Cairo:wght@600;900&display=swap" rel="stylesheet">
     <style>
-        :root { --p1: #00f2fe; --p2: #fc00ff; --accent: #00f2fe; --bg: #020205; }
+        :root { --p1: #00f2fe; --p2: #fc00ff; --bg: #030308; }
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; outline: none; }
-        
-        body, html { 
-            margin: 0; padding: 0; width: 100%; height: 100vh; 
-            background: var(--bg); color: white; font-family: 'Cairo', sans-serif;
-            overflow: hidden; display: flex; align-items: center; justify-content: center;
+        body, html { margin: 0; padding: 0; width: 100%; height: 100vh; background: var(--bg); color: white; font-family: 'Cairo', sans-serif; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+
+        /* خلفية السديم المتفاعل */
+        #nebula-canvas { position: fixed; inset: 0; z-index: -1; filter: contrast(120%) brightness(80%); }
+
+        .app-shell { width: 100%; max-width: 460px; padding: 20px; z-index: 10; perspective: 1000px; }
+
+        .main-card {
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 45px; padding: 30px; box-shadow: 0 40px 80px rgba(0,0,0,0.8); position: relative;
         }
 
-        /* محرك الجزيئات الخلفي */
-        #particle-canvas { position: fixed; inset: 0; z-index: -1; }
+        .header-hud { display: flex; justify-content: space-between; margin-bottom: 25px; font-family: 'Orbitron'; }
+        .stat-box { background: rgba(255,255,255,0.03); padding: 10px 15px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.05); text-align: center; }
+        .stat-label { font-size: 0.6rem; color: #555; display: block; margin-bottom: 3px; }
 
-        .quantum-container {
-            width: 95%; max-width: 480px; position: relative; z-index: 10;
-            perspective: 1500px;
-        }
-
-        /* البطاقة الرئيسية الزجاجية */
-        .glass-shell {
-            background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(40px);
-            border-radius: 40px; padding: 30px; border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 50px 100px rgba(0,0,0,0.9);
-            transform-style: preserve-3d; transition: 0.5s;
-        }
-
-        .hud-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 25px; font-family: 'Orbitron';
-        }
-
-        .score-pill {
-            background: rgba(0,0,0,0.6); border: 1px solid #222;
-            padding: 8px 18px; border-radius: 30px; display: flex; gap: 15px;
-            font-size: 0.8rem; box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-        }
-
-        .latency-dot { width: 8px; height: 8px; border-radius: 50%; background: #0f0; display: inline-block; margin-right: 5px; box-shadow: 0 0 10px #0f0; }
-
-        .terminal-msg {
-            font-family: 'Orbitron'; font-size: 0.7rem; color: var(--accent);
-            text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px;
-            border-left: 2px solid var(--accent); padding-left: 10px;
-        }
-
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-        
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         .cell {
-            aspect-ratio: 1; background: rgba(255, 255, 255, 0.03); border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.06); display: flex; align-items: center;
-            justify-content: center; font-size: 3.5rem; font-family: 'Orbitron';
-            cursor: pointer; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative; overflow: hidden;
+            aspect-ratio: 1; background: rgba(255, 255, 255, 0.02); border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: center;
+            font-size: 3.2rem; font-family: 'Orbitron'; cursor: pointer; transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
-        .cell:active { transform: scale(0.9); }
+        .cell:hover { background: rgba(255,255,255,0.08); border-color: var(--p1); }
         .cell.x { color: var(--p1); text-shadow: 0 0 25px var(--p1); }
         .cell.o { color: var(--p2); text-shadow: 0 0 25px var(--p2); }
-        .cell.win { background: #fff !important; color: #000 !important; box-shadow: 0 0 40px #fff; z-index: 5; }
+        .cell.win { background: white !important; color: black !important; transform: scale(1.05); box-shadow: 0 0 50px white; }
 
-        /* تأثير "الضوء الجاري" عند الدور */
-        .glass-shell::after {
-            content: ''; position: absolute; inset: -2px; border-radius: 42px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            z-index: -1; opacity: 0.3; animation: flow 3s infinite linear;
+        /* شاشة الربط (ID الأرقام) */
+        .overlay { position: fixed; inset: 0; background: var(--bg); z-index: 1000; display: flex; align-items: center; justify-content: center; text-align: center; }
+        .connect-box { width: 85%; max-width: 360px; }
+        .numeric-id-card { 
+            background: #0a0a18; padding: 30px; border-radius: 35px; border: 2px solid #151525; margin: 25px 0;
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.1); 
         }
-        @keyframes flow { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        .id-val { font-family: 'Orbitron'; font-size: 2.2rem; color: var(--p1); letter-spacing: 10px; cursor: pointer; }
 
-        /* شاشة الربط */
-        .lobby-overlay {
-            position: fixed; inset: 0; background: var(--bg); z-index: 1000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 20px; text-align: center;
-        }
-        .lobby-card { width: 100%; max-width: 400px; padding: 40px; background: #07070f; border-radius: 40px; border: 1px solid #1a1a2a; }
-        .id-val { font-family: 'Orbitron'; color: var(--p1); font-size: 1.6rem; cursor: pointer; margin: 20px 0; letter-spacing: 5px; }
-        
-        input {
-            width: 100%; padding: 18px; border-radius: 20px; border: 1px solid #222;
-            background: #000; color: white; text-align: center; font-size: 1rem; margin-bottom: 15px;
-        }
-        .btn-sync {
-            width: 100%; padding: 18px; border-radius: 20px; border: none;
-            background: var(--p1); color: #000; font-weight: 900; cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.3); transition: 0.3s;
-        }
+        input { width: 100%; padding: 20px; border-radius: 22px; border: 1px solid #1a1a2a; background: #000; color: white; text-align: center; font-size: 1.2rem; font-family: 'Orbitron'; margin-bottom: 15px; }
+        .btn-prime { width: 100%; padding: 20px; border-radius: 22px; border: none; background: linear-gradient(135deg, var(--p1), var(--p2)); color: white; font-weight: 900; font-size: 1.1rem; cursor: pointer; }
 
+        #mind-state { font-family: 'Orbitron'; font-size: 0.6rem; color: #444; margin-top: 15px; text-align: center; }
         .hidden { display: none !important; }
-
-        /* تحسين الدردشة */
-        .chat-row { display: flex; gap: 10px; margin-top: 20px; }
-        .chat-row input { margin: 0; font-size: 0.8rem; background: rgba(0,0,0,0.4); }
     </style>
 </head>
 <body>
 
-<canvas id="particle-canvas"></canvas>
+<canvas id="nebula-canvas"></canvas>
 
-<div id="lobby" class="lobby-overlay">
-    <div class="lobby-card">
-        <h1 style="font-family:'Orbitron'; font-weight:900; letter-spacing:10px;">SINGULARITY</h1>
-        <p style="color:#555; font-size:0.7rem;">ID المزامنة (اضغط للنسخ)</p>
-        <div id="my-id" class="id-val">CONNECTING...</div>
-        <input type="text" id="target-id" placeholder="أدخل ID الخصم">
-        <button class="btn-sync" onclick="startSync()">إقامة اتصال عصبي</button>
+<div id="setup" class="overlay">
+    <div class="connect-box">
+        <h1 style="font-family:'Orbitron'; letter-spacing:5px; font-weight:900;">PRIME LINK</h1>
+        <div class="numeric-id-card" onclick="copyID()">
+            <p style="color:#444; margin:0 0 10px; font-size:0.8rem;">رقم غرفتك (اضغط للنسخ)</p>
+            <span id="room-id" class="id-val">------</span>
+        </div>
+        <input type="number" id="target-id" placeholder="أدخل رقم صديقك">
+        <button class="btn-prime" onclick="initLink()">إقامة اتصال</button>
     </div>
 </div>
 
-<div class="quantum-container hidden" id="main-ui">
-    <div class="glass-shell">
-        <div class="hud-header">
-            <div class="score-pill">
-                <span id="sx" style="color:var(--p1)">X: 0</span>
-                <span style="color:#333">|</span>
-                <span id="so" style="color:var(--p2)">O: 0</span>
-            </div>
-            <div style="font-size: 0.6rem; color:#666;">
-                <span id="ping-dot" class="latency-dot"></span>
-                <span id="ms">0ms</span>
-            </div>
+<div class="app-shell hidden" id="game-shell">
+    <div class="main-card">
+        <div class="header-hud">
+            <div class="stat-box"><span class="stat-label">WIN STREAK</span><span id="streak">0</span></div>
+            <div class="stat-box"><span class="stat-label">LATENCY</span><span id="ping">--</span></div>
+            <div class="stat-box"><span class="stat-label">YOU</span><span id="symbol">?</span></div>
         </div>
 
-        <div class="terminal-msg" id="status-text">> SYSTEM_STABLE: WAITING</div>
+        <div id="status-terminal" style="text-align:center; font-family:'Orbitron'; font-size:0.75rem; color:var(--p1); margin-bottom:20px;">> SYSTEM READY</div>
 
         <div class="grid" id="grid">
             <div class="cell" data-i="0"></div><div class="cell" data-i="1"></div><div class="cell" data-i="2"></div>
@@ -137,107 +85,82 @@
             <div class="cell" data-i="6"></div><div class="cell" data-i="7"></div><div class="cell" data-i="8"></div>
         </div>
 
-        <div class="chat-row">
-            <input type="text" id="chat-input" placeholder="إرسال رسالة عصبية...">
-            <button onclick="sendChat()" style="background:var(--accent); border:none; border-radius:15px; padding:0 15px; cursor:pointer;">✉</button>
-        </div>
+        <div id="mind-state">ANALYZING PLAYER MOVES...</div>
     </div>
 </div>
 
 <script>
-    const peer = new Peer();
+    // نظام توليد الـ ID الرقمي لـ PeerJS
+    const rawID = Math.floor(100000 + Math.random() * 900000).toString();
+    const peer = new Peer('XO-' + rawID); 
     let conn, mySym = "", board = Array(9).fill(""), turn = "X", active = true;
-    let scores = {X: 0, O: 0};
+    let startTime;
 
-    // محرك الجزيئات الذكي (Smart Background)
-    const canvas = document.getElementById('particle-canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-    let particles = Array(80).fill().map(() => ({
-        x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5,
-        size: Math.random() * 2
-    }));
+    peer.on('open', () => document.getElementById('room-id').innerText = rawID);
 
-    function animate() {
-        ctx.fillStyle = 'rgba(2, 2, 5, 0.1)'; ctx.fillRect(0,0,canvas.width, canvas.height);
-        particles.forEach(p => {
-            p.x += p.vx; p.y += p.vy;
-            if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
-            if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
-            ctx.fillStyle = 'rgba(0, 242, 254, 0.5)';
-            ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
-        });
-        requestAnimationFrame(animate);
+    function copyID() {
+        navigator.clipboard.writeText(rawID);
+        alert("تم نسخ الرقم: " + rawID);
     }
-    animate();
-
-    peer.on('open', id => document.getElementById('my-id').innerText = id);
-    document.getElementById('my-id').onclick = function() {
-        navigator.clipboard.writeText(this.innerText);
-        alert("تم نسخ كود المزامنة!");
-    };
 
     peer.on('connection', c => { conn = c; mySym = "X"; setupGame(); });
 
-    function startSync() {
+    function initLink() {
         const tid = document.getElementById('target-id').value;
         if(!tid) return;
-        conn = peer.connect(tid);
+        conn = peer.connect('XO-' + tid);
         mySym = "O";
         conn.on('open', setupGame);
     }
 
     function setupGame() {
-        document.getElementById('lobby').classList.add('hidden');
-        document.getElementById('main-ui').classList.remove('hidden');
+        document.getElementById('setup').classList.add('hidden');
+        document.getElementById('game-shell').classList.remove('hidden');
+        document.getElementById('symbol').innerText = mySym;
         updateUI();
 
         conn.on('data', data => {
-            if(data.type === 'move') process(data.i, data.p);
-            if(data.type === 'chat') showChat(data.m);
-            if(data.type === 'ping') conn.send({type: 'pong', t: data.t});
-            if(data.type === 'pong') {
-                const ms = Date.now() - data.t;
-                document.getElementById('ms').innerText = ms + 'ms';
-                document.getElementById('ping-dot').style.background = ms < 100 ? '#0f0' : '#f00';
-            }
+            if(data.type === 'move') process(data.i, data.p, data.time);
+            if(data.type === 'ping') conn.send({type:'pong', t:data.t});
+            if(data.type === 'pong') document.getElementById('ping').innerText = (Date.now()-data.t)+'ms';
         });
-
         setInterval(() => { if(conn) conn.send({type:'ping', t:Date.now()}); }, 2000);
     }
 
     document.querySelectorAll('.cell').forEach(c => {
         c.onclick = () => {
-            const i = c.dataset.i;
-            if(board[i] || turn !== mySym || !active) return;
-            process(i, mySym);
-            conn.send({type:'move', i:i, p:mySym});
+            if(board[c.dataset.i] || turn !== mySym || !active) return;
+            const moveTime = Date.now() - startTime;
+            process(c.dataset.i, mySym, moveTime);
+            conn.send({type:'move', i:c.dataset.i, p:mySym, time: moveTime});
+            if(window.navigator.vibrate) window.navigator.vibrate(30);
         };
     });
 
-    function process(i, p) {
+    function process(i, p, time) {
         board[i] = p;
         const el = document.querySelector(`[data-i="${i}"]`);
         el.innerText = p; el.classList.add(p.toLowerCase());
         
+        // تحليل الحالة النفسية
+        const stateMsg = time < 1000 ? "CONFIDENT ATTACK" : (time > 3000 ? "CALCULATED MOVE" : "STABLE PLAY");
+        document.getElementById('mind-state').innerText = `PEER STATE: ${stateMsg}`;
+
         if(checkWin(p)) {
-            scores[p]++;
             end(p);
         } else if(!board.includes("")) {
             end("D");
         } else {
             turn = turn === "X" ? "O" : "X";
+            startTime = Date.now();
             updateUI();
         }
     }
 
     function updateUI() {
         const color = turn === 'X' ? 'var(--p1)' : 'var(--p2)';
-        document.documentElement.style.setProperty('--accent', color);
-        document.getElementById('status-text').innerText = turn === mySym ? "> YOUR TURN" : `> PEER_${turn}_PROCESSING`;
-        document.getElementById('sx').innerText = `X: ${scores.X}`;
-        document.getElementById('so').innerText = `O: ${scores.O}`;
+        document.getElementById('status-terminal').innerText = turn === mySym ? "> YOUR TURN" : `> WAITING FOR ${turn}`;
+        document.getElementById('status-terminal').style.color = color;
     }
 
     function checkWin(p) {
@@ -251,24 +174,25 @@
 
     function end(res) {
         active = false;
-        if(res !== 'D') confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
-        document.getElementById('status-text').innerText = res === 'D' ? "> NEURAL_STALEMATE" : `> DOMINATION: ${res}`;
-        setTimeout(() => {
-            board.fill(""); active = true; turn = "X";
-            document.querySelectorAll('.cell').forEach(c => { c.innerText = ""; c.className = "cell"; });
-            updateUI();
-        }, 5000);
+        if(res !== 'D') confetti({ particleCount: 200, spread: 90, origin: { y: 0.6 } });
+        document.getElementById('status-terminal').innerText = res === 'D' ? "> TIE GAME" : `> ${res} ELIMINATED THE PEER`;
+        setTimeout(() => location.reload(), 6000);
     }
 
-    function sendChat() {
-        const i = document.getElementById('chat-input');
-        if(i.value && conn) { conn.send({type:'chat', m: i.value}); i.value = ""; }
+    // محرك الخلفية
+    const canvas = document.getElementById('nebula-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    function draw() {
+        ctx.fillStyle = 'rgba(3,3,8,0.1)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+        for(let i=0; i<3; i++) {
+            ctx.beginPath(); ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, Math.random()*2, 0, Math.PI*2);
+            ctx.fillStyle = Math.random() > 0.5 ? '#00f2fe' : '#fc00ff'; ctx.fill();
+        }
+        requestAnimationFrame(draw);
     }
-
-    function showChat(m) {
-        document.getElementById('status-text').innerText = "> INCOMING: " + m;
-        setTimeout(updateUI, 3000);
-    }
+    draw();
+    startTime = Date.now();
 </script>
 </body>
 </html>
