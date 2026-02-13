@@ -3,127 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>X-O NEURAL CLOUD</title>
+    <title>X-O TELE-LINK PRO</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Cairo:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root { --p1: #00f2fe; --p2: #fc00ff; --bg: #010103; }
+        :root { --tele-blue: #24A1DE; --p2: #fc00ff; --bg: #05050a; }
         body { margin: 0; background: var(--bg); color: white; font-family: 'Cairo', sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .container { width: 90%; max-width: 400px; z-index: 10; }
-        .glass {
-            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 242, 254, 0.2); border-radius: 40px;
-            padding: 30px; box-shadow: 0 0 40px rgba(0,0,0,1);
+        
+        /* تأثير النيون في الخلفية */
+        .neon-bg { position: fixed; inset: 0; background: radial-gradient(circle at 50% 50%, #101a2d 0%, #05050a 100%); z-index: -1; }
+
+        .app-card { width: 90%; max-width: 420px; z-index: 10; }
+        .glass-ui {
+            background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(30px);
+            border: 1px solid rgba(36, 161, 222, 0.3); border-radius: 40px;
+            padding: 30px; box-shadow: 0 40px 80px rgba(0,0,0,0.8);
         }
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
-        .cell {
-            aspect-ratio: 1; background: rgba(255, 255, 255, 0.05); border-radius: 20px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2.5rem; font-family: 'Orbitron'; cursor: pointer; border: 1px solid rgba(255,255,255,0.05);
-        }
-        .cell.x { color: var(--p1); text-shadow: 0 0 15px var(--p1); }
-        .cell.o { color: var(--p2); text-shadow: 0 0 15px var(--p2); }
-        .cell.win { background: white !important; color: black !important; box-shadow: 0 0 30px white; }
+
+        .input-group { margin-bottom: 20px; text-align: right; }
+        label { display: block; margin-bottom: 8px; font-size: 0.8rem; color: var(--tele-blue); }
+        
         input {
-            width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #1a1a30;
-            background: #000; color: white; text-align: center; font-size: 1.2rem; margin-bottom: 10px;
+            width: 100%; padding: 18px; border-radius: 20px; border: 1px solid #1a1a30;
+            background: rgba(0,0,0,0.5); color: white; text-align: center; font-size: 1.1rem; font-family: 'Orbitron';
         }
-        .btn {
-            width: 100%; padding: 15px; border-radius: 15px; border: none;
-            background: linear-gradient(45deg, var(--p1), var(--p2));
-            color: white; font-weight: 900; cursor: pointer;
+
+        .btn-link {
+            width: 100%; padding: 18px; border-radius: 20px; border: none;
+            background: linear-gradient(135deg, var(--tele-blue), #1c82b5);
+            color: white; font-weight: 900; font-size: 1.1rem; cursor: pointer;
+            box-shadow: 0 10px 30px rgba(36, 161, 222, 0.3);
         }
+
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 25px; }
+        .cell {
+            aspect-ratio: 1; background: rgba(255, 255, 255, 0.03); border-radius: 22px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 3rem; font-family: 'Orbitron'; cursor: pointer; transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .cell.x { color: var(--tele-blue); text-shadow: 0 0 15px var(--tele-blue); }
+        .cell.o { color: var(--p2); text-shadow: 0 0 15px var(--p2); }
+        .cell.win { background: white !important; color: black !important; box-shadow: 0 0 40px white; }
+
+        .hud { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.7rem; font-family: 'Orbitron'; }
+        .status-msg { text-align: center; margin-top: 15px; font-weight: 900; color: var(--tele-blue); height: 20px; }
+        
         .hidden { display: none !important; }
-        #status { font-size: 0.8rem; text-align: center; margin-top: 10px; color: var(--p1); }
     </style>
 </head>
 <body>
 
-<div id="setup" class="container">
-    <div class="glass" style="text-align: center;">
-        <h1 style="font-family:'Orbitron'; letter-spacing:5px;">CLOUD LINK</h1>
-        <p>أدخل اسم الغرفة (مثلاً: 1234)</p>
-        <input type="text" id="room-id" placeholder="رقم الغرفة">
-        <button class="btn" onclick="initCloud()">دخول الغرفة</button>
-        <div id="status">جاهز للربط السحابي...</div>
+<div class="neon-bg"></div>
+
+<div id="login-screen" class="app-card">
+    <div class="glass-ui">
+        <h2 style="font-family:'Orbitron'; text-align:center; letter-spacing:3px; margin-top:0;">TELE-SYNC</h2>
+        
+        <div class="input-group">
+            <label>Telegram ID الخاص بك:</label>
+            <input type="number" id="tg-id" placeholder="مثلاً: 12345678">
+        </div>
+
+        <div class="input-group">
+            <label>كود المزامنة (تفاهم عليه مع صاحبك):</label>
+            <input type="text" id="sync-code" placeholder="مثلاً: ALGERIA_2024">
+        </div>
+
+        <button class="btn-link" onclick="connectGame()">دخول المزامنة العصبية</button>
+        <p style="font-size: 0.6rem; color: #444; text-align: center; margin-top: 15px;">سيتم الربط بين اللاعبين الذين لديهم نفس "كود المزامنة".</p>
     </div>
 </div>
 
-<div id="game-zone" class="container hidden">
-    <div class="glass">
-        <div id="turn-info" style="text-align: center; font-weight: 900; margin-bottom: 15px;">... جاري التحميل</div>
-        <div class="grid" id="grid">
+<div id="game-screen" class="app-card hidden">
+    <div class="glass-ui">
+        <div class="hud">
+            <span>ID: <span id="display-tg-id"></span></span>
+            <span>CODE: <span id="display-sync"></span></span>
+        </div>
+        
+        <div id="turn-status" class="status-msg">بانتظار الطرف الآخر...</div>
+
+        <div class="grid" id="board">
             <div class="cell" data-i="0"></div><div class="cell" data-i="1"></div><div class="cell" data-i="2"></div>
             <div class="cell" data-i="3"></div><div class="cell" data-i="4"></div><div class="cell" data-i="5"></div>
             <div class="cell" data-i="6"></div><div class="cell" data-i="7"></div><div class="cell" data-i="8"></div>
         </div>
-        <p id="player-sym" style="text-align:center; font-size:0.7rem; color:#555; margin-top:15px;"></p>
+        
+        <div id="player-symbol" style="text-align:center; margin-top:20px; font-size:0.8rem; color:#555;"></div>
     </div>
 </div>
 
 <script>
-    // إعدادات Firebase عامة (للتجربة السريعة)
+    // إعدادات Firebase (يجب وضع إعداداتك هنا لتعمل اللعبة فعلياً)
     const firebaseConfig = {
-        databaseURL: "https://xo-cloud-default-rtdb.firebaseio.com/" 
+        databaseURL: "https://YOUR-PROJECT-ID.firebaseio.com/" 
     };
     
-    // ملاحظة: في العادة تحتاج مفتاح API، لكن سأستخدم منطقاً برمجياً مبسطاً هنا
-    // إذا أردت استخدامه فعلياً، أنشئ مشروع Firebase مجاني وضع مفتاحه هنا.
-    
-    let db, roomRef, mySym = null, board = Array(9).fill(""), turn = "X", gameActive = true;
+    // سأقوم بمحاكاة منطق الربط لك لتعرف كيف تبرمجه
+    let myTgId, syncCode, mySym, board = Array(9).fill(""), turn = "X", active = true;
 
-    function initCloud() {
-        const rid = document.getElementById('room-id').value;
-        if(!rid) return;
+    function connectGame() {
+        myTgId = document.getElementById('tg-id').value;
+        syncCode = document.getElementById('sync-code').value;
+
+        if(!myTgId || !syncCode) {
+            alert("أدخل معلوماتك يا خو!");
+            return;
+        }
+
+        // إظهار اللعبة
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('game-screen').classList.remove('hidden');
+        document.getElementById('display-tg-id').innerText = myTgId;
+        document.getElementById('display-sync').innerText = syncCode;
+
+        // منطق الربط "الذكي":
+        // 1. نرسل للسيرفر أن اللاعب (myTgId) دخل كود المزامنة (syncCode).
+        // 2. إذا وجدنا شخصاً قبله، نجعله هو O والآخر X.
+        // 3. إذا كان هو الأول، نجعله X.
         
-        // محاكاة الاتصال السحابي (هذا الجزء يربط اللاعبين عبر قاعدة بيانات مشتركة)
-        document.getElementById('setup').classList.add('hidden');
-        document.getElementById('game-zone').classList.remove('hidden');
-        
-        // هنا المنطق "الذكي": أول شخص يدخل هو X، والثاني هو O
-        // (يتم تخزين الحالة في السيرفر لضمان المزامنة)
-        connectToCloud(rid);
+        // محاكاة اختيار الرمز (في الحقيقة يتم عبر السيرفر)
+        mySym = confirm("تفاهم مع صاحبك: هل تريد أن تكون X؟ (إلغاء لـ O)") ? "X" : "O";
+        document.getElementById('player-symbol').innerText = "رمزك القتالي: " + mySym;
+        updateStatus();
     }
 
-    function connectToCloud(roomId) {
-        // تنبيه: هذا كود توضيحي للمنطق، للتشغيل الفعلي يجب ربط Firebase SDK
-        document.getElementById('turn-info').innerText = "تم الاتصال بالغرفة: " + roomId;
-        
-        // لنفترض أننا نرسل "رسائل تليجرام" أو "تحديثات سحابية"
-        // كل حركة يتم رفعها للسيرفر والطرف الآخر يستقبلها فوراً
-        console.log("Room joined: " + roomId);
-        mySym = confirm("اضغط OK لتكون X، أو Cancel لتكون O") ? "X" : "O";
-        document.getElementById('player-sym').innerText = "رمزك هو: " + mySym;
+    function updateStatus() {
+        const msg = document.getElementById('turn-status');
+        if(turn === mySym) {
+            msg.innerText = "دورك الآن - أهجم!";
+            msg.style.color = "var(--tele-blue)";
+        } else {
+            msg.innerText = "انتظر حركة الخصم...";
+            msg.style.color = "#444";
+        }
     }
 
-    document.querySelectorAll('.cell').forEach(c => {
-        c.onclick = () => {
-            if(!gameActive || board[c.dataset.i]) return;
-            // تنفيذ الحركة محلياً وإرسالها للسحاب
-            applyMove(c.dataset.i, mySym);
-            // هنا نرسل البيانات للسيرفر (مثل بوت تليجرام)
-            // fetch(`https://api.telegram.org/bot<TOKEN>/sendMessage?chat_id=${chat_id}&text=${move_data}`);
+    document.querySelectorAll('.cell').forEach(cell => {
+        cell.onclick = () => {
+            const i = cell.dataset.i;
+            if(!active || turn !== mySym || board[i]) return;
+            
+            makeMove(i, mySym);
+            
+            // هنا ترسل الحركة للسيرفر (Firebase أو Telegram Bot)
+            // Example: database.ref('games/' + syncCode).set({ lastMove: i, player: mySym });
         };
     });
 
-    function applyMove(i, p) {
+    function makeMove(i, p) {
         board[i] = p;
         const cell = document.querySelector(`[data-i="${i}"]`);
         cell.innerText = p;
         cell.classList.add(p.toLowerCase());
-        checkWinner(p);
+
+        if(checkWin(p)) {
+            active = false;
+            confetti({ particleCount: 200, spread: 70 });
+            document.getElementById('turn-status').innerText = "انتهت المعركة لفائدة " + p;
+            setTimeout(() => location.reload(), 5000);
+        } else if(!board.includes("")) {
+            document.getElementById('turn-status').innerText = "تعادل رقمي!";
+            setTimeout(() => location.reload(), 5000);
+        } else {
+            turn = (p === "X") ? "O" : "X";
+            updateStatus();
+        }
     }
 
-    function checkWinner(p) {
+    function checkWin(p) {
         const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-        if(wins.some(w => w.every(idx => board[idx] === p))) {
-            confetti();
-            gameActive = false;
-            alert("فاز " + p);
-            location.reload();
-        }
+        return wins.some(combo => {
+            const res = combo.every(idx => board[idx] === p);
+            if(res) combo.forEach(idx => document.querySelector(`[data-i="${idx}"]`).classList.add('win'));
+            return res;
+        });
     }
 </script>
 </body>
