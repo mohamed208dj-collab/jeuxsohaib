@@ -3,114 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-O Quantum Nexus - Ultimate</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Orbitron:wght@600;900&display=swap" rel="stylesheet">
+    <title>X-O Cosmic Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@900&family=Orbitron:wght@600;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --x-color: #00e5ff;
-            --o-color: #ff00ea;
-            --bg: #020617;
-            --panel: rgba(15, 23, 42, 0.8);
-            --current-glow: var(--x-color);
+            --x-color: #00f2fe;
+            --o-color: #fc00ff;
+            --main-glow: #00f2fe;
         }
 
-        body {
-            margin: 0; height: 100vh; background: var(--bg);
-            display: flex; align-items: center; justify-content: center;
-            font-family: 'Cairo', sans-serif; overflow: hidden;
-            perspective: 1200px;
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; display: flex; align-items: center; justify-content: center;
+            background: #020205; font-family: 'Cairo', sans-serif;
         }
 
-        /* تأثير النجوم المتحركة */
-        .stars-bg {
+        /* الخلفية المتحركة الفخمة */
+        .nebula-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #1b0c47 0%, #020205 100%);
+            z-index: -2;
+        }
+
+        .nebula-layer {
             position: absolute; width: 200%; height: 200%;
-            background: radial-gradient(white 1px, transparent 1px);
-            background-size: 50px 50px; opacity: 0.2;
-            animation: moveStars 150s linear infinite; z-index: -1;
-        }
-        @keyframes moveStars { from { transform: translate(0,0); } to { transform: translate(-50%, -50%); } }
-
-        .game-container {
-            width: 90%; max-width: 450px; transform-style: preserve-3d;
-            transition: transform 0.1s ease;
+            top: -50%; left: -50%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 242, 254, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(252, 0, 255, 0.1) 0%, transparent 40%);
+            animation: rotateNebula 20s infinite linear;
+            filter: blur(60px);
         }
 
-        .main-panel {
-            background: var(--panel); backdrop-filter: blur(20px);
-            border-radius: 40px; padding: 30px;
-            border: 2px solid var(--current-glow);
-            box-shadow: 0 0 50px rgba(0,0,0,0.5), inset 0 0 30px var(--current-glow);
-            transition: border-color 0.5s, box-shadow 0.5s;
-            position: relative;
+        @keyframes rotateNebula {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* الجزيئات العائمة */
+        .particles {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+        }
+
+        .game-wrapper {
+            perspective: 1500px; width: 100%; display: flex; justify-content: center;
+        }
+
+        .main-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(25px);
+            border-radius: 50px; padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8), inset 0 0 40px rgba(255,255,255,0.05);
+            width: 90%; max-width: 460px;
+            transform-style: preserve-3d; transition: transform 0.1s ease-out;
+            text-align: center;
         }
 
         .header h1 {
-            font-family: 'Orbitron', sans-serif; font-size: 2.8rem; margin: 0;
-            background: linear-gradient(45deg, var(--x-color), var(--o-color));
+            font-family: 'Orbitron', sans-serif; font-size: 3.2rem; margin: 0;
+            background: linear-gradient(to right, #fff, #666);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            letter-spacing: 8px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
         }
 
-        .log-screen {
-            background: rgba(0,0,0,0.4); border-radius: 15px;
-            padding: 10px; margin: 20px 0; border: 1px solid rgba(255,255,255,0.1);
-            color: var(--current-glow); font-family: 'Orbitron'; font-size: 0.8rem;
-            min-height: 20px; transition: color 0.5s;
+        .status-terminal {
+            background: rgba(0,0,0,0.5); border-radius: 12px;
+            padding: 12px; margin: 25px 0;
+            font-family: 'Orbitron'; font-size: 0.85rem;
+            color: var(--main-glow); border-left: 3px solid var(--main-glow);
+            text-transform: uppercase; letter-spacing: 1px;
+            transition: 0.3s;
         }
 
         .board {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
         }
 
         .cell {
-            aspect-ratio: 1; background: rgba(255,255,255,0.03);
-            border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
+            aspect-ratio: 1; background: rgba(255, 255, 255, 0.03);
+            border-radius: 22px; border: 1px solid rgba(255, 255, 255, 0.1);
             display: flex; align-items: center; justify-content: center;
-            font-size: 3.5rem; font-family: 'Orbitron'; cursor: pointer;
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 4rem; font-family: 'Orbitron'; cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .cell:hover { background: rgba(255,255,255,0.08); transform: translateZ(20px); }
-        .cell.x { color: var(--x-color); text-shadow: 0 0 20px var(--x-color); }
-        .cell.o { color: var(--o-color); text-shadow: 0 0 20px var(--o-color); }
+        .cell:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateZ(40px) scale(1.05);
+            border-color: var(--main-glow);
+        }
+
+        .cell.x { color: var(--x-color); text-shadow: 0 0 25px var(--x-color); }
+        .cell.o { color: var(--o-color); text-shadow: 0 0 25px var(--o-color); }
 
         .cell.winner {
-            background: white !important; color: black !important;
-            box-shadow: 0 0 40px white; transform: scale(1.1) rotateY(360deg);
+            background: #fff !important; color: #000 !important;
+            box-shadow: 0 0 50px #fff; transform: scale(1.1) translateZ(50px);
         }
 
-        .shake { animation: shakeEffect 0.5s ease-in-out; }
-        @keyframes shakeEffect {
-            0%, 100% { transform: translateX(0); }
-            20% { transform: translateX(-10px) rotate(-1deg); }
-            40% { transform: translateX(10px) rotate(1deg); }
-            60% { transform: translateX(-10px); }
-            80% { transform: translateX(10px); }
+        .controls {
+            display: flex; gap: 12px; margin-top: 35px;
         }
 
-        .footer-controls {
-            margin-top: 25px; display: flex; gap: 10px;
+        .btn {
+            flex: 1; padding: 15px; border-radius: 20px; border: none;
+            background: rgba(255,255,255,0.05); color: #fff;
+            font-family: 'Cairo'; font-weight: 700; cursor: pointer;
+            transition: 0.3s; border: 1px solid rgba(255,255,255,0.1);
         }
 
-        button {
-            flex: 1; padding: 12px; border-radius: 15px; border: none;
-            background: rgba(255,255,255,0.1); color: white;
-            font-family: 'Cairo'; cursor: pointer; transition: 0.3s;
+        .btn.active {
+            background: #fff; color: #000; box-shadow: 0 10px 20px rgba(0,0,0,0.4);
         }
 
-        button.active { background: var(--current-glow); color: black; font-weight: 900; }
+        .btn:hover:not(.active) { background: rgba(255,255,255,0.15); }
+
     </style>
 </head>
 <body>
 
-<div class="stars-bg"></div>
+<div class="nebula-container">
+    <div class="nebula-layer"></div>
+</div>
 
-<div class="game-container" id="tilt-box">
-    <div class="main-panel" id="main-panel">
-        <div class="header">
+<div class="game-wrapper">
+    <div class="main-card" id="card">
+        <header class="header">
             <h1>NEURON</h1>
-            <div class="log-screen" id="log-msg">> INITIALIZING SYSTEM...</div>
-        </div>
+            <div class="status-terminal" id="status">> SYSTEM READY</div>
+        </header>
 
         <div class="board" id="board">
             <div class="cell" data-i="0"></div>
@@ -124,9 +148,9 @@
             <div class="cell" data-i="8"></div>
         </div>
 
-        <div class="footer-controls">
-            <button id="pve-btn" class="active" onclick="setMode('ai')">الذكاء الاصطناعي</button>
-            <button id="pvp-btn" onclick="setMode('pvp')">لعب مع صديق</button>
+        <div class="controls">
+            <button id="ai-btn" class="btn active" onclick="setMode('ai')">الذكاء الاصطناعي</button>
+            <button id="pvp-btn" class="btn" onclick="setMode('pvp')">لعب مع صديق</button>
         </div>
     </div>
 </div>
@@ -136,22 +160,21 @@
     let player = "X";
     let active = true;
     let mode = 'ai';
-    const log = document.getElementById('log-msg');
-    const panel = document.getElementById('main-panel');
+    const card = document.getElementById('card');
+    const status = document.getElementById('status');
 
-    // تأثير الميلان 3D
+    // تأثير حركة الكارت 3D مع الماوس
     document.addEventListener('mousemove', (e) => {
-        const x = (window.innerWidth / 2 - e.pageX) / 25;
-        const y = (window.innerHeight / 2 - e.pageY) / 25;
-        document.getElementById('tilt-box').style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+        let x = (window.innerWidth / 2 - e.pageX) / 30;
+        let y = (window.innerHeight / 2 - e.pageY) / 30;
+        card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
     });
 
     function setMode(m) {
         mode = m;
-        document.getElementById('pve-btn').classList.toggle('active', m === 'ai');
+        document.getElementById('ai-btn').classList.toggle('active', m === 'ai');
         document.getElementById('pvp-btn').classList.toggle('active', m === 'pvp');
         reset();
-        log.innerText = `> MODE: ${m.toUpperCase()} ACTIVATED`;
     }
 
     document.querySelectorAll('.cell').forEach(cell => {
@@ -159,23 +182,23 @@
             const i = cell.dataset.i;
             if (board[i] || !active) return;
 
-            executeMove(i, player);
+            makeMove(i, player);
 
             if (active && mode === 'ai' && player === 'O') {
-                log.innerText = "> AI ANALYZING...";
+                status.innerText = "> AI ANALYZING...";
                 setTimeout(() => {
                     const best = minimax(board, "O").index;
-                    executeMove(best, "O");
+                    makeMove(best, "O");
                 }, 600);
             }
         });
     });
 
-    function executeMove(i, p) {
+    function makeMove(i, p) {
         board[i] = p;
-        const cell = document.querySelector(`[data-i="${i}"]`);
-        cell.innerText = p;
-        cell.classList.add(p.toLowerCase());
+        const c = document.querySelector(`[data-i="${i}"]`);
+        c.innerText = p;
+        c.classList.add(p.toLowerCase());
         
         if (checkWin(board, p)) {
             endGame(p);
@@ -183,59 +206,48 @@
             endGame("DRAW");
         } else {
             player = player === "X" ? "O" : "X";
-            const color = player === "X" ? "#00e5ff" : "#ff00ea";
-            document.documentElement.style.setProperty('--current-glow', color);
-            log.innerText = `> PLAYER ${player} TURN...`;
+            const color = player === "X" ? "#00f2fe" : "#fc00ff";
+            document.documentElement.style.setProperty('--main-glow', color);
+            status.innerText = `> PLAYER ${player} TURN`;
         }
     }
 
     function checkWin(b, p) {
-        const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-        return wins.some(w => {
-            const isWin = w.every(idx => b[idx] === p);
-            if (isWin && b === board) {
+        const patterns = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+        return patterns.some(w => {
+            const win = w.every(idx => b[idx] === p);
+            if (win && b === board) {
                 w.forEach(idx => document.querySelector(`[data-i="${idx}"]`).classList.add('winner'));
-                panel.classList.add('shake');
-                setTimeout(() => panel.classList.remove('shake'), 500);
             }
-            return isWin;
+            return win;
         });
     }
 
     function endGame(res) {
         active = false;
         if (res === "DRAW") {
-            log.innerText = "> SYSTEM STALEMATE. REBOOTING...";
+            status.innerText = "> DATA ERROR: STALEMATE";
         } else {
-            log.innerText = `> DOMINATION BY ${res}. REBOOTING...`;
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            status.innerText = `> VICTORY: PLAYER ${res}`;
+            confetti({ particleCount: 200, spread: 90, origin: { y: 0.6 } });
         }
         
-        // ميزة التصفير التلقائي بعد 3 ثواني
-        let count = 3;
-        const interval = setInterval(() => {
-            log.innerText = `> AUTO-REBOOT IN ${count}...`;
-            count--;
-            if (count < 0) {
-                clearInterval(interval);
-                reset();
-            }
-        }, 1000);
+        // إعادة تعيين تلقائي بعد 3 ثواني
+        setTimeout(reset, 3000);
     }
 
     function reset() {
         board = ["", "", "", "", "", "", "", "", ""];
         active = true;
         player = "X";
-        document.documentElement.style.setProperty('--current-glow', '#00e5ff');
-        log.innerText = "> SYSTEM READY.";
+        document.documentElement.style.setProperty('--main-glow', '#00f2fe');
+        status.innerText = "> SYSTEM REBOOTED";
         document.querySelectorAll('.cell').forEach(c => {
             c.innerText = "";
             c.classList.remove('x', 'o', 'winner');
         });
     }
 
-    // خوارزمية AI (Minimax)
     function minimax(b, p) {
         const avail = b.map((v, i) => v === "" ? i : null).filter(v => v !== null);
         if (checkWin(b, "X")) return {score: -10};
