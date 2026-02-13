@@ -3,166 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X-O Ultra Pro Max</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>X-O Cyber-Master 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --bg: #020617;
-            --card: rgba(15, 23, 42, 0.8);
-            --cyan: #06b6d4;
-            --pink: #ec4899;
-            --gold: #f59e0b;
+            --primary: #00f2fe;
+            --secondary: #fc00ff;
+            --bg-dark: #020617;
+            --glass-bg: rgba(15, 23, 42, 0.7);
+            --accent-gold: #fbbf24;
         }
 
         body {
             margin: 0;
             height: 100vh;
+            background: var(--bg-dark);
+            font-family: 'Cairo', sans-serif;
+            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: var(--bg);
-            font-family: 'Cairo', sans-serif;
-            color: white;
             overflow: hidden;
-            /* خلفية متحركة أسطورية */
-            background: linear-gradient(135deg, #020617 0%, #0f172a 50%, #020617 100%);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background: radial-gradient(circle at center, #1e1b4b 0%, #020617 100%);
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .container {
+        .game-wrapper {
+            position: relative;
+            z-index: 10;
             width: 100%;
-            max-width: 420px;
-            padding: 25px;
-            background: var(--card);
-            backdrop-filter: blur(20px);
+            max-width: 450px;
+            padding: 20px;
+        }
+
+        /* لوحة العرض الرئيسية */
+        .main-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            border-radius: 40px;
+            padding: 30px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 35px;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.7);
+            box-shadow: 0 50px 100px rgba(0,0,0,0.8);
             text-align: center;
         }
 
-        .scoreboard {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            background: rgba(0,0,0,0.3);
-            border-radius: 20px;
+        header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 2.8rem;
+            margin: 0;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 242, 254, 0.3);
+        }
+
+        .ai-msg {
+            height: 24px;
+            font-size: 0.9rem;
+            color: var(--secondary);
+            margin: 10px 0;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .stats-grid {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.4);
             padding: 15px;
-            margin-bottom: 20px;
+            border-radius: 20px;
+            margin-bottom: 25px;
         }
 
-        .score-box h3 { margin: 0; font-size: 0.8rem; opacity: 0.6; }
-        .score-box p { margin: 5px 0 0; font-size: 1.5rem; font-weight: 900; }
-
-        .game-info {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            font-weight: 700;
-            height: 35px;
-        }
+        .stat-box span { display: block; font-size: 0.7rem; opacity: 0.6; }
+        .stat-box strong { font-size: 1.4rem; font-family: 'Orbitron'; color: var(--primary); }
 
         .board {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            gap: 12px;
             margin-bottom: 25px;
         }
 
         .cell {
             aspect-ratio: 1;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 3.5rem;
+            font-family: 'Orbitron';
             cursor: pointer;
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.3s all cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .cell:hover {
-            background: rgba(255,255,255,0.08);
-            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.08);
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        .cell.x { color: var(--cyan); text-shadow: 0 0 20px var(--cyan); }
-        .cell.o { color: var(--pink); text-shadow: 0 0 20px var(--pink); }
+        .cell.x { color: var(--primary); text-shadow: 0 0 20px var(--primary); }
+        .cell.o { color: var(--secondary); text-shadow: 0 0 20px var(--secondary); }
 
-        .cell.winner {
-            background: var(--gold) !important;
-            color: black !important;
-            box-shadow: 0 0 40px var(--gold);
+        .cell.winner-cell {
+            background: linear-gradient(45deg, var(--primary), var(--secondary)) !important;
+            color: white !important;
+            transform: scale(1.1);
+            animation: pulse 1s infinite alternate;
         }
 
-        .controls {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        @keyframes pulse {
+            to { box-shadow: 0 0 50px rgba(252, 0, 255, 0.6); }
         }
 
-        .mode-selector {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 10px;
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
         }
 
         button {
-            padding: 12px 25px;
+            padding: 15px;
+            border-radius: 18px;
             border: none;
-            border-radius: 15px;
             font-weight: 900;
             cursor: pointer;
             transition: 0.3s;
             font-family: 'Cairo';
         }
 
-        .btn-reset { background: white; color: black; }
-        .btn-mode { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); }
-        .btn-mode.active { background: var(--cyan); border-color: var(--cyan); color: white; }
+        .btn-main { background: white; color: black; }
+        .btn-mode { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.1); }
+        .btn-mode.active { background: var(--secondary); color: white; box-shadow: 0 0 20px var(--secondary); }
 
-        button:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        button:hover { transform: scale(1.05); }
 
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="scoreboard">
-        <div class="score-box"><h3>X (أنت)</h3><p id="s-x">0</p></div>
-        <div class="score-box"><h3>تعادل</h3><p id="s-d">0</p></div>
-        <div class="score-box"><h3>O (الخصم)</h3><p id="s-o">0</p></div>
-    </div>
+<div class="game-wrapper">
+    <div class="main-card">
+        <header>
+            <h1>CYBER X-O</h1>
+            <div class="ai-msg" id="ai-msg">تحداني إن كنت تجرؤ...</div>
+        </header>
 
-    <div class="game-info" id="status">جولة اللاعب <span style="color:var(--cyan)">X</span></div>
+        <div class="stats-grid">
+            <div class="stat-box"><span>أنت (X)</span><strong id="s-x">0</strong></div>
+            <div class="stat-box"><span>تعادل</span><strong id="s-d">0</strong></div>
+            <div class="stat-box"><span>الكمبيوتر (O)</span><strong id="s-o">0</strong></div>
+        </div>
 
-    <div class="mode-selector">
-        <button class="btn-mode active" id="pvp" onclick="setMode('pvp')">صديق 👥</button>
-        <button class="btn-mode" id="pva" onclick="setMode('pva')">ذكاء اصطناعي 🤖</button>
-    </div>
+        <div class="board" id="board">
+            <div class="cell" onclick="play(0)"></div>
+            <div class="cell" onclick="play(1)"></div>
+            <div class="cell" onclick="play(2)"></div>
+            <div class="cell" onclick="play(3)"></div>
+            <div class="cell" onclick="play(4)"></div>
+            <div class="cell" onclick="play(5)"></div>
+            <div class="cell" onclick="play(6)"></div>
+            <div class="cell" onclick="play(7)"></div>
+            <div class="cell" onclick="play(8)"></div>
+        </div>
 
-    <div class="board" id="board">
-        <div class="cell" onclick="makeMove(0)"></div>
-        <div class="cell" onclick="makeMove(1)"></div>
-        <div class="cell" onclick="makeMove(2)"></div>
-        <div class="cell" onclick="makeMove(3)"></div>
-        <div class="cell" onclick="makeMove(4)"></div>
-        <div class="cell" onclick="makeMove(5)"></div>
-        <div class="cell" onclick="makeMove(6)"></div>
-        <div class="cell" onclick="makeMove(7)"></div>
-        <div class="cell" onclick="makeMove(8)"></div>
-    </div>
-
-    <div class="controls">
-        <button class="btn-reset" onclick="resetBoard()">إعادة الجولة 🔄</button>
+        <div class="actions">
+            <button class="btn-mode active" id="mode-btn" onclick="toggleMode()">ذكاء اصطناعي: تشغيل</button>
+            <button class="btn-main" onclick="reset()">إعادة الجولة</button>
+        </div>
     </div>
 </div>
 
@@ -170,133 +182,104 @@
     let board = ["", "", "", "", "", "", "", "", ""];
     let player = "X";
     let active = true;
-    let mode = 'pvp';
-    let scores = {X: 0, O: 0, D: 0};
+    let vsAI = true;
+    let stats = {X: 0, O: 0, D: 0};
 
-    const cells = document.querySelectorAll('.cell');
-    const statusTxt = document.getElementById('status');
+    const msgs = ["سأهزمك في حركتين!", "تفكيرك بطيء جداً..", "هل هذا أفضل ما لديك؟", "لقد وقعت في الفخ!", "تعادل؟ لا يمكن!"];
 
-    function setMode(m) {
-        mode = m;
-        document.getElementById('pvp').classList.toggle('active', m === 'pvp');
-        document.getElementById('pva').classList.toggle('active', m === 'pva');
-        resetBoard();
-        scores = {X: 0, O: 0, D: 0};
-        updateScore();
+    function toggleMode() {
+        vsAI = !vsAI;
+        document.getElementById('mode-btn').innerText = vsAI ? "ذكاء اصطناعي: تشغيل" : "ضد صديق: تشغيل";
+        document.getElementById('mode-btn').classList.toggle('active');
+        reset();
     }
 
-    function makeMove(i) {
+    function play(i) {
         if (board[i] || !active) return;
         
-        executeMove(i, player);
+        move(i, player);
 
-        if (active && mode === 'pva' && player === 'O') {
-            setTimeout(aiMove, 500);
+        if (active && vsAI) {
+            document.getElementById('ai-msg').innerText = msgs[Math.floor(Math.random()*msgs.length)];
+            setTimeout(aiThink, 600);
         }
     }
 
-    function executeMove(i, p) {
+    function move(i, p) {
         board[i] = p;
-        cells[i].innerHTML = `<span class="pop">${p}</span>`;
-        cells[i].classList.add(p.toLowerCase());
-        
+        const cell = document.querySelectorAll('.cell')[i];
+        cell.innerText = p;
+        cell.classList.add(p.toLowerCase());
+
         if (checkWin(board, p)) {
             endGame(p);
-        } else if (board.every(c => c !== "")) {
+        } else if (!board.includes("")) {
             endGame('D');
         } else {
             player = player === "X" ? "O" : "X";
-            statusTxt.innerHTML = `جولة اللاعب <span style="color:var(--${player === 'X' ? 'cyan' : 'pink'})">${player}</span>`;
-            if(mode === 'pva' && player === 'O') aiMove();
         }
     }
 
-    function aiMove() {
-        if (!active) return;
-        let bestScore = -Infinity;
-        let move;
-        for (let i = 0; i < 9; i++) {
+    function aiThink() {
+        let best = -Infinity;
+        let bestIdx;
+        for (let i=0; i<9; i++) {
             if (board[i] === "") {
                 board[i] = "O";
                 let score = minimax(board, 0, false);
                 board[i] = "";
-                if (score > bestScore) {
-                    bestScore = score;
-                    move = i;
-                }
+                if (score > best) { best = score; bestIdx = i; }
             }
         }
-        executeMove(move, "O");
+        move(bestIdx, "O");
     }
 
-    // خوارزمية Minimax لجعل الكمبيوتر مستحيل الفوز عليه
-    function minimax(b, depth, isMaximizing) {
+    function minimax(b, depth, isMax) {
         if (checkWin(b, "O")) return 10;
         if (checkWin(b, "X")) return -10;
-        if (b.every(c => c !== "")) return 0;
+        if (!b.includes("")) return 0;
 
-        if (isMaximizing) {
-            let bestScore = -Infinity;
-            for (let i = 0; i < 9; i++) {
-                if (b[i] === "") {
-                    b[i] = "O";
-                    let score = minimax(b, depth + 1, false);
-                    b[i] = "";
-                    bestScore = Math.max(score, bestScore);
-                }
-            }
-            return bestScore;
+        if (isMax) {
+            let best = -Infinity;
+            for(let i=0; i<9; i++) if(b[i]==="") { b[i]="O"; best = Math.max(best, minimax(b, depth+1, false)); b[i]=""; }
+            return best;
         } else {
-            let bestScore = Infinity;
-            for (let i = 0; i < 9; i++) {
-                if (b[i] === "") {
-                    b[i] = "X";
-                    let score = minimax(b, depth + 1, true);
-                    b[i] = "";
-                    bestScore = Math.min(score, bestScore);
-                }
-            }
-            return bestScore;
+            let best = Infinity;
+            for(let i=0; i<9; i++) if(b[i]==="") { b[i]="X"; best = Math.min(best, minimax(b, depth+1, true)); b[i]=""; }
+            return best;
         }
     }
 
     function checkWin(b, p) {
-        const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-        return wins.some(pattern => {
+        const patterns = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+        return patterns.some(pattern => {
             const win = pattern.every(idx => b[idx] === p);
-            if(win && active && b === board) pattern.forEach(idx => cells[idx].classList.add('winner'));
+            if (win && active && b === board) {
+                pattern.forEach(idx => document.querySelectorAll('.cell')[idx].classList.add('winner-cell'));
+            }
             return win;
         });
     }
 
     function endGame(res) {
         active = false;
-        if (res === 'D') {
-            statusTxt.innerText = "تعادل الأبطال! 🤝";
-            scores.D++;
-        } else {
-            statusTxt.innerHTML = `🏆 الملك <span style="color:var(--${res==='X'?'cyan':'pink'})">${res}</span> اكتسح الساحة!`;
-            scores[res]++;
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        if (res === 'D') { stats.D++; document.getElementById('ai-msg').innerText = "ليست سيئة.. مجرد تعادل."; }
+        else { 
+            stats[res]++; 
+            document.getElementById('ai-msg').innerText = res === 'O' ? "كما توقعت.. الفوز لي!" : "مستحيل! لقد غششت بالتأكيد!";
+            if (res === 'X') confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
         }
-        updateScore();
+        document.getElementById('s-x').innerText = stats.X;
+        document.getElementById('s-o').innerText = stats.O;
+        document.getElementById('s-d').innerText = stats.D;
     }
 
-    function updateScore() {
-        document.getElementById('s-x').innerText = scores.X;
-        document.getElementById('s-o').innerText = scores.O;
-        document.getElementById('s-d').innerText = scores.D;
-    }
-
-    function resetBoard() {
+    function reset() {
         board = ["", "", "", "", "", "", "", "", ""];
-        player = "X";
         active = true;
-        statusTxt.innerHTML = `جولة اللاعب <span style="color:var(--cyan)">X</span>`;
-        cells.forEach(c => {
-            c.innerHTML = "";
-            c.classList.remove('x', 'o', 'winner');
-        });
+        player = "X";
+        document.getElementById('ai-msg').innerText = "جولة جديدة.. حاول أن تركز.";
+        document.querySelectorAll('.cell').forEach(c => { c.innerText = ""; c.classList.remove('x','o','winner-cell'); });
     }
 </script>
 </body>
