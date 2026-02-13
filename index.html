@@ -3,187 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>X-O Quantum Mobile & Desktop</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Orbitron:wght@600;900&display=swap" rel="stylesheet">
+    <title>X-O Neural Overdrive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Cairo:wght@700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
             --x-color: #00f2fe;
             --o-color: #fc00ff;
-            --main-glow: #00f2fe;
+            --bg: #050508;
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); overflow: hidden; display: flex; align-items: center; justify-content: center; font-family: 'Cairo', sans-serif; }
 
-        body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow: hidden; display: flex; align-items: center; justify-content: center;
-            background: #020205; font-family: 'Cairo', sans-serif; touch-action: manipulation;
+        /* محرك الجزيئات الخلفي */
+        #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+        .universe { position: fixed; width: 100%; height: 100%; background: radial-gradient(circle at center, #101025 0%, #050508 100%); z-index: -1; }
+
+        .game-zone { perspective: 1500px; width: 100%; max-width: 450px; padding: 20px; z-index: 10; }
+
+        .master-card {
+            background: var(--glass); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border-radius: 40px; padding: 30px; border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 50px 100px rgba(0,0,0,0.8); transform-style: preserve-3d;
+            transition: transform 0.1s ease-out; position: relative;
         }
 
-        /* الخلفية المتحركة (خفيفة على المعالج للهواتف) */
-        .nebula {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #1b0c47 0%, #020205 100%);
-            z-index: -1;
+        /* تيار النيون حول الإطار */
+        .master-card::before {
+            content: ''; position: absolute; inset: -2px; border-radius: 42px;
+            background: conic-gradient(from 0deg, transparent, var(--x-color), var(--o-color), transparent);
+            animation: rotateGlow 4s linear infinite; z-index: -1; mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+        }
+        @keyframes rotateGlow { to { transform: rotate(360deg); } }
+
+        .terminal {
+            background: rgba(0,0,0,0.6); border-radius: 15px; padding: 12px; margin: 20px 0;
+            font-family: 'Orbitron', monospace; font-size: 0.8rem; color: var(--x-color);
+            border-left: 4px solid var(--x-color); text-shadow: 0 0 10px var(--x-color);
         }
 
-        .nebula::after {
-            content: ''; position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
-            background: radial-gradient(circle at 20% 30%, rgba(0, 242, 254, 0.1), transparent 40%);
-            animation: rotate 20s infinite linear; filter: blur(50px);
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+
+        .cube {
+            aspect-ratio: 1; background: rgba(255,255,255,0.02); border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center;
+            justify-content: center; font-size: 3.5rem; font-family: 'Orbitron';
+            cursor: pointer; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .cube:hover { background: rgba(255,255,255,0.08); transform: translateZ(30px); border-color: #fff; }
+        .cube.x { color: var(--x-color); text-shadow: 0 0 25px var(--x-color); }
+        .cube.o { color: var(--o-color); text-shadow: 0 0 25px var(--o-color); }
 
-        .container {
-            perspective: 1000px; width: 100%; max-width: 420px; padding: 15px;
-            z-index: 10;
+        .winner-cell { background: white !important; color: black !important; box-shadow: 0 0 50px white; transform: scale(1.1) translateZ(50px) rotateY(360deg); }
+
+        .ui-footer { display: flex; gap: 10px; margin-top: 25px; }
+        .btn {
+            flex: 1; padding: 15px; border-radius: 18px; border: none; background: rgba(255,255,255,0.05);
+            color: #fff; font-family: 'Cairo'; font-weight: 900; cursor: pointer; transition: 0.3s;
         }
+        .btn.active { background: white; color: black; box-shadow: 0 0 20px white; }
 
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-radius: 30px; padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            transform-style: preserve-3d; transition: transform 0.1s ease-out;
-            text-align: center;
-        }
-
-        h1 {
-            font-family: 'Orbitron', sans-serif; font-size: clamp(1.5rem, 8vw, 2.5rem);
-            margin: 0; color: #fff; letter-spacing: 5px;
-        }
-
-        .status {
-            background: rgba(0,0,0,0.3); border-radius: 10px;
-            padding: 8px; margin: 15px 0; font-family: 'Orbitron';
-            font-size: 0.75rem; color: var(--main-glow);
-            border: 1px solid var(--main-glow);
-        }
-
-        .board {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
-        }
-
-        .cell {
-            aspect-ratio: 1; background: rgba(255, 255, 255, 0.03);
-            border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.08);
-            display: flex; align-items: center; justify-content: center;
-            font-size: clamp(2rem, 12vw, 3.5rem); font-family: 'Orbitron';
-            cursor: pointer; transition: 0.2s;
-        }
-
-        /* تفاعل الهاتف */
-        .cell:active { transform: scale(0.9) translateZ(10px); background: rgba(255,255,255,0.1); }
-
-        .cell.x { color: var(--x-color); text-shadow: 0 0 15px var(--x-color); }
-        .cell.o { color: var(--o-color); text-shadow: 0 0 15px var(--o-color); }
-        .cell.winner { background: #fff !important; color: #000 !important; box-shadow: 0 0 30px #fff; }
-
-        .btns { display: flex; gap: 8px; margin-top: 20px; }
-        
-        button {
-            flex: 1; padding: 12px; border-radius: 12px; border: none;
-            background: rgba(255,255,255,0.05); color: #fff;
-            font-family: 'Cairo'; font-size: 0.9rem; font-weight: bold;
-        }
-
-        button.active { background: #fff; color: #000; }
-
-        /* تعديلات للشاشات الصغيرة جداً */
-        @media (max-height: 600px) {
-            .card { padding: 15px; }
-            .board { gap: 5px; }
-            h1 { margin-bottom: 5px; }
-        }
+        /* أنيميشن الانفجار */
+        @keyframes explode { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .shake { animation: explode 0.3s ease-in-out; }
     </style>
 </head>
 <body>
 
-<div class="nebula"></div>
+<canvas id="particle-canvas"></canvas>
+<div class="universe"></div>
 
-<div class="container" id="wrapper">
-    <div class="card" id="card">
-        <h1>NEURON</h1>
-        <div class="status" id="status">> READY</div>
+<div class="game-zone" id="wrapper">
+    <div class="master-card" id="card">
+        <h1 style="text-align:center; font-family:'Orbitron'; color:white; letter-spacing:10px; margin:0;">NEURAL</h1>
+        <div class="terminal" id="term">> SYSTEM: ONLINE...</div>
         
-        <div class="board" id="board">
-            <div class="cell" data-i="0"></div>
-            <div class="cell" data-i="1"></div>
-            <div class="cell" data-i="2"></div>
-            <div class="cell" data-i="3"></div>
-            <div class="cell" data-i="4"></div>
-            <div class="cell" data-i="5"></div>
-            <div class="cell" data-i="6"></div>
-            <div class="cell" data-i="7"></div>
-            <div class="cell" data-i="8"></div>
+        <div class="grid" id="grid">
+            <div class="cube" data-i="0"></div>
+            <div class="cube" data-i="1"></div>
+            <div class="cube" data-i="2"></div>
+            <div class="cube" data-i="3"></div>
+            <div class="cube" data-i="4"></div>
+            <div class="cube" data-i="5"></div>
+            <div class="cube" data-i="6"></div>
+            <div class="cube" data-i="7"></div>
+            <div class="cube" data-i="8"></div>
         </div>
 
-        <div class="btns">
-            <button id="ai-btn" class="active" onclick="setMode('ai')">الذكاء</button>
-            <button id="pvp-btn" onclick="setMode('pvp')">صديق</button>
+        <div class="ui-footer">
+            <button class="btn active" id="ai-btn" onclick="setMode('ai')">ذكاء اصطناعي</button>
+            <button class="btn" id="pvp-btn" onclick="setMode('pvp')">لعب محلي</button>
         </div>
     </div>
 </div>
 
 <script>
-    let board = ["", "", "", "", "", "", "", "", ""];
-    let player = "X";
-    let active = true;
-    let mode = 'ai';
-    const card = document.getElementById('card');
-    const status = document.getElementById('status');
+    // --- محرك الجزيئات المتقدم ---
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-    // تفعيل الميلان فقط في الحاسوب (Mouse)
-    if (window.matchMedia("(pointer: fine)").matches) {
+    class Particle {
+        constructor(x, y, color) {
+            this.x = x; this.y = y; this.color = color;
+            this.size = Math.random() * 4 + 1;
+            this.spX = (Math.random() - 0.5) * 10;
+            this.spY = (Math.random() - 0.5) * 10;
+            this.alpha = 1;
+        }
+        draw() {
+            ctx.save(); ctx.globalAlpha = this.alpha;
+            ctx.fillStyle = this.color; ctx.shadowBlur = 10; ctx.shadowColor = this.color;
+            ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
+            ctx.restore();
+        }
+        update() { this.x += this.spX; this.y += this.spY; this.alpha -= 0.02; }
+    }
+
+    function createExplosion(x, y, color) {
+        for(let i=0; i<20; i++) particles.push(new Particle(x, y, color));
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles = particles.filter(p => p.alpha > 0);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    // --- منطق اللعبة ---
+    let board = Array(9).fill("");
+    let player = "X", active = true, mode = 'ai';
+    const term = document.getElementById('term');
+
+    // 3D Tilt للكمبيوتر
+    if(window.matchMedia("(pointer: fine)").matches) {
         document.addEventListener('mousemove', (e) => {
-            let x = (window.innerWidth / 2 - e.pageX) / 25;
-            let y = (window.innerHeight / 2 - e.pageY) / 25;
-            card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+            const x = (window.innerWidth/2 - e.pageX)/25;
+            const y = (window.innerHeight/2 - e.pageY)/25;
+            document.getElementById('card').style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
         });
     }
 
     function setMode(m) {
         mode = m;
-        document.getElementById('ai-btn').classList.toggle('active', m === 'ai');
-        document.getElementById('pvp-btn').classList.toggle('active', m === 'pvp');
+        document.getElementById('ai-btn').classList.toggle('active', m==='ai');
+        document.getElementById('pvp-btn').classList.toggle('active', m==='pvp');
         reset();
     }
 
-    document.querySelectorAll('.cell').forEach(cell => {
-        cell.addEventListener('click', (e) => {
-            const i = cell.dataset.i;
-            if (board[i] || !active) return;
+    document.querySelectorAll('.cube').forEach(el => {
+        el.addEventListener('click', (e) => {
+            const i = el.dataset.i;
+            if(board[i] || !active) return;
+            
+            const rect = el.getBoundingClientRect();
+            createExplosion(rect.left + rect.width/2, rect.top + rect.height/2, player==='X'?'#00f2fe':'#fc00ff');
             
             makeMove(i, player);
 
-            if (active && mode === 'ai' && player === 'O') {
-                status.innerText = "> AI THINKING...";
+            if(active && mode === 'ai' && player === 'O') {
+                term.innerText = "> AI: تباً.. سأهزمك في الخطوة القادمة";
                 setTimeout(() => {
                     const best = minimax(board, "O").index;
+                    const r = document.querySelector(`[data-i="${best}"]`).getBoundingClientRect();
+                    createExplosion(r.left + r.width/2, r.top + r.height/2, '#fc00ff');
                     makeMove(best, "O");
-                }, 500);
+                }, 600);
             }
         });
     });
 
     function makeMove(i, p) {
         board[i] = p;
-        const c = document.querySelector(`[data-i="${i}"]`);
-        c.innerText = p;
-        c.classList.add(p.toLowerCase());
+        const el = document.querySelector(`[data-i="${i}"]`);
+        el.innerText = p; el.classList.add(p.toLowerCase());
         
-        if (checkWin(board, p)) {
+        if(checkWin(board, p)) {
             endGame(p);
-        } else if (!board.includes("")) {
-            endGame("DRAW");
+        } else if(!board.includes("")) {
+            endGame("D");
         } else {
             player = player === "X" ? "O" : "X";
-            const color = player === "X" ? "#00f2fe" : "#fc00ff";
-            document.documentElement.style.setProperty('--main-glow', color);
-            status.innerText = `> TURN: ${player}`;
+            term.innerText = `> TURN: PLAYER ${player}`;
+            document.documentElement.style.setProperty('--x-color', player==='X'?'#00f2fe':'#fc00ff');
         }
     }
 
@@ -191,8 +203,10 @@
         const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
         return wins.some(w => {
             const win = w.every(idx => b[idx] === p);
-            if (win && b === board) {
-                w.forEach(idx => document.querySelector(`[data-i="${idx}"]`).classList.add('winner'));
+            if(win && b === board) {
+                w.forEach(idx => document.querySelector(`[data-i="${idx}"]`).classList.add('winner-cell'));
+                document.getElementById('card').classList.add('shake');
+                setTimeout(() => document.getElementById('card').classList.remove('shake'), 300);
             }
             return win;
         });
@@ -200,38 +214,31 @@
 
     function endGame(res) {
         active = false;
-        status.innerText = res === "DRAW" ? "> STALEMATE" : `> ${res} WINS!`;
-        if (res !== "DRAW") confetti({ particleCount: 150, spread: 60, origin: { y: 0.7 } });
-        setTimeout(reset, 3000);
+        term.innerText = res === "D" ? "> DRAW: نادم على تضييع وقتي معك" : `> SYSTEM: تم سحق الخصم بواسطة ${res}`;
+        if(res !== "D") confetti({ particleCount: 200, spread: 100, origin: { y: 0.7 } });
+        setTimeout(reset, 4000);
     }
 
     function reset() {
-        board = ["", "", "", "", "", "", "", "", ""];
-        active = true;
-        player = "X";
-        document.documentElement.style.setProperty('--main-glow', '#00f2fe');
-        status.innerText = "> SYSTEM READY";
-        document.querySelectorAll('.cell').forEach(c => {
-            c.innerText = "";
-            c.classList.remove('x', 'o', 'winner');
-        });
+        board.fill(""); active = true; player = "X";
+        term.innerText = "> SYSTEM: READY FOR BATTLE";
+        document.querySelectorAll('.cube').forEach(c => { c.innerText = ""; c.className = 'cube'; });
     }
 
+    // AI Minimax
     function minimax(b, p) {
-        const avail = b.map((v, i) => v === "" ? i : null).filter(v => v !== null);
-        if (checkWin(b, "X")) return {score: -10};
-        if (checkWin(b, "O")) return {score: 10};
-        if (avail.length === 0) return {score: 0};
+        const av = b.map((v,i)=>v===""?i:null).filter(v=>v!==null);
+        if(checkWin(b, "X")) return {score:-10};
+        if(checkWin(b, "O")) return {score:10};
+        if(av.length===0) return {score:0};
         const moves = [];
-        for (let i of avail) {
-            let move = {index: i};
-            b[i] = p;
-            move.score = minimax(b, p === "O" ? "X" : "O").score;
-            b[i] = "";
-            moves.push(move);
+        for(let i of av) {
+            let m = {index: i}; b[i] = p;
+            m.score = minimax(b, p==="O"?"X":"O").score;
+            b[i] = ""; moves.push(m);
         }
         let best;
-        if (p === "O") {
+        if(p === "O") {
             let bs = -Infinity;
             moves.forEach((m, i) => { if(m.score > bs) { bs = m.score; best = i; } });
         } else {
@@ -240,6 +247,8 @@
         }
         return moves[best];
     }
+
+    window.onresize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
 </script>
 </body>
 </html>
