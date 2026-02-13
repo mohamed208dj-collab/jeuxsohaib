@@ -3,141 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>X-O NEURAL PRIME</title>
+    <title>X-O NEURAL GALAXY</title>
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Cairo:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Cairo:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root { --p1: #00f2fe; --p2: #fc00ff; --bg: #05050a; }
-        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; outline: none; }
-        body { 
-            margin: 0; background: var(--bg); color: white; font-family: 'Cairo', sans-serif; 
-            height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden;
-        }
-
-        /* خلفية نيون ناعمة */
-        .bg-glow {
-            position: fixed; width: 300px; height: 300px; background: var(--p1);
-            filter: blur(150px); border-radius: 50%; opacity: 0.2; z-index: -1;
-            animation: move 10s infinite alternate;
-        }
-        @keyframes move { from { transform: translate(-50%, -50%); } to { transform: translate(50%, 50%); } }
-
-        .container { width: 90%; max-width: 400px; z-index: 10; }
+        :root { --p1: #00f2fe; --p2: #fc00ff; --bg: #010103; }
+        body { margin: 0; background: var(--bg); color: white; font-family: 'Cairo', sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         
-        .glass-card {
-            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 35px;
-            padding: 25px; box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        /* تصميم "البلازما" المتحركة */
+        .plasma { position: fixed; inset: 0; background: radial-gradient(circle at 50% 50%, #101020 0%, #010103 100%); z-index: -1; }
+        
+        .main-container { width: 90%; max-width: 420px; text-align: center; z-index: 10; }
+        
+        /* واجهة زجاجية فخمة */
+        .glass {
+            background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 40px;
+            padding: 30px; box-shadow: 0 50px 100px rgba(0,0,0,0.8);
         }
 
-        .id-section { background: rgba(0,0,0,0.4); padding: 20px; border-radius: 25px; margin: 15px 0; border: 1px dashed #333; }
-        .id-text { font-family: 'Orbitron'; font-size: 2rem; color: var(--p1); letter-spacing: 5px; cursor: pointer; display: block; margin: 10px 0; }
+        .id-card { 
+            background: rgba(0,0,0,0.5); padding: 20px; border-radius: 25px; 
+            margin-bottom: 20px; border: 1px solid var(--p1); cursor: pointer;
+            transition: 0.3s;
+        }
+        .id-card:active { transform: scale(0.95); }
+        .id-num { font-family: 'Orbitron'; font-size: 2.2rem; display: block; color: var(--p1); text-shadow: 0 0 20px var(--p1); }
 
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
         .cell {
-            aspect-ratio: 1; background: rgba(255, 255, 255, 0.05); border-radius: 18px;
+            aspect-ratio: 1; background: rgba(255, 255, 255, 0.03); border-radius: 20px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 2.5rem; font-family: 'Orbitron'; cursor: pointer; transition: 0.2s;
+            font-size: 3rem; font-family: 'Orbitron'; cursor: pointer; transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.05);
         }
-        .cell.x { color: var(--p1); text-shadow: 0 0 15px var(--p1); }
-        .cell.o { color: var(--p2); text-shadow: 0 0 15px var(--p2); }
-        .cell.win { background: white !important; color: black !important; }
+        .cell.x { color: var(--p1); text-shadow: 0 0 20px var(--p1); }
+        .cell.o { color: var(--p2); text-shadow: 0 0 20px var(--p2); }
+        .cell.win { background: white !important; color: black !important; box-shadow: 0 0 50px white; }
 
         input {
-            width: 100%; padding: 15px; border-radius: 15px; border: 1px solid #222;
-            background: #000; color: white; text-align: center; font-size: 1.1rem; margin-bottom: 10px;
+            width: 100%; padding: 18px; border-radius: 20px; border: 1px solid #222;
+            background: #000; color: white; text-align: center; font-size: 1.3rem; font-family: 'Orbitron'; margin-bottom: 15px;
         }
         .btn {
-            width: 100%; padding: 15px; border-radius: 15px; border: none;
+            width: 100%; padding: 18px; border-radius: 20px; border: none;
             background: linear-gradient(45deg, var(--p1), var(--p2));
-            color: white; font-weight: bold; cursor: pointer; transition: 0.3s;
+            color: white; font-weight: 900; font-size: 1.1rem; cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.3);
         }
-        .btn:active { transform: scale(0.98); }
 
-        .status { text-align: center; font-size: 0.8rem; margin-top: 10px; color: #666; }
+        .log { font-size: 0.7rem; color: #555; margin-top: 15px; font-family: monospace; }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-<div class="bg-glow"></div>
+<div class="plasma"></div>
 
-<div id="setup" class="container">
-    <div class="glass-card" style="text-align: center;">
-        <h2 style="margin: 0; font-family: 'Orbitron'; letter-spacing: 3px;">NEURAL LINK</h2>
-        <div class="id-section" onclick="copyID()">
-            <small style="color: #666;">كود غرفتك (اضغط للنسخ)</small>
-            <span id="my-id" class="id-text">------</span>
+<div id="lobby" class="main-container">
+    <div class="glass">
+        <h1 style="font-family:'Orbitron'; letter-spacing:8px; margin-bottom:5px;">NEXUS</h1>
+        <p style="color:#666; font-size:0.8rem;">رقم غرفتك (اضغط للنسخ)</p>
+        <div class="id-card" onclick="copyMyID()">
+            <span id="display-id" class="id-num">LOADING</span>
         </div>
-        <input type="number" id="peer-id-input" placeholder="أدخل كود صديقك هنا">
-        <button class="btn" onclick="connectToPeer()">اتصال الآن</button>
-        <div class="status" id="conn-status">جاري تهيئة النظام...</div>
+        <input type="number" id="input-peer-id" placeholder="ID صديقك">
+        <button class="btn" onclick="joinFriend()">إطلاق المزامنة</button>
+        <div class="log" id="debug-log">System Initializing...</div>
     </div>
 </div>
 
-<div id="game" class="container hidden">
-    <div class="glass-card">
-        <div style="display: flex; justify-content: space-between; font-family: 'Orbitron'; font-size: 0.8rem; border-bottom: 1px solid #222; padding-bottom: 10px;">
-            <span id="score">X: 0 | O: 0</span>
-            <span id="my-symbol-text"></span>
-        </div>
-        <div id="turn-display" style="text-align: center; margin: 15px 0; font-weight: 900;">بانتظار دور اللاعب...</div>
-        <div class="grid" id="board">
+<div id="game-zone" class="main-container hidden">
+    <div class="glass">
+        <div id="status-bar" style="font-family:'Orbitron'; font-size:0.7rem; margin-bottom:15px; color:var(--p1);">[ WAITING FOR MOVE ]</div>
+        <div class="grid" id="grid">
             <div class="cell" data-i="0"></div><div class="cell" data-i="1"></div><div class="cell" data-i="2"></div>
             <div class="cell" data-i="3"></div><div class="cell" data-i="4"></div><div class="cell" data-i="5"></div>
             <div class="cell" data-i="6"></div><div class="cell" data-i="7"></div><div class="cell" data-i="8"></div>
         </div>
+        <p id="my-sym-display" style="margin-top:20px; font-size:0.8rem; color:#444;"></p>
     </div>
 </div>
 
 <script>
-    // إعدادات السيرفرات لضمان الاتصال عبر شبكات مختلفة
-    const config = {
-        'iceServers': [
-            { 'urls': 'stun:stun.l.google.com:19302' },
-            { 'urls': 'stun:stun1.l.google.com:19302' }
-        ]
+    const log = (msg) => document.getElementById('debug-log').innerText = "> " + msg;
+    
+    // إعدادات لتجاوز حظر الشبكات
+    const peerConfig = {
+        config: { 
+            iceServers: [
+                { urls: 'stun:stun.l.google.com:19302' },
+                { urls: 'stun:stun1.l.google.com:19302' },
+                { urls: 'stun:stun2.l.google.com:19302' }
+            ] 
+        }
     };
 
     const myNumber = Math.floor(100000 + Math.random() * 900000).toString();
-    const peer = new Peer('X' + myNumber, { config: config });
+    const peer = new Peer('NEX-' + myNumber, peerConfig);
 
     let conn, mySym, board = Array(9).fill(""), turn = "X", active = true;
 
-    peer.on('open', id => {
-        document.getElementById('my-id').innerText = myNumber;
-        document.getElementById('conn-status').innerText = "جاهز للإرسال ✅";
+    peer.on('open', (id) => {
+        document.getElementById('display-id').innerText = myNumber;
+        log("جاهز للاتصال. أرسل الرقم لصديقك.");
+    });
+
+    peer.on('error', (err) => {
+        log("خطأ: " + err.type);
+        if(err.type === 'peer-unavailable') alert("لم يتم العثور على هذا الـ ID. تأكد أن صديقك فاتح اللعبة!");
     });
 
     // استقبال الاتصال
-    peer.on('connection', c => {
+    peer.on('connection', (c) => {
         conn = c;
         mySym = "X";
-        start();
+        setupConnection();
     });
 
-    function connectToPeer() {
-        const target = document.getElementById('peer-id-input').value;
+    function joinFriend() {
+        const target = document.getElementById('input-peer-id').value;
         if(!target) return;
-        document.getElementById('conn-status').innerText = "جاري البحث عن الكود...";
-        conn = peer.connect('X' + target);
+        log("جاري البحث عن " + target + "...");
+        conn = peer.connect('NEX-' + target, { reliable: true });
         mySym = "O";
-        conn.on('open', start);
+        conn.on('open', setupConnection);
     }
 
-    function start() {
-        document.getElementById('setup').classList.add('hidden');
-        document.getElementById('game').classList.remove('hidden');
-        document.getElementById('my-symbol-text').innerText = "أنت: " + mySym;
+    function setupConnection() {
+        document.getElementById('lobby').classList.add('hidden');
+        document.getElementById('game-zone').classList.remove('hidden');
+        document.getElementById('my-sym-display').innerText = "أنت تلعب بـ: " + mySym;
         
-        conn.on('data', data => {
-            if(data.type === 'move') handleMove(data.i, data.p);
+        conn.on('data', (data) => {
+            if(data.type === 'move') applyMove(data.i, data.p);
         });
+        log("تم الاتصال بنجاح!");
     }
 
-    function handleMove(i, p) {
-        if(board[i]) return;
+    function applyMove(i, p) {
+        if(board[i] || !active) return;
         board[i] = p;
         const cell = document.querySelector(`[data-i="${i}"]`);
         cell.innerText = p;
@@ -145,22 +151,23 @@
         
         if(checkWin(p)) {
             active = false;
-            confetti();
-            setTimeout(reset, 3000);
+            confetti({ particleCount: 200, spread: 70 });
+            document.getElementById('status-bar').innerText = "[ DOMINATION: " + p + " ]";
+            setTimeout(reset, 5000);
         } else if(!board.includes("")) {
-            setTimeout(reset, 3000);
+            document.getElementById('status-bar').innerText = "[ NEURAL TIE ]";
+            setTimeout(reset, 5000);
         } else {
             turn = (turn === "X") ? "O" : "X";
-            updateUI();
+            updateStatus();
         }
     }
 
     document.querySelectorAll('.cell').forEach(c => {
         c.onclick = () => {
             if(!active || turn !== mySym || board[c.dataset.i]) return;
-            handleMove(c.dataset.i, mySym);
-            conn.send({type: 'move', i: c.dataset.i, p: mySym});
-            if(window.navigator.vibrate) window.navigator.vibrate(20);
+            applyMove(c.dataset.i, mySym);
+            conn.send({ type: 'move', i: c.dataset.i, p: mySym });
         };
     });
 
@@ -173,21 +180,21 @@
         });
     }
 
-    function updateUI() {
-        const el = document.getElementById('turn-display');
-        el.innerText = (turn === mySym) ? "دورك الآن!" : "انتظر دور خصمك...";
-        el.style.color = (turn === mySym) ? "var(--p1)" : "#555";
+    function updateStatus() {
+        const s = document.getElementById('status-bar');
+        s.innerText = (turn === mySym) ? "[ YOUR TURN ]" : "[ PEER THINKING... ]";
+        s.style.color = (turn === mySym) ? "var(--p1)" : "#444";
     }
 
     function reset() {
         board.fill(""); turn = "X"; active = true;
         document.querySelectorAll('.cell').forEach(c => { c.innerText = ""; c.className = "cell"; });
-        updateUI();
+        updateStatus();
     }
 
-    function copyID() {
+    function copyMyID() {
         navigator.clipboard.writeText(myNumber);
-        alert("تم نسخ الكود: " + myNumber);
+        alert("تم نسخ الكود بنجاح: " + myNumber);
     }
 </script>
 </body>
