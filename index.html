@@ -3,228 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>X-O Quantum Engine</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Orbitron:wght@600;900&display=swap" rel="stylesheet">
+    <title>X-O Quantum Online Edition</title>
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Orbitron:wght@600;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --accent: #00f2fe;
-            --x-color: #00f2fe;
-            --o-color: #fc00ff;
-            --bg: #010103;
-        }
-
+        :root { --cyan: #00f2fe; --pink: #fc00ff; --bg: #020205; }
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-        body {
-            margin: 0; height: 100vh; background: var(--bg);
-            display: flex; align-items: center; justify-content: center;
-            font-family: 'Cairo', sans-serif; overflow: hidden;
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(0, 242, 254, 0.05) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(252, 0, 255, 0.05) 0px, transparent 50%);
+        
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            background: var(--bg); font-family: 'Cairo', sans-serif; 
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
         }
 
-        .quantum-card {
-            width: 95%; max-width: 440px;
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 40px; padding: 25px;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.8);
-            transform-style: preserve-3d; transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        /* خلفية سديمية فخمة */
+        .nebula {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #1b0c47 0%, #020205 100%);
+            z-index: -1;
+        }
+        .nebula::after {
+            content: ''; position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
+            background: radial-gradient(circle at 20% 30%, rgba(0, 242, 254, 0.1), transparent 40%);
+            animation: rotate 30s infinite linear; filter: blur(60px);
+        }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* الشاشات */
+        .overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 100; backdrop-filter: blur(10px); padding: 20px; text-align: center;
         }
 
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h1 { 
-            font-family: 'Orbitron', sans-serif; font-size: 2.2rem; margin: 0;
-            background: linear-gradient(to right, var(--x-color), var(--o-color));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+        .card {
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px);
+            border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 25px; width: 90%; max-width: 420px; box-shadow: 0 30px 60px rgba(0,0,0,0.5);
         }
 
-        .terminal {
-            background: rgba(0,0,0,0.4); border-radius: 15px; padding: 10px 15px;
-            margin-bottom: 20px; border-right: 3px solid var(--accent);
-            font-family: 'Orbitron', monospace; font-size: 0.75rem; color: var(--accent);
-            transition: 0.3s; height: 40px; display: flex; align-items: center;
+        h1 { font-family: 'Orbitron'; font-size: clamp(1.8rem, 8vw, 2.5rem); margin: 0 0 15px; color: #fff; letter-spacing: 5px; }
+
+        .id-display {
+            background: rgba(255,255,255,0.05); border: 1px dashed var(--cyan);
+            padding: 15px; border-radius: 15px; margin: 20px 0; cursor: pointer;
+        }
+        .id-display span { font-family: 'Orbitron'; color: var(--cyan); font-size: 1.2rem; display: block; }
+
+        .status { 
+            background: rgba(0,0,0,0.3); padding: 10px; border-radius: 12px;
+            margin-bottom: 15px; color: var(--cyan); font-family: 'Orbitron'; font-size: 0.85rem;
+            border-left: 3px solid var(--cyan);
         }
 
-        .grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
-            position: relative;
-        }
-
+        .board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         .cell {
-            aspect-ratio: 1; background: rgba(255, 255, 255, 0.03);
-            border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.06);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 3.5rem; font-family: 'Orbitron'; cursor: pointer;
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            color: #fff;
+            aspect-ratio: 1; background: rgba(255,255,255,0.03); border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center;
+            justify-content: center; font-size: 3.5rem; font-family: 'Orbitron'; cursor: pointer;
+            transition: 0.3s;
         }
+        .cell:active { transform: scale(0.9); }
+        .cell.x { color: var(--cyan); text-shadow: 0 0 20px var(--cyan); }
+        .cell.o { color: var(--pink); text-shadow: 0 0 20px var(--pink); }
+        .cell.winner { background: #fff !important; color: #000 !important; box-shadow: 0 0 30px #fff; }
 
-        .cell:hover { background: rgba(255, 255, 255, 0.07); transform: translateZ(20px); }
-        .cell.x { color: var(--x-color); text-shadow: 0 0 20px var(--x-color); }
-        .cell.o { color: var(--o-color); text-shadow: 0 0 20px var(--o-color); }
-
-        .cell.winner { 
-            background: #fff !important; color: #000 !important; 
-            box-shadow: 0 0 40px #fff; transform: scale(1.05) translateZ(30px);
+        input {
+            width: 100%; padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.3); color: white; text-align: center; font-size: 1rem; margin-bottom: 15px;
         }
-
-        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 25px; }
         .btn {
-            padding: 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.05); color: #fff; font-family: 'Cairo';
-            font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 0.85rem;
+            width: 100%; padding: 15px; border-radius: 15px; border: none;
+            background: var(--cyan); color: black; font-weight: 900; cursor: pointer; font-size: 1rem;
         }
-        .btn.active { background: #fff; color: #000; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+        .hidden { display: none !important; }
 
-        /* Animation for drawing X and O */
-        .draw-in { animation: draw 0.4s ease-out; }
-        @keyframes draw { from { opacity: 0; transform: scale(0.5) rotate(-45deg); } to { opacity: 1; transform: scale(1) rotate(0); } }
-
-        .win-shake { animation: shake 0.4s ease-in-out; }
-        @keyframes shake {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
+        .shake { animation: shake 0.4s ease-in-out; }
+        @keyframes shake { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
     </style>
 </head>
 <body>
 
-<div class="quantum-card" id="card">
-    <div class="header">
-        <h1>QUANTUM</h1>
-    </div>
-    
-    <div class="terminal" id="status">> SYSTEM_READY: AWAITING_INPUT</div>
+<div class="nebula"></div>
 
-    <div class="grid" id="grid">
+<div id="setup-screen" class="overlay">
+    <h1>NEURON LINK</h1>
+    <div class="id-display" onclick="copyID()">
+        <p style="margin: 0 0 5px; font-size: 0.8rem;">كود جهازك (اضغط للنسخ):</p>
+        <span id="my-id">جاري التوليد...</span>
+    </div>
+    <div style="width: 100%; max-width: 300px;">
+        <input type="text" id="peer-id-input" placeholder="أدخل كود صديقك">
+        <button class="btn" onclick="connectToFriend()">ربط واتصال</button>
+    </div>
+    <p style="margin-top: 20px; font-size: 0.7rem; color: #666;">ابعث الكود لصاحبك باش يدخل معاك</p>
+</div>
+
+<div class="card" id="game-card">
+    <div class="status" id="game-status">> INITIALIZING...</div>
+    <div class="board" id="board">
         <div class="cell" data-i="0"></div><div class="cell" data-i="1"></div><div class="cell" data-i="2"></div>
         <div class="cell" data-i="3"></div><div class="cell" data-i="4"></div><div class="cell" data-i="5"></div>
         <div class="cell" data-i="6"></div><div class="cell" data-i="7"></div><div class="cell" data-i="8"></div>
     </div>
-
-    <div class="controls">
-        <button class="btn active" id="mode-ai" onclick="setMode('ai')">الذكاء: مستحيل</button>
-        <button class="btn" id="mode-pvp" onclick="setMode('pvp')">تحدي صديق</button>
-        <button class="btn" style="grid-column: span 2;" onclick="reset()">إعادة تهيئة النظام</button>
-    </div>
+    <button onclick="location.reload()" style="background:none; border:none; color:#555; margin-top:15px; cursor:pointer;">إعادة تشغيل</button>
 </div>
 
 <script>
+    let peer = new Peer();
+    let conn;
+    let mySymbol = ""; 
     let board = Array(9).fill("");
-    let player = "X", active = true, mode = 'ai';
-    const status = document.getElementById('status');
-    const card = document.getElementById('card');
+    let turn = "X";
+    let active = true;
 
-    // تفعيل الـ 3D Tilt للكمبيوتر فقط
-    if (window.matchMedia("(pointer: fine)").matches) {
-        document.addEventListener('mousemove', (e) => {
-            let x = (window.innerWidth / 2 - e.pageX) / 30;
-            let y = (window.innerHeight / 2 - e.pageY) / 30;
-            card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+    const statusText = document.getElementById('game-status');
+    const myIdDisplay = document.getElementById('my-id');
+
+    // توليد الـ ID
+    peer.on('open', (id) => {
+        myIdDisplay.innerText = id;
+        statusText.innerText = "> READY FOR CONNECTION";
+    });
+
+    // نسخ الكود
+    function copyID() {
+        navigator.clipboard.writeText(myIdDisplay.innerText);
+        alert("تم نسخ الكود! ابعثوا لصاحبك");
+    }
+
+    // استقبال الاتصال
+    peer.on('connection', (connection) => {
+        conn = connection;
+        mySymbol = "X"; // المستضيف دائما X
+        startOnlineGame();
+    });
+
+    // الاتصال بالطرف الآخر
+    function connectToFriend() {
+        const friendId = document.getElementById('peer-id-input').value;
+        if (!friendId) return alert("دخل الكود أولاً");
+        
+        conn = peer.connect(friendId);
+        mySymbol = "O"; // الضيف دائما O
+        
+        conn.on('open', () => {
+            startOnlineGame();
         });
     }
 
-    function setMode(m) {
-        mode = m;
-        document.getElementById('mode-ai').classList.toggle('active', m === 'ai');
-        document.getElementById('mode-pvp').classList.toggle('active', m === 'pvp');
-        reset();
-        status.innerText = `> MODE_SET: ${m.toUpperCase()}`;
+    function startOnlineGame() {
+        document.getElementById('setup-screen').classList.add('hidden');
+        statusText.innerText = `أنت اللاعب: ${mySymbol} | ${mySymbol === 'X' ? 'دورك' : 'انتظر الخصم'}`;
+        
+        conn.on('data', (data) => {
+            if (data.type === 'move') {
+                processMove(data.index, data.player);
+            }
+        });
     }
 
     document.querySelectorAll('.cell').forEach(cell => {
         cell.addEventListener('click', () => {
             const i = cell.dataset.i;
-            if (board[i] || !active) return;
-            
-            makeMove(i, player);
+            if (board[i] || turn !== mySymbol || !active || !conn) return;
 
-            if (active && mode === 'ai' && player === 'O') {
-                status.innerText = "> AI_CALCULATING...";
-                setTimeout(() => {
-                    const aiMove = minimax(board, "O").index;
-                    makeMove(aiMove, "O");
-                }, 500);
-            }
+            processMove(i, mySymbol);
+            conn.send({ type: 'move', index: i, player: mySymbol });
         });
     });
 
-    function makeMove(i, p) {
+    function processMove(i, p) {
         board[i] = p;
-        const c = document.querySelector(`[data-i="${i}"]`);
-        c.innerHTML = `<span class="draw-in">${p}</span>`;
-        c.classList.add(p.toLowerCase());
+        const cell = document.querySelector(`[data-i="${i}"]`);
+        cell.innerText = p;
+        cell.classList.add(p.toLowerCase());
         
-        if (checkWin(board, p)) {
+        if (checkWin(p)) {
             endGame(p);
         } else if (!board.includes("")) {
             endGame("DRAW");
         } else {
-            player = player === "X" ? "O" : "X";
-            const color = player === "X" ? "#00f2fe" : "#fc00ff";
-            document.documentElement.style.setProperty('--accent', color);
-            status.innerText = `> CURRENT_TURN: PLAYER_${player}`;
+            turn = (p === "X") ? "O" : "X";
+            updateStatus();
         }
     }
 
-    function checkWin(b, p) {
+    function updateStatus() {
+        const isMyTurn = turn === mySymbol;
+        statusText.innerText = isMyTurn ? `> دورك الآن (${mySymbol})` : `> انتظر الخصم... (${turn})`;
+        statusText.style.color = turn === "X" ? "var(--cyan)" : "var(--pink)";
+    }
+
+    function checkWin(p) {
         const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
         return wins.some(w => {
-            const win = w.every(idx => b[idx] === p);
-            if (win && b === board) {
+            const isWin = w.every(idx => board[idx] === p);
+            if (isWin) {
                 w.forEach(idx => document.querySelector(`[data-i="${idx}"]`).classList.add('winner'));
-                card.classList.add('win-shake');
-                setTimeout(() => card.classList.remove('win-shake'), 400);
+                document.getElementById('game-card').classList.add('shake');
             }
-            return win;
+            return isWin;
         });
     }
 
     function endGame(res) {
         active = false;
         if (res === "DRAW") {
-            status.innerText = "> RESULT: SYSTEM_STALEMATE";
+            statusText.innerText = "> تعادل! سيتم إعادة التشغيل...";
         } else {
-            status.innerText = `> RESULT: PLAYER_${res}_DOMINANCE`;
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.8 }, colors: [res==='X'?'#00f2fe':'#fc00ff', '#ffffff'] });
+            statusText.innerText = res === mySymbol ? "> مبروك! لقد سحقت الخصم 😎" : "> للأسف! الخصم فاز عليك 💀";
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         }
-        setTimeout(reset, 4000);
-    }
-
-    function reset() {
-        board.fill(""); active = true; player = "X";
-        document.documentElement.style.setProperty('--accent', '#00f2fe');
-        status.innerText = "> SYSTEM_REBOOTED: READY";
-        document.querySelectorAll('.cell').forEach(c => {
-            c.innerText = ""; c.className = 'cell';
-        });
-    }
-
-    // Unbeatable AI Algorithm
-    function minimax(b, p) {
-        const av = b.map((v, i) => v === "" ? i : null).filter(v => v !== null);
-        if (checkWin(b, "X")) return {score: -10};
-        if (checkWin(b, "O")) return {score: 10};
-        if (av.length === 0) return {score: 0};
-        const moves = [];
-        for (let i of av) {
-            let m = {index: i}; b[i] = p;
-            m.score = minimax(b, p === "O" ? "X" : "O").score;
-            b[i] = ""; moves.push(m);
-        }
-        let best;
-        if (p === "O") {
-            let bs = -Infinity;
-            moves.forEach((m, i) => { if(m.score > bs) { bs = m.score; best = i; } });
-        } else {
-            let bs = Infinity;
-            moves.forEach((m, i) => { if(m.score < bs) { bs = m.score; best = i; } });
-        }
-        return moves[best];
+        setTimeout(() => location.reload(), 5000);
     }
 </script>
 </body>
