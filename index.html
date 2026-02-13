@@ -3,197 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لعبة X-O الملكية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap" rel="stylesheet">
+    <title>X-O Ultra Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    
     <style>
         :root {
-            --bg: #050810;
-            --cyan: #00f2fe;
-            --pink: #fc00ff;
-            --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.1);
+            --bg: #030712;
+            --card: rgba(17, 24, 39, 0.7);
+            --cyan: #22d3ee;
+            --pink: #f472b6;
+            --white: #f8fafc;
         }
 
         body {
+            background: var(--bg);
+            color: var(--white);
+            font-family: 'Cairo', sans-serif;
             margin: 0;
             height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
-            background: radial-gradient(circle at center, #111a2e 0%, var(--bg) 100%);
-            color: white;
-            font-family: 'Cairo', sans-serif;
+            align-items: center;
             overflow: hidden;
+            background-image: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #030712 100%);
         }
 
-        .container {
-            backdrop-filter: blur(15px);
-            background: var(--glass);
-            padding: 40px;
-            border-radius: 35px;
-            border: 1px solid var(--border);
-            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+        .game-container {
+            background: var(--card);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             text-align: center;
+            width: 90%;
+            max-width: 400px;
         }
 
-        h1 {
-            font-size: 3.5rem;
-            margin: 0 0 20px 0;
-            background: linear-gradient(45deg, var(--cyan), var(--pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 900;
+        .scoreboard {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 1rem;
         }
 
-        .status {
-            font-size: 1.5rem;
-            margin-bottom: 25px;
-            font-weight: 700;
-        }
+        .score-item { display: flex; flex-direction: column; }
+        .score-val { font-size: 1.5rem; font-weight: 900; }
+        .score-label { font-size: 0.8rem; opacity: 0.7; }
 
-        .grid {
+        .status { font-size: 1.2rem; margin-bottom: 1rem; height: 1.8rem; font-weight: bold; }
+
+        .board {
             display: grid;
-            grid-template-columns: repeat(3, 110px);
-            gap: 15px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 1.5rem;
         }
 
         .cell {
-            width: 110px;
-            height: 110px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border);
-            border-radius: 20px;
+            aspect-ratio: 1/1;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4rem;
+            font-size: 3rem;
+            font-weight: 900;
             cursor: pointer;
-            transition: 0.3s all cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .cell:hover {
-            background: rgba(255, 255, 255, 0.08);
-            transform: scale(1.05) translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .cell.x { color: var(--cyan); text-shadow: 0 0 20px var(--cyan); }
-        .cell.o { color: var(--pink); text-shadow: 0 0 20px var(--pink); }
-
-        /* أنيميشن دخول الحرف */
-        .cell span {
-            animation: popIn 0.4s forwards;
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.5); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
+        .cell:hover { background: rgba(255, 255, 255, 0.1); transform: scale(1.02); }
+        .cell.x { color: var(--cyan); text-shadow: 0 0 15px var(--cyan); }
+        .cell.o { color: var(--pink); text-shadow: 0 0 15px var(--pink); }
 
         .cell.winner {
+            animation: win-pulse 1s infinite alternate;
             background: white !important;
             color: black !important;
-            box-shadow: 0 0 40px white;
-            text-shadow: none;
         }
 
-        .btn-restart {
-            padding: 12px 40px;
-            border: none;
-            border-radius: 50px;
+        @keyframes win-pulse {
+            from { box-shadow: 0 0 10px white; }
+            to { box-shadow: 0 0 30px white; transform: scale(1.05); }
+        }
+
+        .controls { display: flex; gap: 10px; justify-content: center; }
+
+        button {
             background: white;
             color: black;
-            font-weight: 900;
-            font-size: 1.1rem;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 0.8rem;
+            font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
+            font-family: 'Cairo', sans-serif;
         }
 
-        .btn-restart:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px white;
+        button:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(255, 255, 255, 0.2); }
+        button.secondary { background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.2); }
+
+        .shake { animation: shake 0.4s; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>X - O</h1>
-        <div class="status" id="status">جولة اللاعب: <span id="turn" style="color:var(--cyan)">X</span></div>
-
-        <div class="grid" id="grid">
-            <div class="cell" data-idx="0"></div>
-            <div class="cell" data-idx="1"></div>
-            <div class="cell" data-idx="2"></div>
-            <div class="cell" data-idx="3"></div>
-            <div class="cell" data-idx="4"></div>
-            <div class="cell" data-idx="5"></div>
-            <div class="cell" data-idx="6"></div>
-            <div class="cell" data-idx="7"></div>
-            <div class="cell" data-idx="8"></div>
-        </div>
-
-        <button class="btn-restart" onclick="reset()">إعادة التحدي</button>
+<div class="game-container" id="game-ui">
+    <div class="scoreboard">
+        <div class="score-item"><span class="score-val" id="score-x" style="color:var(--cyan)">0</span><span class="score-label">X فوز</span></div>
+        <div class="score-item"><span class="score-val" id="score-draw">0</span><span class="score-label">تعادل</span></div>
+        <div class="score-item"><span class="score-val" id="score-o" style="color:var(--pink)">0</span><span class="score-label">O فوز</span></div>
     </div>
 
-    <script>
-        const cells = document.querySelectorAll('.cell');
-        const turnText = document.getElementById('turn');
-        const statusText = document.getElementById('status');
-        let player = "X";
-        let board = ["", "", "", "", "", "", "", "", ""];
-        let active = true;
+    <div class="status" id="status-text">دور اللاعب <span style="color:var(--cyan)">X</span></div>
 
-        const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    <div class="board" id="board">
+        <div class="cell" data-i="0"></div>
+        <div class="cell" data-i="1"></div>
+        <div class="cell" data-i="2"></div>
+        <div class="cell" data-i="3"></div>
+        <div class="cell" data-i="4"></div>
+        <div class="cell" data-i="5"></div>
+        <div class="cell" data-i="6"></div>
+        <div class="cell" data-i="7"></div>
+        <div class="cell" data-i="8"></div>
+    </div>
 
-        function handleCell(e) {
-            const i = e.target.getAttribute('data-idx');
-            if (board[i] !== "" || !active) return;
+    <div class="controls">
+        <button onclick="resetGame()">إعادة اللعب</button>
+        <button class="secondary" id="ai-toggle" onclick="toggleAI()">لعب ضد AI: قفل</button>
+    </div>
+</div>
 
-            board[i] = player;
-            e.target.innerHTML = `<span>${player}</span>`;
-            e.target.classList.add(player.toLowerCase());
+<script>
+    let board = ["", "", "", "", "", "", "", "", ""];
+    let currentPlayer = "X";
+    let isGameActive = true;
+    let vsAI = false;
+    let scores = { X: 0, O: 0, Draw: 0 };
 
-            if (checkWin()) {
-                statusText.innerHTML = `👑 الملك <span style="color:var(--${player === 'X' ? 'cyan' : 'pink'})">${player}</span> فاز بالمعركة!`;
-                active = false;
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-                return;
-            }
+    const cells = document.querySelectorAll('.cell');
+    const statusText = document.getElementById('status-text');
+    const aiBtn = document.getElementById('ai-toggle');
 
-            if (!board.includes("")) {
-                statusText.innerText = "تعادل الأبطال! 🤝";
-                active = false;
-                return;
-            }
+    const winConditions = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 
-            player = player === "X" ? "O" : "X";
-            turnText.innerText = player;
-            turnText.style.color = `var(--${player === 'X' ? 'cyan' : 'pink'})`;
+    function toggleAI() {
+        vsAI = !vsAI;
+        aiBtn.innerText = vsAI ? "لعب ضد AI: تشغيل" : "لعب ضد AI: قفل";
+        resetGame();
+    }
+
+    function handleCellClick(e) {
+        const i = e.target.getAttribute('data-i');
+        if (board[i] !== "" || !isGameActive) return;
+
+        makeMove(i, "X");
+
+        if (isGameActive && vsAI) {
+            setTimeout(computerMove, 500);
         }
+    }
 
-        function checkWin() {
-            for (let w of wins) {
-                if (board[w[0]] && board[w[0]] === board[w[1]] && board[w[0]] === board[w[2]]) {
-                    w.forEach(idx => cells[idx].classList.add('winner'));
-                    return true;
-                }
+    function makeMove(index, player) {
+        board[index] = player;
+        cells[index].innerText = player;
+        cells[index].classList.add(player.toLowerCase());
+        
+        if (checkWin()) {
+            endGame(player);
+        } else if (!board.includes("")) {
+            endGame("Draw");
+        } else {
+            currentPlayer = player === "X" ? "O" : "X";
+            statusText.innerHTML = `دور اللاعب <span style="color:var(--${currentPlayer.toLowerCase() === 'x' ? 'cyan' : 'pink'})">${currentPlayer}</span>`;
+        }
+    }
+
+    function computerMove() {
+        if (!isGameActive) return;
+        // AI بسيط: يختار أول مكان فاضي (تقدر تطوره ليكون ذكي جداً)
+        let emptyIndices = board.map((v, i) => v === "" ? i : null).filter(v => v !== null);
+        let move = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+        makeMove(move, "O");
+    }
+
+    function checkWin() {
+        for (let condition of winConditions) {
+            const [a, b, c] = condition;
+            if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                [a,b,c].forEach(i => cells[i].classList.add('winner'));
+                return true;
             }
-            return false;
         }
+        return false;
+    }
 
-        function reset() {
-            board = ["", "", "", "", "", "", "", "", ""];
-            active = true;
-            player = "X";
-            statusText.innerHTML = `جولة اللاعب: <span id="turn" style="color:var(--cyan)">X</span>`;
-            cells.forEach(c => { c.innerHTML = ""; c.classList.remove('x', 'o', 'winner'); });
+    function endGame(result) {
+        isGameActive = false;
+        if (result === "Draw") {
+            statusText.innerText = "تعادل!";
+            scores.Draw++;
+            document.getElementById('score-draw').innerText = scores.Draw;
+            document.getElementById('game-ui').classList.add('shake');
+            setTimeout(() => document.getElementById('game-ui').classList.remove('shake'), 400);
+        } else {
+            statusText.innerHTML = `🏆 الفائز: <span style="color:var(--${result.toLowerCase() === 'x' ? 'cyan' : 'pink'})">${result}</span>`;
+            scores[result]++;
+            document.getElementById(`score-${result.toLowerCase()}`).innerText = scores[result];
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         }
+    }
 
-        cells.forEach(c => c.addEventListener('click', handleCell));
-    </script>
+    function resetGame() {
+        board = ["", "", "", "", "", "", "", "", ""];
+        isGameActive = true;
+        currentPlayer = "X";
+        statusText.innerHTML = `دور اللاعب <span style="color:var(--cyan)">X</span>`;
+        cells.forEach(c => {
+            c.innerText = "";
+            c.classList.remove('x', 'o', 'winner');
+        });
+    }
+
+    cells.forEach(c => c.addEventListener('click', handleCellClick));
+</script>
 </body>
 </html>
