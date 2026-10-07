@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>سجل القراءة | رواياتي</title>
+    <title>البحث | رواياتي</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,462 +13,567 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
           rel="stylesheet">
 
-    <style>
+<style>
 
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        body{
-            font-family:"Cairo",sans-serif;
-            background:#030712;
-            color:white;
-            min-height:100vh;
-            padding-bottom:90px;
-        }
+body{
+    font-family:"Cairo",sans-serif;
+    background:#030712;
+    color:white;
+    min-height:100vh;
+    padding-bottom:90px;
+}
 
-        a{
-            text-decoration:none;
-            color:inherit;
-        }
+a{
+    text-decoration:none;
+    color:inherit;
+}
 
-        /* ================= HEADER ================= */
+/* ================= HEADER ================= */
 
-        header{
-            height:70px;
-            padding:0 6%;
+header{
+    height:70px;
+    padding:0 6%;
 
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 
-            position:sticky;
-            top:0;
-            z-index:100;
+    position:sticky;
+    top:0;
+    z-index:100;
 
-            background:rgba(3,7,18,.94);
-            backdrop-filter:blur(18px);
+    background:rgba(3,7,18,.94);
+    backdrop-filter:blur(18px);
 
-            border-bottom:1px solid rgba(255,255,255,.07);
-        }
+    border-bottom:1px solid rgba(255,255,255,.07);
+}
 
-        .logo{
-            color:#3b82f6;
-            font-size:24px;
-            font-weight:800;
-        }
+.logo{
+    color:#3b82f6;
+    font-size:24px;
+    font-weight:800;
+}
 
-        .header-actions{
-            display:flex;
-            gap:10px;
-        }
+.header-actions{
+    display:flex;
+    gap:10px;
+}
 
-        .header-btn{
-            width:42px;
-            height:42px;
+.header-btn{
+    width:42px;
+    height:42px;
 
-            display:flex;
-            align-items:center;
-            justify-content:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-            border-radius:12px;
+    border-radius:12px;
 
-            background:rgba(255,255,255,.05);
-            border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.08);
 
-            font-size:18px;
+    font-size:18px;
 
-            transition:.3s;
-        }
+    transition:.3s;
+}
 
-        .header-btn:hover{
-            background:#3b82f6;
-            transform:translateY(-2px);
-        }
+.header-btn:hover{
+    background:#3b82f6;
+    transform:translateY(-2px);
+}
 
 
-        /* ================= CONTAINER ================= */
+/* ================= CONTAINER ================= */
 
-        .container{
-            width:92%;
-            max-width:900px;
-            margin:auto;
-            padding:35px 0;
-        }
+.container{
+    width:92%;
+    max-width:1100px;
+    margin:auto;
+    padding:35px 0;
+}
 
 
-        /* ================= TITLE ================= */
+/* ================= TITLE ================= */
 
-        .page-title{
-            margin-bottom:25px;
-        }
+.page-title{
+    margin-bottom:25px;
+}
 
-        .page-title h1{
-            font-size:30px;
-            font-weight:800;
-            margin-bottom:5px;
-        }
+.page-title h1{
+    font-size:30px;
+    font-weight:800;
+    margin-bottom:5px;
+}
 
-        .page-title p{
-            color:#9ca3af;
-            font-size:13px;
-        }
+.page-title p{
+    color:#9ca3af;
+    font-size:13px;
+}
 
 
-        /* ================= HISTORY CARD ================= */
+/* ================= SEARCH ================= */
 
-        .history-card{
-            display:flex;
-            gap:20px;
+.search-wrapper{
+    position:relative;
+    margin-bottom:30px;
+}
 
-            padding:18px;
+.search-wrapper input{
+    width:100%;
+    height:58px;
 
-            background:rgba(255,255,255,.035);
+    padding:0 55px 0 20px;
 
-            border:1px solid rgba(255,255,255,.07);
+    border-radius:16px;
 
-            border-radius:20px;
+    background:rgba(255,255,255,.045);
 
-            transition:.3s;
-        }
+    border:1px solid rgba(255,255,255,.09);
 
-        .history-card:hover{
-            border-color:rgba(59,130,246,.4);
+    outline:none;
 
-            box-shadow:
-                0 15px 40px rgba(0,0,0,.3);
+    color:white;
 
-            transform:translateY(-3px);
-        }
+    font-family:"Cairo";
 
+    font-size:13px;
 
-        /* ================= COVER ================= */
+    transition:.3s;
+}
 
-        .cover{
-            width:145px;
-            height:205px;
+.search-wrapper input:focus{
+    border-color:#3b82f6;
 
-            object-fit:cover;
+    box-shadow:
+        0 0 0 3px rgba(59,130,246,.08);
+}
 
-            border-radius:14px;
+.search-icon{
+    position:absolute;
 
-            flex-shrink:0;
-        }
+    right:18px;
+    top:50%;
 
+    transform:translateY(-50%);
 
-        /* ================= INFO ================= */
+    font-size:20px;
 
-        .history-info{
-            flex:1;
+    color:#60a5fa;
 
-            display:flex;
-            flex-direction:column;
+    pointer-events:none;
+}
 
-            justify-content:center;
-        }
+.clear-search{
+    position:absolute;
 
-        .badge{
-            display:inline-block;
+    left:15px;
+    top:50%;
 
-            width:max-content;
+    transform:translateY(-50%);
 
-            padding:5px 10px;
+    width:30px;
+    height:30px;
 
-            margin-bottom:10px;
+    display:none;
 
-            border-radius:20px;
+    align-items:center;
+    justify-content:center;
 
-            background:rgba(59,130,246,.1);
+    border:none;
 
-            border:1px solid rgba(59,130,246,.2);
+    border-radius:50%;
 
-            color:#60a5fa;
+    background:rgba(255,255,255,.08);
 
-            font-size:10px;
-        }
+    color:#9ca3af;
 
-        .history-info h2{
-            font-size:23px;
-            font-weight:800;
+    cursor:pointer;
 
-            margin-bottom:6px;
-        }
+    font-size:14px;
+}
 
-        .author{
-            color:#9ca3af;
-            font-size:12px;
 
-            margin-bottom:15px;
-        }
+/* ================= QUICK ================= */
 
+.quick-title{
+    font-size:17px;
+    font-weight:800;
 
-        /* ================= CHAPTER ================= */
+    margin-bottom:13px;
+}
 
-        .chapter-box{
-            padding:13px 15px;
+.quick-searches{
+    display:flex;
+    gap:8px;
 
-            border-radius:13px;
+    overflow-x:auto;
 
-            background:rgba(255,255,255,.035);
+    padding-bottom:5px;
 
-            border:1px solid rgba(255,255,255,.06);
+    margin-bottom:30px;
+}
 
-            margin-bottom:15px;
-        }
+.quick-searches::-webkit-scrollbar{
+    display:none;
+}
 
-        .chapter-box small{
-            color:#9ca3af;
+.quick-btn{
+    white-space:nowrap;
 
-            display:block;
+    padding:8px 14px;
 
-            font-size:10px;
+    border-radius:25px;
 
-            margin-bottom:3px;
-        }
+    background:rgba(255,255,255,.04);
 
-        .chapter-box strong{
-            font-size:14px;
-        }
+    border:1px solid rgba(255,255,255,.07);
 
+    color:#9ca3af;
 
-        /* ================= BUTTONS ================= */
+    font-family:"Cairo";
 
-        .buttons{
-            display:flex;
-            gap:9px;
-            flex-wrap:wrap;
-        }
+    font-size:11px;
 
-        .btn{
-            padding:10px 16px;
+    cursor:pointer;
 
-            border-radius:11px;
+    transition:.3s;
+}
 
-            font-size:11px;
+.quick-btn:hover{
+    background:#3b82f6;
+    border-color:#3b82f6;
+    color:white;
+}
 
-            font-weight:700;
 
-            transition:.3s;
-        }
+/* ================= RESULTS HEADER ================= */
 
-        .continue-btn{
-            background:#3b82f6;
-            color:white;
-        }
+.results-header{
+    display:flex;
 
-        .continue-btn:hover{
-            background:#2563eb;
-        }
+    align-items:center;
 
-        .details-btn{
-            background:rgba(255,255,255,.05);
+    justify-content:space-between;
 
-            border:1px solid rgba(255,255,255,.08);
+    margin-bottom:15px;
+}
 
-            color:#d1d5db;
-        }
+.results-header h2{
+    font-size:19px;
+    font-weight:800;
+}
 
-        .details-btn:hover{
-            background:rgba(255,255,255,.1);
-        }
+.results-header span{
+    color:#60a5fa;
+    font-size:11px;
+}
 
 
-        /* ================= DATE ================= */
+/* ================= GRID ================= */
 
-        .date{
-            margin-top:12px;
+.novels-grid{
+    display:grid;
 
-            color:#6b7280;
+    grid-template-columns:
+        repeat(5,1fr);
 
-            font-size:10px;
-        }
+    gap:18px;
+}
 
 
-        /* ================= EMPTY ================= */
+/* ================= CARD ================= */
 
-        .empty{
-            display:none;
+.novel-card{
+    overflow:hidden;
 
-            text-align:center;
+    border-radius:17px;
 
-            padding:80px 20px;
+    background:rgba(255,255,255,.035);
 
-            background:rgba(255,255,255,.025);
+    border:1px solid rgba(255,255,255,.07);
 
-            border:1px solid rgba(255,255,255,.06);
+    transition:.35s;
+}
 
-            border-radius:20px;
-        }
+.novel-card:hover{
+    transform:translateY(-5px);
 
-        .empty-icon{
-            font-size:55px;
+    border-color:
+        rgba(59,130,246,.4);
 
-            margin-bottom:15px;
-        }
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.35);
+}
 
-        .empty h2{
-            font-size:20px;
+.cover{
+    width:100%;
+    height:245px;
 
-            margin-bottom:7px;
-        }
+    object-fit:cover;
 
-        .empty p{
-            color:#9ca3af;
+    display:block;
+}
 
-            font-size:12px;
+.card-content{
+    padding:13px;
+}
 
-            margin-bottom:22px;
-        }
+.category{
+    display:inline-block;
 
-        .browse-btn{
-            display:inline-block;
+    padding:4px 8px;
 
-            padding:11px 20px;
+    border-radius:20px;
 
-            background:#3b82f6;
+    background:rgba(59,130,246,.1);
 
-            border-radius:12px;
+    border:1px solid rgba(59,130,246,.18);
 
-            font-size:12px;
+    color:#60a5fa;
 
-            font-weight:700;
-        }
+    font-size:9px;
 
+    margin-bottom:7px;
+}
 
-        /* ================= CLEAR ================= */
+.novel-title{
+    font-size:13px;
 
-        .clear-box{
-            display:none;
+    font-weight:800;
 
-            margin-top:15px;
+    white-space:nowrap;
 
-            text-align:left;
-        }
+    overflow:hidden;
 
-        .clear-btn{
-            border:none;
+    text-overflow:ellipsis;
 
-            background:rgba(239,68,68,.08);
+    margin-bottom:4px;
+}
 
-            border:1px solid rgba(239,68,68,.15);
+.author{
+    color:#9ca3af;
 
-            color:#f87171;
+    font-size:10px;
 
-            padding:9px 14px;
+    white-space:nowrap;
 
-            border-radius:10px;
+    overflow:hidden;
 
-            font-family:"Cairo";
+    text-overflow:ellipsis;
 
-            font-size:10px;
+    margin-bottom:10px;
+}
 
-            cursor:pointer;
+.details-btn{
+    display:block;
 
-        }
+    text-align:center;
 
+    padding:8px;
 
-        /* ================= BOTTOM NAV ================= */
+    border-radius:9px;
 
-        .bottom-nav{
-            position:fixed;
+    background:rgba(59,130,246,.1);
 
-            bottom:0;
-            left:0;
+    color:#60a5fa;
 
-            width:100%;
-            height:70px;
+    font-size:10px;
 
-            display:flex;
+    font-weight:700;
 
-            justify-content:space-around;
-            align-items:center;
+    transition:.3s;
+}
 
-            background:rgba(3,7,18,.96);
+.details-btn:hover{
+    background:#3b82f6;
+    color:white;
+}
 
-            backdrop-filter:blur(18px);
 
-            border-top:1px solid rgba(255,255,255,.07);
+/* ================= EMPTY ================= */
 
-            z-index:200;
-        }
+.empty{
+    display:none;
 
-        .nav-item{
-            display:flex;
+    text-align:center;
 
-            flex-direction:column;
+    padding:70px 20px;
 
-            align-items:center;
+    background:rgba(255,255,255,.025);
 
-            gap:3px;
+    border:1px solid rgba(255,255,255,.06);
 
-            color:#6b7280;
+    border-radius:20px;
+}
 
-            font-size:10px;
+.empty-icon{
+    font-size:50px;
 
-            transition:.3s;
-        }
+    margin-bottom:12px;
+}
 
-        .nav-item span{
-            font-size:19px;
-        }
+.empty h3{
+    font-size:19px;
 
-        .nav-item:hover,
-        .nav-item.active{
-            color:#3b82f6;
-        }
+    margin-bottom:7px;
+}
 
+.empty p{
+    color:#9ca3af;
 
-        /* ================= RESPONSIVE ================= */
+    font-size:12px;
+}
 
-        @media(max-width:600px){
 
-            .container{
-                width:92%;
-                padding-top:25px;
-            }
+/* ================= INITIAL ================= */
 
-            .page-title h1{
-                font-size:25px;
-            }
+.initial{
+    text-align:center;
 
-            .history-card{
-                gap:13px;
-                padding:13px;
-            }
+    padding:65px 20px;
 
-            .cover{
-                width:105px;
-                height:155px;
-            }
+    background:rgba(255,255,255,.025);
 
-            .history-info h2{
-                font-size:17px;
-            }
+    border:1px solid rgba(255,255,255,.06);
 
-            .author{
-                font-size:10px;
-                margin-bottom:10px;
-            }
+    border-radius:20px;
+}
 
-            .chapter-box{
-                padding:9px 11px;
-                margin-bottom:10px;
-            }
+.initial-icon{
+    font-size:50px;
 
-            .buttons{
-                gap:6px;
-            }
+    margin-bottom:12px;
+}
 
-            .btn{
-                padding:8px 11px;
-                font-size:9px;
-            }
+.initial h3{
+    font-size:19px;
 
-        }
+    margin-bottom:7px;
+}
 
-    </style>
+.initial p{
+    color:#9ca3af;
+
+    font-size:12px;
+}
+
+
+/* ================= BOTTOM NAV ================= */
+
+.bottom-nav{
+    position:fixed;
+
+    bottom:0;
+    left:0;
+
+    width:100%;
+    height:70px;
+
+    display:flex;
+
+    justify-content:space-around;
+    align-items:center;
+
+    background:rgba(3,7,18,.96);
+
+    backdrop-filter:blur(18px);
+
+    border-top:1px solid rgba(255,255,255,.07);
+
+    z-index:200;
+}
+
+.nav-item{
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:3px;
+
+    color:#6b7280;
+
+    font-size:10px;
+
+    transition:.3s;
+}
+
+.nav-item span{
+    font-size:19px;
+}
+
+.nav-item:hover,
+.nav-item.active{
+    color:#3b82f6;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1000px){
+
+    .novels-grid{
+        grid-template-columns:
+            repeat(4,1fr);
+    }
+
+}
+
+@media(max-width:750px){
+
+    .novels-grid{
+        grid-template-columns:
+            repeat(3,1fr);
+
+        gap:12px;
+    }
+
+    .cover{
+        height:200px;
+    }
+
+}
+
+@media(max-width:500px){
+
+    .container{
+        width:92%;
+        padding-top:25px;
+    }
+
+    .page-title h1{
+        font-size:25px;
+    }
+
+    .novels-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+
+        gap:12px;
+    }
+
+    .cover{
+        height:220px;
+    }
+
+    .card-content{
+        padding:10px;
+    }
+
+    .novel-title{
+        font-size:12px;
+    }
+
+}
+
+</style>
 
 </head>
 
@@ -486,8 +591,8 @@
 
     <div class="header-actions">
 
-        <a href="search.html" class="header-btn">
-            🔍
+        <a href="index.html" class="header-btn">
+            🏠
         </a>
 
         <a href="library.html" class="header-btn">
@@ -508,113 +613,38 @@
     <div class="page-title">
 
         <h1>
-            سجل القراءة 📖
+            البحث 🔍
         </h1>
 
         <p>
-            تابع من أين توقفت في آخر رواية قرأتها
+            ابحث عن روايتك المفضلة أو اسم الكاتب
         </p>
 
     </div>
 
 
 
-    <!-- HISTORY -->
+    <!-- SEARCH -->
 
-    <div
-        class="history-card"
-        id="historyCard">
+    <div class="search-wrapper">
 
+        <span class="search-icon">
+            🔍
+        </span>
 
-        <img
-            id="novelCover"
-            class="cover"
-            src=""
-            alt="غلاف الرواية"
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="اكتب اسم الرواية أو الكاتب..."
+            autocomplete="off"
         >
 
-
-        <div class="history-info">
-
-
-            <span class="badge">
-                آخر قراءة
-            </span>
-
-
-            <h2 id="novelTitle">
-                —
-            </h2>
-
-
-            <p
-                class="author"
-                id="novelAuthor">
-                —
-            </p>
-
-
-            <div class="chapter-box">
-
-                <small>
-                    توقفت عند
-                </small>
-
-                <strong id="chapterTitle">
-                    —
-                </strong>
-
-            </div>
-
-
-            <div class="buttons">
-
-                <a
-                    href="#"
-                    id="continueBtn"
-                    class="btn continue-btn">
-
-                    ▶ متابعة القراءة
-
-                </a>
-
-
-                <a
-                    href="#"
-                    id="detailsBtn"
-                    class="btn details-btn">
-
-                    تفاصيل الرواية
-
-                </a>
-
-            </div>
-
-
-            <div
-                class="date"
-                id="readDate">
-                —
-            </div>
-
-
-        </div>
-
-    </div>
-
-
-
-    <!-- CLEAR -->
-
-    <div
-        class="clear-box"
-        id="clearBox">
-
         <button
-            class="clear-btn"
-            onclick="clearHistory()">
+            class="clear-search"
+            id="clearSearch"
+            onclick="clearSearch()">
 
-            🗑 مسح سجل القراءة
+            ✕
 
         </button>
 
@@ -622,31 +652,138 @@
 
 
 
-    <!-- EMPTY -->
+    <!-- QUICK SEARCH -->
+
+    <h2 class="quick-title">
+        بحث سريع
+    </h2>
+
+    <div class="quick-searches">
+
+        <button
+            class="quick-btn"
+            onclick="quickSearch('أحمد')">
+
+            أحمد
+
+        </button>
+
+        <button
+            class="quick-btn"
+            onclick="quickSearch('سارة')">
+
+            سارة
+
+        </button>
+
+        <button
+            class="quick-btn"
+            onclick="quickSearch('حب')">
+
+            حب
+
+        </button>
+
+        <button
+            class="quick-btn"
+            onclick="quickSearch('السر')">
+
+            السر
+
+        </button>
+
+        <button
+            class="quick-btn"
+            onclick="quickSearch('مدينة')">
+
+            مدينة
+
+        </button>
+
+        <button
+            class="quick-btn"
+            onclick="quickSearch('الماضي')">
+
+            الماضي
+
+        </button>
+
+        <button
+            class="quick-btn"
+            onclick="quickSearch('ليلة')">
+
+            ليلة
+
+        </button>
+
+    </div>
+
+
+
+    <!-- RESULTS -->
 
     <div
-        class="empty"
-        id="empty">
+        id="resultsSection"
+        style="display:none;">
 
-        <div class="empty-icon">
-            📖
+        <div class="results-header">
+
+            <h2>
+                نتائج البحث
+            </h2>
+
+            <span id="resultCount">
+                0 رواية
+            </span>
+
         </div>
 
-        <h2>
-            مازال ما قريتش أي رواية
-        </h2>
+
+        <div
+            class="novels-grid"
+            id="novelsGrid">
+        </div>
+
+
+        <div
+            class="empty"
+            id="empty">
+
+            <div class="empty-icon">
+                😕
+            </div>
+
+            <h3>
+                ما لقيناش رواية
+            </h3>
+
+            <p>
+                جرب كلمة أخرى أو اسم كاتب مختلف
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- INITIAL -->
+
+    <div
+        class="initial"
+        id="initial">
+
+        <div class="initial-icon">
+            📚
+        </div>
+
+        <h3>
+            ابحث عن رواية
+        </h3>
 
         <p>
-            ابدأ قراءة رواية الآن، وسيظهر آخر فصل قرأته هنا.
+            اكتب اسم الرواية أو الكاتب باش تظهرلك النتائج
         </p>
-
-        <a
-            href="all-novels.html"
-            class="browse-btn">
-
-            اكتشف الروايات
-
-        </a>
 
     </div>
 
@@ -664,7 +801,6 @@
         class="nav-item">
 
         <span>⌂</span>
-
         الرئيسية
 
     </a>
@@ -675,7 +811,6 @@
         class="nav-item">
 
         <span>📖</span>
-
         الروايات
 
     </a>
@@ -683,10 +818,9 @@
 
     <a
         href="search.html"
-        class="nav-item">
+        class="nav-item active">
 
         <span>🔍</span>
-
         البحث
 
     </a>
@@ -694,10 +828,9 @@
 
     <a
         href="history.html"
-        class="nav-item active">
+        class="nav-item">
 
         <span>🕘</span>
-
         السجل
 
     </a>
@@ -708,7 +841,6 @@
         class="nav-item">
 
         <span>👤</span>
-
         حسابي
 
     </a>
@@ -721,201 +853,324 @@
 
 
 /* ==================================================
-   بيانات الروايات
+   الروايات
 ================================================== */
 
 const novels = [
 
-    {
-        id:1,
-        title:"آخر ما تبقى مني",
-        author:"أحمد الرواي",
-        cover:"https://images.unsplash.com/photo-1512820790803-83ca734da794"
-    },
+    {id:1,title:"آخر ما تبقى مني",author:"أحمد الرواي",category:"دراما",cover:"https://images.unsplash.com/photo-1512820790803-83ca734da794"},
+    {id:2,title:"مدينة الرماد",author:"ليان نور",category:"غموض",cover:"https://images.unsplash.com/photo-1500534623283-312aade485b7"},
+    {id:3,title:"حينما ينام القمر",author:"سارة محمد",category:"رومانسية",cover:"https://images.unsplash.com/photo-1499750310107-5fef28a66643"},
+    {id:4,title:"ظل الماضي",author:"ياسين كاتب",category:"دراما",cover:"https://images.unsplash.com/photo-1516979187457-637abb4f9353"},
+    {id:5,title:"رسائل لم تصل",author:"نور الهدى",category:"رومانسية",cover:"https://images.unsplash.com/photo-1455390582262-044cdead277a"},
+    {id:6,title:"آخر ليلة",author:"يوسف خالد",category:"تشويق",cover:"https://images.unsplash.com/photo-1519681393784-d120267933ba"},
+    {id:7,title:"الطريق المجهول",author:"عمر عادل",category:"مغامرة",cover:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"},
+    {id:8,title:"ما وراء الظلام",author:"مالك أحمد",category:"رعب",cover:"https://images.unsplash.com/photo-1511497584788-876760111969"},
+    {id:9,title:"سر الغرفة السابعة",author:"رامي منصور",category:"غموض",cover:"https://images.unsplash.com/photo-1511108690759-009324a90311"},
+    {id:10,title:"عندما اختفى المطر",author:"ريم عادل",category:"دراما",cover:"https://images.unsplash.com/photo-1501691223387-dd0500403074"},
 
-    {
-        id:2,
-        title:"مدينة الرماد",
-        author:"ليان نور",
-        cover:"https://images.unsplash.com/photo-1500534623283-312aade485b7"
-    },
+    {id:11,title:"لعنة البحر",author:"سليم ناصر",category:"رعب"},
+    {id:12,title:"بين نارين",author:"محمد أمين",category:"دراما"},
+    {id:13,title:"حكاية بلا نهاية",author:"ليلى حسن",category:"دراما"},
+    {id:14,title:"صوت من الماضي",author:"آدم يوسف",category:"غموض"},
+    {id:15,title:"الفتاة التي لم تعد",author:"مريم علي",category:"رومانسية"},
+    {id:16,title:"مدينة لا تنام",author:"كريم وليد",category:"دراما"},
+    {id:17,title:"حب تحت المطر",author:"هبة أحمد",category:"رومانسية"},
+    {id:18,title:"الطيف الأسود",author:"ياسر عادل",category:"رعب"},
+    {id:19,title:"آخر وعد",author:"سارة نجيب",category:"رومانسية"},
+    {id:20,title:"خلف الباب",author:"إياد منصور",category:"غموض"},
 
-    {
-        id:3,
-        title:"حينما ينام القمر",
-        author:"سارة محمد",
-        cover:"https://images.unsplash.com/photo-1499750310107-5fef28a66643"
-    },
+    {id:21,title:"المنفى",author:"خالد سمير",category:"دراما"},
+    {id:22,title:"قبل أن ترحل",author:"نور أحمد",category:"رومانسية"},
+    {id:23,title:"نصف قلب",author:"ملك سامي",category:"رومانسية"},
+    {id:24,title:"ليلة في الغابة",author:"أنس إبراهيم",category:"رعب"},
+    {id:25,title:"أوراق محترقة",author:"رامي يوسف",category:"دراما"},
+    {id:26,title:"عشق مستحيل",author:"رؤى محمد",category:"رومانسية"},
+    {id:27,title:"المجهول",author:"سيف الدين",category:"غموض"},
+    {id:28,title:"حين التقينا",author:"إيمان علي",category:"رومانسية"},
+    {id:29,title:"أنت قدري",author:"ليان أحمد",category:"رومانسية"},
+    {id:30,title:"الناجي الأخير",author:"عادل منصور",category:"مغامرة"},
 
-    {
-        id:4,
-        title:"ظل الماضي",
-        author:"ياسين كاتب",
-        cover:"https://images.unsplash.com/photo-1516979187457-637abb4f9353"
-    },
+    {id:31,title:"رماد الذكريات",author:"حسن كمال",category:"دراما"},
+    {id:32,title:"أحببتك مرتين",author:"جنى يوسف",category:"رومانسية"},
+    {id:33,title:"المدينة القديمة",author:"وليد سامي",category:"غموض"},
+    {id:34,title:"البيت المهجور",author:"طارق نجيب",category:"رعب"},
+    {id:35,title:"بيننا ألف حكاية",author:"نوران خالد",category:"دراما"},
+    {id:36,title:"الرجل الأخير",author:"إيهاب حسن",category:"تشويق"},
+    {id:37,title:"أسرار الليل",author:"يحيى محمد",category:"غموض"},
+    {id:38,title:"قدرنا واحد",author:"تالا يوسف",category:"رومانسية"},
+    {id:39,title:"على حافة الهاوية",author:"سامي خالد",category:"تشويق"},
+    {id:40,title:"الممر السري",author:"بدر الدين",category:"غموض"},
 
-    {
-        id:5,
-        title:"رسائل لم تصل",
-        author:"نور الهدى",
-        cover:"https://images.unsplash.com/photo-1455390582262-044cdead277a"
-    }
+    {id:41,title:"أنت وأنا فقط",author:"سلمى علي",category:"رومانسية"},
+    {id:42,title:"الندم الأخير",author:"فارس أحمد",category:"دراما"},
+    {id:43,title:"الرسالة الأخيرة",author:"سارة ناصر",category:"غموض"},
+    {id:44,title:"نبض بعيد",author:"ياسمين عادل",category:"رومانسية"},
+    {id:45,title:"لعنة العائلة",author:"جواد منصور",category:"رعب"},
+    {id:46,title:"حين يعود الغائب",author:"مريم خالد",category:"دراما"},
+    {id:47,title:"الحب المستحيل",author:"رنا يوسف",category:"رومانسية"},
+    {id:48,title:"أيام لا تنسى",author:"أمين ناصر",category:"دراما"},
+    {id:49,title:"صندوق الأسرار",author:"عبد الرحمن علي",category:"غموض"},
+    {id:50,title:"في انتظارك",author:"نورهان محمد",category:"رومانسية"},
+
+    {id:51,title:"الوجه الآخر",author:"حسام نجيب",category:"غموض"},
+    {id:52,title:"الطريق إلى النجاة",author:"كريم أحمد",category:"مغامرة"},
+    {id:53,title:"حب من بعيد",author:"سندس علي",category:"رومانسية"},
+    {id:54,title:"المطاردة",author:"مراد خالد",category:"تشويق"},
+    {id:55,title:"الحقيقة المخفية",author:"ياسين محمد",category:"غموض"},
+    {id:56,title:"قصة قلب",author:"آية نور",category:"رومانسية"},
+    {id:57,title:"السر القديم",author:"فؤاد ناصر",category:"غموض"},
+    {id:58,title:"في قلب العاصفة",author:"عمر يوسف",category:"مغامرة"},
+    {id:59,title:"لا تنساني",author:"ملك أحمد",category:"رومانسية"},
+    {id:60,title:"المدينة المظلمة",author:"سيف أحمد",category:"رعب"},
+
+    {id:61,title:"رسالة مجهولة",author:"ريم خالد",category:"غموض"},
+    {id:62,title:"حب بلا حدود",author:"لارا محمد",category:"رومانسية"},
+    {id:63,title:"العودة",author:"مازن علي",category:"دراما"},
+    {id:64,title:"ظل المدينة",author:"إسلام ناصر",category:"غموض"},
+    {id:65,title:"أجمل صدفة",author:"سارة يوسف",category:"رومانسية"},
+    {id:66,title:"السر الأخير",author:"حسين أحمد",category:"غموض"},
+    {id:67,title:"أبواب مغلقة",author:"خالد يوسف",category:"دراما"},
+    {id:68,title:"وعد قديم",author:"ليلى ناصر",category:"رومانسية"},
+    {id:69,title:"نهاية البداية",author:"أمين خالد",category:"دراما"},
+    {id:70,title:"الحكاية الأخيرة",author:"محمد ياسين",category:"غموض"}
 
 ];
 
 
 /* ==================================================
-   الحصول على سجل القراءة
+   صور افتراضية للروايات
 ================================================== */
 
-const savedHistory =
-    localStorage.getItem("lastRead");
+const defaultCovers = [
+
+    "https://images.unsplash.com/photo-1512820790803-83ca734da794",
+    "https://images.unsplash.com/photo-1500534623283-312aade485b7",
+    "https://images.unsplash.com/photo-1499750310107-5fef28a66643",
+    "https://images.unsplash.com/photo-1516979187457-637abb4f9353",
+    "https://images.unsplash.com/photo-1455390582262-044cdead277a",
+    "https://images.unsplash.com/photo-1519681393784-d120267933ba",
+    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
+    "https://images.unsplash.com/photo-1511497584788-876760111969",
+    "https://images.unsplash.com/photo-1511108690759-009324a90311",
+    "https://images.unsplash.com/photo-1501691223387-dd0500403074"
+
+];
+
+
+/* ==================================================
+   إضافة صور لباقي الروايات
+================================================== */
+
+novels.forEach((novel,index)=>{
+
+    if(!novel.cover){
+
+        novel.cover =
+            defaultCovers[index % defaultCovers.length];
+
+    }
+
+});
 
 
 /* ==================================================
    العناصر
 ================================================== */
 
-const historyCard =
-    document.getElementById("historyCard");
+const searchInput =
+    document.getElementById("searchInput");
+
+const clearButton =
+    document.getElementById("clearSearch");
+
+const resultsSection =
+    document.getElementById("resultsSection");
+
+const initial =
+    document.getElementById("initial");
+
+const grid =
+    document.getElementById("novelsGrid");
 
 const empty =
     document.getElementById("empty");
 
-const clearBox =
-    document.getElementById("clearBox");
+const resultCount =
+    document.getElementById("resultCount");
 
 
 /* ==================================================
-   إذا ماكانش تاريخ
+   تنفيذ البحث
 ================================================== */
 
-if(!savedHistory){
+function performSearch(){
 
-    historyCard.style.display = "none";
-
-    empty.style.display = "block";
-
-}else{
-
-    try{
-
-        const history =
-            JSON.parse(savedHistory);
+    const query =
+        searchInput.value
+        .trim()
+        .toLowerCase();
 
 
-        const novelId =
-            Number(history.novel);
+    /* بدون بحث */
+
+    if(query === ""){
+
+        resultsSection.style.display = "none";
+
+        initial.style.display = "block";
+
+        clearButton.style.display = "none";
+
+        return;
+
+    }
 
 
-        const novel =
-            novels.find(item =>
-                item.id === novelId
+    resultsSection.style.display = "block";
+
+    initial.style.display = "none";
+
+    clearButton.style.display = "flex";
+
+
+    /* البحث في الاسم والكاتب والتصنيف */
+
+    const results =
+        novels.filter(novel => {
+
+            return (
+
+                novel.title
+                .toLowerCase()
+                .includes(query)
+
+                ||
+
+                novel.author
+                .toLowerCase()
+                .includes(query)
+
+                ||
+
+                novel.category
+                .toLowerCase()
+                .includes(query)
+
             );
 
+        });
 
-        if(!novel){
 
-            historyCard.style.display = "none";
+    resultCount.textContent =
+        `${results.length} رواية`;
 
-            empty.style.display = "block";
 
-        }else{
+    /* لا توجد نتائج */
 
-            showHistory(
-                history,
-                novel
-            );
+    if(results.length === 0){
 
-        }
-
-    }catch(error){
-
-        historyCard.style.display = "none";
+        grid.innerHTML = "";
 
         empty.style.display = "block";
 
+        return;
+
     }
+
+
+    empty.style.display = "none";
+
+
+    /* عرض النتائج */
+
+    grid.innerHTML =
+        results.map(novel => `
+
+            <article class="novel-card">
+
+                <a href="novel.html?id=${novel.id}">
+
+                    <img
+                        class="cover"
+                        src="${novel.cover}?auto=format&fit=crop&w=600&q=80"
+                        alt="${novel.title}"
+                    >
+
+                    <div class="card-content">
+
+                        <span class="category">
+                            ${novel.category}
+                        </span>
+
+                        <h3 class="novel-title">
+                            ${novel.title}
+                        </h3>
+
+                        <p class="author">
+                            بقلم ${novel.author}
+                        </p>
+
+                        <div class="details-btn">
+                            عرض الرواية
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </article>
+
+        `).join("");
 
 }
 
 
 /* ==================================================
-   عرض آخر قراءة
+   البحث أثناء الكتابة
 ================================================== */
 
-function showHistory(history, novel){
-
-    document.getElementById("novelCover").src =
-        novel.cover +
-        "?auto=format&fit=crop&w=600&q=80";
-
-
-    document.getElementById("novelTitle").textContent =
-        novel.title;
+searchInput.addEventListener(
+    "input",
+    performSearch
+);
 
 
-    document.getElementById("novelAuthor").textContent =
-        "بقلم " + novel.author;
+/* ==================================================
+   البحث السريع
+================================================== */
 
+function quickSearch(text){
 
-    document.getElementById("chapterTitle").textContent =
-        "الفصل " + history.chapter;
+    searchInput.value = text;
 
+    performSearch();
 
-    document.getElementById("continueBtn").href =
-        `reader.html?novel=${novel.id}&chapter=${history.chapter}`;
-
-
-    document.getElementById("detailsBtn").href =
-        `novel.html?id=${novel.id}`;
-
-
-    if(history.date){
-
-        const date =
-            new Date(history.date);
-
-
-        document.getElementById("readDate").textContent =
-            "آخر قراءة: " +
-            date.toLocaleDateString(
-                "ar-DZ",
-                {
-                    year:"numeric",
-                    month:"long",
-                    day:"numeric"
-                }
-            );
-
-    }else{
-
-        document.getElementById("readDate").textContent =
-            "آخر قراءة";
-
-    }
-
-
-    clearBox.style.display = "block";
+    searchInput.focus();
 
 }
 
 
 /* ==================================================
-   مسح السجل
+   مسح البحث
 ================================================== */
 
-function clearHistory(){
+function clearSearch(){
 
-    localStorage.removeItem("lastRead");
+    searchInput.value = "";
 
-    historyCard.style.display = "none";
+    performSearch();
 
-    clearBox.style.display = "none";
-
-    empty.style.display = "block";
+    searchInput.focus();
 
 }
+
+
+/* ==================================================
+   تشغيل أولي
+================================================== */
+
+performSearch();
 
 </script>
 
