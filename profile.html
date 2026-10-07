@@ -1,1 +1,1056 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>حسابي | رواياتي</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:"Cairo",sans-serif;
+    background:#030712;
+    color:white;
+    min-height:100vh;
+    padding-bottom:90px;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+
+/* ================= HEADER ================= */
+
+header{
+    height:70px;
+    padding:0 6%;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    position:sticky;
+    top:0;
+    z-index:100;
+
+    background:rgba(3,7,18,.94);
+    backdrop-filter:blur(18px);
+
+    border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.logo{
+    color:#3b82f6;
+    font-size:24px;
+    font-weight:800;
+}
+
+.header-actions{
+    display:flex;
+    gap:10px;
+}
+
+.header-btn{
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:12px;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    font-size:18px;
+
+    transition:.3s;
+}
+
+.header-btn:hover{
+    background:#3b82f6;
+    transform:translateY(-2px);
+}
+
+
+/* ================= CONTAINER ================= */
+
+.container{
+    width:92%;
+    max-width:900px;
+    margin:auto;
+    padding:35px 0;
+}
+
+
+/* ================= PROFILE ================= */
+
+.profile-card{
+    position:relative;
+
+    overflow:hidden;
+
+    padding:30px;
+
+    border-radius:24px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(59,130,246,.12),
+            rgba(255,255,255,.025)
+        );
+
+    border:1px solid rgba(255,255,255,.08);
+
+    margin-bottom:20px;
+}
+
+.profile-glow{
+    position:absolute;
+
+    width:180px;
+    height:180px;
+
+    background:#2563eb;
+
+    opacity:.08;
+
+    border-radius:50%;
+
+    filter:blur(70px);
+
+    top:-70px;
+    left:-50px;
+}
+
+.profile-content{
+    position:relative;
+    z-index:2;
+
+    display:flex;
+    align-items:center;
+
+    gap:20px;
+}
+
+
+/* ================= AVATAR ================= */
+
+.avatar{
+    width:90px;
+    height:90px;
+
+    flex-shrink:0;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+
+    border:3px solid rgba(255,255,255,.12);
+
+    font-size:35px;
+
+    box-shadow:
+        0 10px 35px rgba(37,99,235,.25);
+}
+
+
+/* ================= PROFILE INFO ================= */
+
+.profile-info{
+    flex:1;
+}
+
+.profile-info h1{
+    font-size:24px;
+    font-weight:800;
+
+    margin-bottom:4px;
+}
+
+.profile-info p{
+    color:#9ca3af;
+
+    font-size:12px;
+}
+
+.member{
+    display:inline-block;
+
+    margin-top:8px;
+
+    padding:4px 10px;
+
+    border-radius:20px;
+
+    color:#60a5fa;
+
+    background:rgba(59,130,246,.1);
+
+    border:1px solid rgba(59,130,246,.18);
+
+    font-size:9px;
+}
+
+
+/* ================= EDIT BUTTON ================= */
+
+.edit-btn{
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    padding:9px 13px;
+
+    border-radius:10px;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    color:#d1d5db;
+
+    font-size:10px;
+
+    transition:.3s;
+}
+
+.edit-btn:hover{
+    background:#3b82f6;
+    color:white;
+}
+
+
+/* ================= STATS ================= */
+
+.stats{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:12px;
+
+    margin-bottom:20px;
+}
+
+.stat{
+    padding:18px 10px;
+
+    text-align:center;
+
+    border-radius:17px;
+
+    background:rgba(255,255,255,.035);
+
+    border:1px solid rgba(255,255,255,.07);
+}
+
+.stat-number{
+    display:block;
+
+    color:#60a5fa;
+
+    font-size:23px;
+
+    font-weight:800;
+
+    margin-bottom:3px;
+}
+
+.stat-label{
+    color:#9ca3af;
+
+    font-size:10px;
+}
+
+
+/* ================= SECTION ================= */
+
+.section-title{
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:12px;
+
+    margin-top:25px;
+}
+
+.section-title h2{
+    font-size:18px;
+
+    font-weight:800;
+}
+
+.section-title a{
+    color:#60a5fa;
+
+    font-size:10px;
+}
+
+
+/* ================= MENU ================= */
+
+.menu{
+    display:flex;
+
+    flex-direction:column;
+
+    gap:9px;
+}
+
+.menu-item{
+    display:flex;
+
+    align-items:center;
+
+    gap:13px;
+
+    padding:15px;
+
+    border-radius:15px;
+
+    background:rgba(255,255,255,.035);
+
+    border:1px solid rgba(255,255,255,.06);
+
+    transition:.3s;
+}
+
+.menu-item:hover{
+    background:rgba(59,130,246,.08);
+
+    border-color:
+        rgba(59,130,246,.25);
+
+    transform:translateX(-3px);
+}
+
+.menu-icon{
+    width:40px;
+    height:40px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+
+    border-radius:12px;
+
+    background:rgba(59,130,246,.1);
+
+    font-size:18px;
+}
+
+.menu-text{
+    flex:1;
+}
+
+.menu-text strong{
+    display:block;
+
+    font-size:12px;
+
+    margin-bottom:2px;
+}
+
+.menu-text small{
+    color:#6b7280;
+
+    font-size:9px;
+}
+
+.arrow{
+    color:#6b7280;
+
+    font-size:16px;
+}
+
+
+/* ================= LOGIN BOX ================= */
+
+.login-box{
+    margin-top:25px;
+
+    padding:22px;
+
+    text-align:center;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(59,130,246,.1),
+            rgba(255,255,255,.025)
+        );
+
+    border:1px solid rgba(59,130,246,.15);
+}
+
+.login-box h3{
+    font-size:17px;
+
+    margin-bottom:6px;
+}
+
+.login-box p{
+    color:#9ca3af;
+
+    font-size:11px;
+
+    margin-bottom:15px;
+}
+
+.login-btn{
+    display:inline-block;
+
+    padding:10px 25px;
+
+    border-radius:11px;
+
+    background:#3b82f6;
+
+    font-size:11px;
+
+    font-weight:700;
+}
+
+.login-btn:hover{
+    background:#2563eb;
+}
+
+
+/* ================= BOTTOM NAV ================= */
+
+.bottom-nav{
+    position:fixed;
+
+    bottom:0;
+    left:0;
+
+    width:100%;
+    height:70px;
+
+    display:flex;
+
+    justify-content:space-around;
+
+    align-items:center;
+
+    background:rgba(3,7,18,.96);
+
+    backdrop-filter:blur(18px);
+
+    border-top:1px solid rgba(255,255,255,.07);
+
+    z-index:200;
+}
+
+.nav-item{
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:3px;
+
+    color:#6b7280;
+
+    font-size:10px;
+
+    transition:.3s;
+}
+
+.nav-item span{
+    font-size:19px;
+}
+
+.nav-item:hover,
+.nav-item.active{
+    color:#3b82f6;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:600px){
+
+    .container{
+        width:92%;
+
+        padding-top:25px;
+    }
+
+    .profile-card{
+        padding:20px;
+    }
+
+    .profile-content{
+        gap:13px;
+    }
+
+    .avatar{
+        width:72px;
+        height:72px;
+
+        font-size:28px;
+    }
+
+    .profile-info h1{
+        font-size:19px;
+    }
+
+    .edit-btn{
+        padding:8px;
+
+        font-size:9px;
+    }
+
+    .stat{
+        padding:14px 8px;
+    }
+
+    .stat-number{
+        font-size:20px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <a href="index.html" class="logo">
+        رواياتي.
+    </a>
+
+    <div class="header-actions">
+
+        <a href="search.html" class="header-btn">
+            🔍
+        </a>
+
+        <a href="settings.html" class="header-btn">
+            ⚙️
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- ================= CONTENT ================= -->
+
+<main class="container">
+
+
+    <!-- PROFILE -->
+
+    <section class="profile-card">
+
+        <div class="profile-glow"></div>
+
+        <div class="profile-content">
+
+            <div class="avatar">
+                👤
+            </div>
+
+
+            <div class="profile-info">
+
+                <h1>
+                    زائر رواياتي
+                </h1>
+
+                <p>
+                    مرحباً بك في عالم الروايات
+                </p>
+
+                <span class="member">
+                    عضو جديد
+                </span>
+
+            </div>
+
+
+            <a
+                href="login.html"
+                class="edit-btn">
+
+                ✏️ تعديل
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- STATS -->
+
+    <section class="stats">
+
+        <div class="stat">
+
+            <span
+                class="stat-number"
+                id="libraryCount">
+
+                0
+
+            </span>
+
+            <span class="stat-label">
+                في مكتبتي
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <span
+                class="stat-number"
+                id="historyCount">
+
+                0
+
+            </span>
+
+            <span class="stat-label">
+                قيد القراءة
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <span
+                class="stat-number">
+
+                70
+
+            </span>
+
+            <span class="stat-label">
+                رواية متاحة
+            </span>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- MY LIBRARY -->
+
+    <div class="section-title">
+
+        <h2>
+            مكتبتي
+        </h2>
+
+        <a href="library.html">
+            عرض الكل
+        </a>
+
+    </div>
+
+
+    <div class="menu">
+
+        <a
+            href="library.html"
+            class="menu-item">
+
+            <div class="menu-icon">
+                📚
+            </div>
+
+            <div class="menu-text">
+
+                <strong>
+                    مكتبتي
+                </strong>
+
+                <small>
+                    الروايات التي أضفتها إلى مكتبتك
+                </small>
+
+            </div>
+
+            <div class="arrow">
+                ←
+            </div>
+
+        </a>
+
+
+        <a
+            href="history.html"
+            class="menu-item">
+
+            <div class="menu-icon">
+                🕘
+            </div>
+
+            <div class="menu-text">
+
+                <strong>
+                    سجل القراءة
+                </strong>
+
+                <small>
+                    تابع آخر رواية توقفت عندها
+                </small>
+
+            </div>
+
+            <div class="arrow">
+                ←
+            </div>
+
+        </a>
+
+    </div>
+
+
+
+    <!-- DISCOVER -->
+
+    <div class="section-title">
+
+        <h2>
+            استكشاف
+        </h2>
+
+    </div>
+
+
+    <div class="menu">
+
+        <a
+            href="all-novels.html"
+            class="menu-item">
+
+            <div class="menu-icon">
+                📖
+            </div>
+
+            <div class="menu-text">
+
+                <strong>
+                    كل الروايات
+                </strong>
+
+                <small>
+                    اكتشف جميع الروايات
+                </small>
+
+            </div>
+
+            <div class="arrow">
+                ←
+            </div>
+
+        </a>
+
+
+        <a
+            href="categories.html"
+            class="menu-item">
+
+            <div class="menu-icon">
+                🗂️
+            </div>
+
+            <div class="menu-text">
+
+                <strong>
+                    التصنيفات
+                </strong>
+
+                <small>
+                    اختر النوع الذي يناسبك
+                </small>
+
+            </div>
+
+            <div class="arrow">
+                ←
+            </div>
+
+        </a>
+
+
+        <a
+            href="search.html"
+            class="menu-item">
+
+            <div class="menu-icon">
+                🔍
+            </div>
+
+            <div class="menu-text">
+
+                <strong>
+                    البحث
+                </strong>
+
+                <small>
+                    ابحث عن رواية أو كاتب
+                </small>
+
+            </div>
+
+            <div class="arrow">
+                ←
+            </div>
+
+        </a>
+
+    </div>
+
+
+
+    <!-- SETTINGS -->
+
+    <div class="section-title">
+
+        <h2>
+            الإعدادات
+        </h2>
+
+    </div>
+
+
+    <div class="menu">
+
+        <a
+            href="settings.html"
+            class="menu-item">
+
+            <div class="menu-icon">
+                ⚙️
+            </div>
+
+            <div class="menu-text">
+
+                <strong>
+                    الإعدادات
+                </strong>
+
+                <small>
+                    تخصيص تجربة القراءة
+                </small>
+
+            </div>
+
+            <div class="arrow">
+                ←
+            </div>
+
+        </a>
+
+
+        <a
+            href="login.html"
+            class="menu-item">
+
+            <div class="menu-icon">
+                🔐
+            </div>
+
+            <div class="menu-text">
+
+                <strong>
+                    تسجيل الدخول
+                </strong>
+
+                <small>
+                    سجل دخولك لحفظ حسابك
+                </small>
+
+            </div>
+
+            <div class="arrow">
+                ←
+            </div>
+
+        </a>
+
+    </div>
+
+
+
+    <!-- LOGIN -->
+
+    <div class="login-box">
+
+        <h3>
+            احفظ تجربتك 📚
+        </h3>
+
+        <p>
+            سجل الدخول باش تقدر تحتفظ بمكتبتك وتكمل القراءة من أي جهاز.
+        </p>
+
+        <a
+            href="login.html"
+            class="login-btn">
+
+            تسجيل الدخول
+
+        </a>
+
+    </div>
+
+
+</main>
+
+
+
+<!-- ================= BOTTOM NAV ================= -->
+
+<nav class="bottom-nav">
+
+    <a
+        href="index.html"
+        class="nav-item">
+
+        <span>⌂</span>
+        الرئيسية
+
+    </a>
+
+
+    <a
+        href="all-novels.html"
+        class="nav-item">
+
+        <span>📖</span>
+        الروايات
+
+    </a>
+
+
+    <a
+        href="search.html"
+        class="nav-item">
+
+        <span>🔍</span>
+        البحث
+
+    </a>
+
+
+    <a
+        href="history.html"
+        class="nav-item">
+
+        <span>🕘</span>
+        السجل
+
+    </a>
+
+
+    <a
+        href="profile.html"
+        class="nav-item active">
+
+        <span>👤</span>
+        حسابي
+
+    </a>
+
+</nav>
+
+
+
+<script>
+
+/* =========================
+   حساب آخر قراءة
+========================= */
+
+const lastRead =
+    localStorage.getItem("lastRead");
+
+
+if(lastRead){
+
+    document.getElementById(
+        "historyCount"
+    ).textContent = "1";
+
+}
+
+
+/* =========================
+   حساب المكتبة
+========================= */
+
+const library =
+    JSON.parse(
+        localStorage.getItem("library") || "[]"
+    );
+
+
+document.getElementById(
+    "libraryCount"
+).textContent = library.length;
+
+</script>
+
+</body>
+
+</html>
