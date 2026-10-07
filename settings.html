@@ -1,1 +1,1269 @@
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>الإعدادات | رواياتي</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:"Cairo",sans-serif;
+    background:#030712;
+    color:#fff;
+    min-height:100vh;
+    padding-bottom:90px;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+
+/* ================= HEADER ================= */
+
+header{
+    height:70px;
+    padding:0 6%;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    position:sticky;
+    top:0;
+    z-index:100;
+
+    background:rgba(3,7,18,.94);
+    backdrop-filter:blur(18px);
+
+    border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.logo{
+    color:#3b82f6;
+    font-size:24px;
+    font-weight:800;
+}
+
+.header-actions{
+    display:flex;
+    gap:10px;
+}
+
+.header-btn{
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:12px;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    font-size:18px;
+
+    transition:.3s;
+}
+
+.header-btn:hover{
+    background:#3b82f6;
+    transform:translateY(-2px);
+}
+
+
+/* ================= CONTAINER ================= */
+
+.container{
+    width:92%;
+    max-width:900px;
+    margin:auto;
+    padding:30px 0;
+}
+
+
+/* ================= TITLE ================= */
+
+.page-title{
+    margin-bottom:25px;
+}
+
+.page-title h1{
+    font-size:25px;
+    font-weight:800;
+}
+
+.page-title p{
+    color:#8b93a1;
+    font-size:11px;
+    margin-top:4px;
+}
+
+
+/* ================= SECTION ================= */
+
+.settings-section{
+    margin-bottom:25px;
+}
+
+.section-title{
+    font-size:15px;
+    font-weight:800;
+    margin-bottom:10px;
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.section-title span{
+    color:#3b82f6;
+}
+
+
+/* ================= SETTING CARD ================= */
+
+.settings-card{
+    overflow:hidden;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,.035);
+
+    border:1px solid rgba(255,255,255,.07);
+}
+
+
+/* ================= ROW ================= */
+
+.setting-row{
+    min-height:68px;
+
+    padding:12px 16px;
+
+    display:flex;
+    align-items:center;
+
+    gap:13px;
+
+    border-bottom:1px solid rgba(255,255,255,.06);
+
+    transition:.3s;
+}
+
+.setting-row:last-child{
+    border-bottom:none;
+}
+
+.setting-row:hover{
+    background:rgba(59,130,246,.05);
+}
+
+
+/* ================= ICON ================= */
+
+.setting-icon{
+    width:40px;
+    height:40px;
+
+    flex-shrink:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:12px;
+
+    background:rgba(59,130,246,.1);
+
+    font-size:18px;
+}
+
+
+/* ================= TEXT ================= */
+
+.setting-text{
+    flex:1;
+}
+
+.setting-text strong{
+    display:block;
+
+    font-size:12px;
+
+    margin-bottom:2px;
+}
+
+.setting-text small{
+    display:block;
+
+    color:#6b7280;
+
+    font-size:9px;
+}
+
+
+/* ================= ARROW ================= */
+
+.arrow{
+    color:#6b7280;
+    font-size:16px;
+}
+
+
+/* ================= SELECT ================= */
+
+.select{
+    border:none;
+    outline:none;
+
+    color:#dbeafe;
+
+    background:#111827;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:9px;
+
+    padding:7px 10px;
+
+    font-family:"Cairo",sans-serif;
+
+    font-size:9px;
+}
+
+.select option{
+    background:#111827;
+    color:#fff;
+}
+
+
+/* ================= TOGGLE ================= */
+
+.toggle{
+    width:46px;
+    height:25px;
+
+    position:relative;
+
+    flex-shrink:0;
+}
+
+.toggle input{
+    display:none;
+}
+
+.slider{
+    position:absolute;
+
+    inset:0;
+
+    cursor:pointer;
+
+    background:#1f2937;
+
+    border-radius:30px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    transition:.3s;
+}
+
+.slider:before{
+    content:"";
+
+    position:absolute;
+
+    width:19px;
+    height:19px;
+
+    top:2px;
+    right:23px;
+
+    border-radius:50%;
+
+    background:#9ca3af;
+
+    transition:.3s;
+}
+
+.toggle input:checked + .slider{
+    background:#2563eb;
+}
+
+.toggle input:checked + .slider:before{
+    transform:translateX(21px);
+
+    background:#fff;
+}
+
+
+/* ================= RANGE ================= */
+
+.range-wrap{
+    width:130px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+}
+
+.range{
+    width:100%;
+
+    accent-color:#3b82f6;
+}
+
+
+/* ================= BUTTON ================= */
+
+.action-button{
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:8px;
+
+    width:100%;
+
+    margin-top:12px;
+
+    padding:13px;
+
+    border-radius:13px;
+
+    background:rgba(255,255,255,.04);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    color:#d1d5db;
+
+    font-family:"Cairo",sans-serif;
+
+    font-size:11px;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.action-button:hover{
+    background:#3b82f6;
+    color:#fff;
+}
+
+
+/* ================= DANGER ================= */
+
+.danger{
+    color:#f87171;
+}
+
+.danger .setting-icon{
+    background:rgba(239,68,68,.1);
+}
+
+.danger:hover{
+    background:rgba(239,68,68,.07);
+}
+
+
+/* ================= FOOTER ================= */
+
+.footer{
+    text-align:center;
+
+    color:#4b5563;
+
+    font-size:9px;
+
+    margin-top:30px;
+
+    line-height:2;
+}
+
+
+/* ================= BOTTOM NAV ================= */
+
+.bottom-nav{
+    position:fixed;
+
+    bottom:0;
+    left:0;
+
+    width:100%;
+    height:70px;
+
+    display:flex;
+
+    justify-content:space-around;
+
+    align-items:center;
+
+    background:rgba(3,7,18,.96);
+
+    backdrop-filter:blur(18px);
+
+    border-top:1px solid rgba(255,255,255,.07);
+
+    z-index:200;
+}
+
+.nav-item{
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:3px;
+
+    color:#6b7280;
+
+    font-size:10px;
+
+    transition:.3s;
+}
+
+.nav-item span{
+    font-size:19px;
+}
+
+.nav-item:hover,
+.nav-item.active{
+    color:#3b82f6;
+}
+
+
+/* ================= MOBILE ================= */
+
+@media(max-width:600px){
+
+    .container{
+        width:92%;
+        padding-top:25px;
+    }
+
+    .page-title h1{
+        font-size:22px;
+    }
+
+    .setting-row{
+        min-height:64px;
+        padding:10px 12px;
+    }
+
+    .setting-icon{
+        width:37px;
+        height:37px;
+        font-size:16px;
+    }
+
+    .setting-text strong{
+        font-size:11px;
+    }
+
+    .range-wrap{
+        width:95px;
+    }
+
+    .select{
+        max-width:90px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <a href="index.html" class="logo">
+        رواياتي.
+    </a>
+
+    <div class="header-actions">
+
+        <a href="search.html" class="header-btn">
+            🔍
+        </a>
+
+        <a href="profile.html" class="header-btn">
+            👤
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- ================= CONTENT ================= -->
+
+<main class="container">
+
+
+    <div class="page-title">
+
+        <h1>
+            ⚙️ الإعدادات
+        </h1>
+
+        <p>
+            خصص تجربة القراءة بالطريقة التي تناسبك
+        </p>
+
+    </div>
+
+
+
+    <!-- ================= READING ================= -->
+
+    <section class="settings-section">
+
+        <div class="section-title">
+            <span>📖</span>
+            إعدادات القراءة
+        </div>
+
+
+        <div class="settings-card">
+
+
+            <div class="setting-row">
+
+                <div class="setting-icon">
+                    🌙
+                </div>
+
+                <div class="setting-text">
+
+                    <strong>
+                        الوضع الليلي
+                    </strong>
+
+                    <small>
+                        استخدام المظهر الداكن أثناء القراءة
+                    </small>
+
+                </div>
+
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="darkMode"
+                        checked>
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+
+
+            <div class="setting-row">
+
+                <div class="setting-icon">
+                    🔤
+                </div>
+
+                <div class="setting-text">
+
+                    <strong>
+                        حجم الخط
+                    </strong>
+
+                    <small>
+                        اختر الحجم المناسب لقراءة الروايات
+                    </small>
+
+                </div>
+
+
+                <select
+                    class="select"
+                    id="fontSize">
+
+                    <option value="small">
+                        صغير
+                    </option>
+
+                    <option value="medium" selected>
+                        متوسط
+                    </option>
+
+                    <option value="large">
+                        كبير
+                    </option>
+
+                    <option value="xlarge">
+                        كبير جداً
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <div class="setting-row">
+
+                <div class="setting-icon">
+                    📏
+                </div>
+
+                <div class="setting-text">
+
+                    <strong>
+                        تباعد الأسطر
+                    </strong>
+
+                    <small>
+                        التحكم في المسافة بين الأسطر
+                    </small>
+
+                </div>
+
+
+                <select
+                    class="select"
+                    id="lineHeight">
+
+                    <option value="small">
+                        ضيق
+                    </option>
+
+                    <option value="medium" selected>
+                        متوسط
+                    </option>
+
+                    <option value="large">
+                        واسع
+                    </option>
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= APP ================= -->
+
+    <section class="settings-section">
+
+        <div class="section-title">
+            <span>📱</span>
+            إعدادات التطبيق
+        </div>
+
+
+        <div class="settings-card">
+
+
+            <div class="setting-row">
+
+                <div class="setting-icon">
+                    🔔
+                </div>
+
+                <div class="setting-text">
+
+                    <strong>
+                        الإشعارات
+                    </strong>
+
+                    <small>
+                        تلقي إشعارات الروايات الجديدة
+                    </small>
+
+                </div>
+
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="notifications">
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+
+
+            <div class="setting-row">
+
+                <div class="setting-icon">
+                    📶
+                </div>
+
+                <div class="setting-text">
+
+                    <strong>
+                        توفير البيانات
+                    </strong>
+
+                    <small>
+                        تقليل تحميل الصور أثناء التصفح
+                    </small>
+
+                </div>
+
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="dataSaver">
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+
+
+            <div class="setting-row">
+
+                <div class="setting-icon">
+                    🌐
+                </div>
+
+                <div class="setting-text">
+
+                    <strong>
+                        اللغة
+                    </strong>
+
+                    <small>
+                        لغة واجهة الموقع
+                    </small>
+
+                </div>
+
+
+                <select class="select">
+
+                    <option selected>
+                        العربية
+                    </option>
+
+                    <option>
+                        Français
+                    </option>
+
+                    <option>
+                        English
+                    </option>
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= READING SPEED ================= -->
+
+    <section class="settings-section">
+
+        <div class="section-title">
+            <span>🎨</span>
+            المظهر
+        </div>
+
+
+        <div class="settings-card">
+
+
+            <div class="setting-row">
+
+                <div class="setting-icon">
+                    ✨
+                </div>
+
+                <div class="setting-text">
+
+                    <strong>
+                        تأثيرات الواجهة
+                    </strong>
+
+                    <small>
+                        تفعيل الحركات والتأثيرات البصرية
+                    </small>
+
+                </div>
+
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        id="animations"
+                        checked>
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+
+
+            <div class="setting-row">
+
+                <div class="setting-icon">
+                    🔵
+                </div>
+
+                <div class="setting-text">
+
+                    <strong>
+                        لون الواجهة
+                    </strong>
+
+                    <small>
+                        اللون الأساسي للموقع
+                    </small>
+
+                </div>
+
+
+                <select
+                    class="select">
+
+                    <option selected>
+                        أزرق
+                    </option>
+
+                    <option>
+                        بنفسجي
+                    </option>
+
+                    <option>
+                        أخضر
+                    </option>
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= ACCOUNT ================= -->
+
+    <section class="settings-section">
+
+        <div class="section-title">
+            <span>👤</span>
+            الحساب
+        </div>
+
+
+        <div class="settings-card">
+
+
+            <a
+                href="profile.html"
+                class="setting-row">
+
+                <div class="setting-icon">
+                    👤
+                </div>
+
+                <div class="setting-text">
+
+                    <strong>
+                        حسابي
+                    </strong>
+
+                    <small>
+                        عرض معلومات الحساب
+                    </small>
+
+                </div>
+
+                <div class="arrow">
+                    ←
+                </div>
+
+            </a>
+
+
+
+            <a
+                href="login.html"
+                class="setting-row">
+
+                <div class="setting-icon">
+                    🔐
+                </div>
+
+                <div class="setting-text">
+
+                    <strong>
+                        تسجيل الدخول
+                    </strong>
+
+                    <small>
+                        تسجيل الدخول أو إنشاء حساب
+                    </small>
+
+                </div>
+
+                <div class="arrow">
+                    ←
+                </div>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= DATA ================= -->
+
+    <section class="settings-section">
+
+        <div class="section-title">
+            <span>💾</span>
+            البيانات
+        </div>
+
+
+        <div class="settings-card">
+
+
+            <a
+                href="history.html"
+                class="setting-row">
+
+                <div class="setting-icon">
+                    🕘
+                </div>
+
+                <div class="setting-text">
+
+                    <strong>
+                        سجل القراءة
+                    </strong>
+
+                    <small>
+                        عرض الروايات التي قرأتها مؤخراً
+                    </small>
+
+                </div>
+
+                <div class="arrow">
+                    ←
+                </div>
+
+            </a>
+
+
+            <button
+                class="setting-row action-button"
+                onclick="clearHistory()">
+
+                <div class="setting-icon">
+                    🗑️
+                </div>
+
+                <div class="setting-text">
+
+                    <strong class="danger">
+                        مسح سجل القراءة
+                    </strong>
+
+                    <small>
+                        حذف آخر رواية تمت قراءتها
+                    </small>
+
+                </div>
+
+                <div class="arrow">
+                    ←
+                </div>
+
+            </button>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <div class="footer">
+
+        <p>
+            رواياتي.
+        </p>
+
+        <p>
+            منصة قراءة الروايات العربية
+        </p>
+
+        <p>
+            الإصدار 1.0
+        </p>
+
+    </div>
+
+
+</main>
+
+
+
+<!-- ================= BOTTOM NAV ================= -->
+
+<nav class="bottom-nav">
+
+    <a
+        href="index.html"
+        class="nav-item">
+
+        <span>⌂</span>
+        الرئيسية
+
+    </a>
+
+
+    <a
+        href="all-novels.html"
+        class="nav-item">
+
+        <span>📖</span>
+        الروايات
+
+    </a>
+
+
+    <a
+        href="search.html"
+        class="nav-item">
+
+        <span>🔍</span>
+        البحث
+
+    </a>
+
+
+    <a
+        href="history.html"
+        class="nav-item">
+
+        <span>🕘</span>
+        السجل
+
+    </a>
+
+
+    <a
+        href="profile.html"
+        class="nav-item">
+
+        <span>👤</span>
+        حسابي
+
+    </a>
+
+</nav>
+
+
+
+<script>
+
+/* =========================
+   تحميل الإعدادات
+========================= */
+
+const darkMode =
+    document.getElementById("darkMode");
+
+const notifications =
+    document.getElementById("notifications");
+
+const dataSaver =
+    document.getElementById("dataSaver");
+
+const animations =
+    document.getElementById("animations");
+
+const fontSize =
+    document.getElementById("fontSize");
+
+const lineHeight =
+    document.getElementById("lineHeight");
+
+
+/* =========================
+   قراءة الإعدادات المحفوظة
+========================= */
+
+darkMode.checked =
+    localStorage.getItem("darkMode") !== "false";
+
+notifications.checked =
+    localStorage.getItem("notifications") === "true";
+
+dataSaver.checked =
+    localStorage.getItem("dataSaver") === "true";
+
+animations.checked =
+    localStorage.getItem("animations") !== "false";
+
+
+const savedFont =
+    localStorage.getItem("fontSize");
+
+if(savedFont){
+    fontSize.value = savedFont;
+}
+
+
+const savedLine =
+    localStorage.getItem("lineHeight");
+
+if(savedLine){
+    lineHeight.value = savedLine;
+}
+
+
+/* =========================
+   حفظ الإعدادات
+========================= */
+
+darkMode.addEventListener("change",function(){
+
+    localStorage.setItem(
+        "darkMode",
+        this.checked
+    );
+
+});
+
+
+notifications.addEventListener("change",function(){
+
+    localStorage.setItem(
+        "notifications",
+        this.checked
+    );
+
+});
+
+
+dataSaver.addEventListener("change",function(){
+
+    localStorage.setItem(
+        "dataSaver",
+        this.checked
+    );
+
+});
+
+
+animations.addEventListener("change",function(){
+
+    localStorage.setItem(
+        "animations",
+        this.checked
+    );
+
+});
+
+
+fontSize.addEventListener("change",function(){
+
+    localStorage.setItem(
+        "fontSize",
+        this.value
+    );
+
+});
+
+
+lineHeight.addEventListener("change",function(){
+
+    localStorage.setItem(
+        "lineHeight",
+        this.value
+    );
+
+});
+
+
+/* =========================
+   مسح سجل القراءة
+========================= */
+
+function clearHistory(){
+
+    localStorage.removeItem("lastRead");
+
+    window.location.href =
+        "history.html";
+
+}
+
+</script>
+
+</body>
+
+</html>
