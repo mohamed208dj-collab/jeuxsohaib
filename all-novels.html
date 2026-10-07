@@ -2,24 +2,16 @@
 <html lang="ar" dir="rtl">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>كل الروايات | رواياتي</title>
 
-    <link rel="preconnect"
-          href="https://fonts.googleapis.com">
-
-    <link rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
           rel="stylesheet">
-
 
 <style>
 
@@ -30,15 +22,10 @@
 }
 
 body{
-
     font-family:"Cairo",sans-serif;
-
     background:#030712;
-
     color:white;
-
     min-height:100vh;
-
     padding-bottom:90px;
 }
 
@@ -47,66 +34,48 @@ a{
     color:inherit;
 }
 
-
 /* ================= HEADER ================= */
 
 header{
-
     height:70px;
-
     padding:0 6%;
 
     display:flex;
-
     align-items:center;
-
     justify-content:space-between;
 
     position:sticky;
-
     top:0;
-
     z-index:100;
 
-    background:rgba(3,7,18,.92);
-
+    background:rgba(3,7,18,.94);
     backdrop-filter:blur(18px);
 
     border-bottom:1px solid rgba(255,255,255,.07);
 }
 
 .logo{
-
     color:#3b82f6;
-
     font-size:24px;
-
     font-weight:800;
 }
 
 .header-actions{
-
     display:flex;
-
     gap:10px;
 }
 
 .header-btn{
-
     width:42px;
-
     height:42px;
 
     display:flex;
-
     align-items:center;
-
     justify-content:center;
 
     border-radius:12px;
 
     background:rgba(255,255,255,.05);
-
     border:1px solid rgba(255,255,255,.08);
 
     font-size:18px;
@@ -115,9 +84,7 @@ header{
 }
 
 .header-btn:hover{
-
     background:#3b82f6;
-
     transform:translateY(-2px);
 }
 
@@ -125,13 +92,9 @@ header{
 /* ================= CONTAINER ================= */
 
 .container{
-
     width:92%;
-
     max-width:1200px;
-
     margin:auto;
-
     padding:35px 0;
 }
 
@@ -139,23 +102,17 @@ header{
 /* ================= TITLE ================= */
 
 .page-title{
-
     margin-bottom:25px;
 }
 
 .page-title h1{
-
     font-size:30px;
-
     font-weight:800;
-
     margin-bottom:5px;
 }
 
 .page-title p{
-
     color:#9ca3af;
-
     font-size:13px;
 }
 
@@ -163,16 +120,12 @@ header{
 /* ================= SEARCH ================= */
 
 .search-box{
-
     display:flex;
-
     gap:10px;
-
-    margin-bottom:25px;
+    margin-bottom:22px;
 }
 
 .search-box input{
-
     flex:1;
 
     height:52px;
@@ -195,14 +148,10 @@ header{
 }
 
 .search-box input:focus{
-
     border-color:#3b82f6;
-
-    box-shadow:0 0 20px rgba(59,130,246,.1);
 }
 
 .search-box button{
-
     width:55px;
 
     border:none;
@@ -222,9 +171,7 @@ header{
 /* ================= FILTERS ================= */
 
 .filters{
-
     display:flex;
-
     gap:8px;
 
     overflow-x:auto;
@@ -235,12 +182,10 @@ header{
 }
 
 .filters::-webkit-scrollbar{
-
     display:none;
 }
 
 .filter{
-
     white-space:nowrap;
 
     padding:9px 16px;
@@ -262,39 +207,29 @@ header{
 
 .filter:hover,
 .filter.active{
-
     background:#3b82f6;
-
     border-color:#3b82f6;
-
     color:white;
 }
 
 
-/* ================= COUNT ================= */
+/* ================= RESULT ================= */
 
 .result-info{
-
     display:flex;
-
     align-items:center;
-
     justify-content:space-between;
 
     margin-bottom:15px;
 }
 
 .result-info h2{
-
     font-size:19px;
-
     font-weight:800;
 }
 
 .result-info span{
-
     color:#60a5fa;
-
     font-size:12px;
 }
 
@@ -302,12 +237,8 @@ header{
 /* ================= GRID ================= */
 
 .novels-grid{
-
     display:grid;
-
-    grid-template-columns:
-        repeat(5,1fr);
-
+    grid-template-columns:repeat(5,1fr);
     gap:18px;
 }
 
@@ -315,9 +246,7 @@ header{
 /* ================= CARD ================= */
 
 .novel-card{
-
     position:relative;
-
     overflow:hidden;
 
     border-radius:17px;
@@ -330,7 +259,6 @@ header{
 }
 
 .novel-card:hover{
-
     transform:translateY(-6px);
 
     border-color:rgba(59,130,246,.4);
@@ -340,9 +268,7 @@ header{
 }
 
 .cover{
-
     width:100%;
-
     height:250px;
 
     object-fit:cover;
@@ -351,12 +277,10 @@ header{
 }
 
 .card-content{
-
     padding:13px;
 }
 
 .category{
-
     display:inline-block;
 
     font-size:9px;
@@ -375,9 +299,7 @@ header{
 }
 
 .novel-title{
-
     font-size:14px;
-
     font-weight:800;
 
     white-space:nowrap;
@@ -390,16 +312,13 @@ header{
 }
 
 .author{
-
     color:#9ca3af;
-
     font-size:10px;
 
     margin-bottom:10px;
 }
 
 .read-btn{
-
     display:block;
 
     text-align:center;
@@ -420,9 +339,7 @@ header{
 }
 
 .read-btn:hover{
-
     background:#3b82f6;
-
     color:white;
 }
 
@@ -430,7 +347,6 @@ header{
 /* ================= EMPTY ================= */
 
 .empty{
-
     display:none;
 
     text-align:center;
@@ -441,16 +357,12 @@ header{
 }
 
 .empty-icon{
-
     font-size:50px;
-
     margin-bottom:15px;
 }
 
 .empty h3{
-
     color:white;
-
     margin-bottom:7px;
 }
 
@@ -458,24 +370,20 @@ header{
 /* ================= BOTTOM NAV ================= */
 
 .bottom-nav{
-
     position:fixed;
 
     bottom:0;
-
     left:0;
 
     width:100%;
-
     height:70px;
 
     display:flex;
 
     justify-content:space-around;
-
     align-items:center;
 
-    background:rgba(3,7,18,.95);
+    background:rgba(3,7,18,.96);
 
     backdrop-filter:blur(18px);
 
@@ -485,7 +393,6 @@ header{
 }
 
 .nav-item{
-
     display:flex;
 
     flex-direction:column;
@@ -502,13 +409,11 @@ header{
 }
 
 .nav-item span{
-
     font-size:19px;
 }
 
 .nav-item:hover,
 .nav-item.active{
-
     color:#3b82f6;
 }
 
@@ -518,9 +423,7 @@ header{
 @media(max-width:1000px){
 
     .novels-grid{
-
-        grid-template-columns:
-            repeat(4,1fr);
+        grid-template-columns:repeat(4,1fr);
     }
 
 }
@@ -528,15 +431,11 @@ header{
 @media(max-width:750px){
 
     .novels-grid{
-
-        grid-template-columns:
-            repeat(3,1fr);
-
+        grid-template-columns:repeat(3,1fr);
         gap:12px;
     }
 
     .cover{
-
         height:200px;
     }
 
@@ -545,42 +444,32 @@ header{
 @media(max-width:500px){
 
     header{
-
         padding:0 5%;
     }
 
     .container{
-
         width:92%;
-
         padding-top:25px;
     }
 
     .page-title h1{
-
         font-size:25px;
     }
 
     .novels-grid{
-
-        grid-template-columns:
-            repeat(2,1fr);
-
+        grid-template-columns:repeat(2,1fr);
         gap:12px;
     }
 
     .cover{
-
         height:220px;
     }
 
     .card-content{
-
         padding:10px;
     }
 
     .novel-title{
-
         font-size:12px;
     }
 
@@ -598,29 +487,18 @@ header{
 
 <header>
 
-    <a href="index.html"
-       class="logo">
-
+    <a href="index.html" class="logo">
         رواياتي.
-
     </a>
-
 
     <div class="header-actions">
 
-        <a href="search.html"
-           class="header-btn">
-
+        <a href="search.html" class="header-btn">
             🔍
-
         </a>
 
-
-        <a href="library.html"
-           class="header-btn">
-
+        <a href="library.html" class="header-btn">
             📚
-
         </a>
 
     </div>
@@ -659,9 +537,7 @@ header{
         >
 
         <button onclick="searchNovels()">
-
             🔍
-
         </button>
 
     </div>
@@ -674,61 +550,62 @@ header{
 
         <button
             class="filter active"
-            onclick="filterCategory('الكل',this)">
+            data-category="الكل"
+            onclick="filterCategory('الكل')">
 
             الكل
 
         </button>
 
-
         <button
             class="filter"
-            onclick="filterCategory('دراما',this)">
+            data-category="دراما"
+            onclick="filterCategory('دراما')">
 
             دراما
 
         </button>
 
-
         <button
             class="filter"
-            onclick="filterCategory('رومانسية',this)">
+            data-category="رومانسية"
+            onclick="filterCategory('رومانسية')">
 
             رومانسية
 
         </button>
 
-
         <button
             class="filter"
-            onclick="filterCategory('غموض',this)">
+            data-category="غموض"
+            onclick="filterCategory('غموض')">
 
             غموض
 
         </button>
 
-
         <button
             class="filter"
-            onclick="filterCategory('تشويق',this)">
+            data-category="تشويق"
+            onclick="filterCategory('تشويق')">
 
             تشويق
 
         </button>
 
-
         <button
             class="filter"
-            onclick="filterCategory('رعب',this)">
+            data-category="رعب"
+            onclick="filterCategory('رعب')">
 
             رعب
 
         </button>
 
-
         <button
             class="filter"
-            onclick="filterCategory('مغامرة',this)">
+            data-category="مغامرة"
+            onclick="filterCategory('مغامرة')">
 
             مغامرة
 
@@ -792,53 +669,29 @@ header{
 
 <nav class="bottom-nav">
 
-    <a href="index.html"
-       class="nav-item">
-
+    <a href="index.html" class="nav-item">
         <span>⌂</span>
-
         الرئيسية
-
     </a>
 
-
-    <a href="all-novels.html"
-       class="nav-item active">
-
+    <a href="all-novels.html" class="nav-item active">
         <span>📖</span>
-
         الروايات
-
     </a>
 
-
-    <a href="search.html"
-       class="nav-item">
-
+    <a href="search.html" class="nav-item">
         <span>🔍</span>
-
         البحث
-
     </a>
 
-
-    <a href="library.html"
-       class="nav-item">
-
+    <a href="library.html" class="nav-item">
         <span>📚</span>
-
         المكتبة
-
     </a>
 
-
-    <a href="profile.html"
-       class="nav-item">
-
+    <a href="profile.html" class="nav-item">
         <span>👤</span>
-
         حسابي
-
     </a>
 
 </nav>
@@ -849,7 +702,7 @@ header{
 
 
 /* ==================================================
-   الروايات
+   أسماء الروايات
 ================================================== */
 
 const titles = [
@@ -928,6 +781,10 @@ const titles = [
 ];
 
 
+/* ==================================================
+   أسماء الكتاب
+================================================== */
+
 const authors = [
 
 "أحمد الرواي",
@@ -1003,6 +860,10 @@ const authors = [
 
 ];
 
+
+/* ==================================================
+   التصنيفات
+================================================== */
 
 const categories = [
 
@@ -1080,6 +941,10 @@ const categories = [
 ];
 
 
+/* ==================================================
+   صور الأغلفة
+================================================== */
+
 const covers = [
 
 "https://images.unsplash.com/photo-1512820790803-83ca734da794",
@@ -1096,15 +961,11 @@ const covers = [
 ];
 
 
-let currentCategory = "الكل";
-
-
 /* ==================================================
-   إنشاء الروايات
+   إنشاء الـ70 رواية
 ================================================== */
 
 const novels = [];
-
 
 for(let i = 0; i < 70; i++){
 
@@ -1121,6 +982,44 @@ for(let i = 0; i < 70; i++){
         cover:covers[i % covers.length]
 
     });
+
+}
+
+
+/* ==================================================
+   المتغير الحالي
+================================================== */
+
+let currentCategory = "الكل";
+
+
+/* ==================================================
+   قراءة التصنيف من الرابط
+================================================== */
+
+const urlParams =
+    new URLSearchParams(window.location.search);
+
+const categoryFromURL =
+    urlParams.get("category");
+
+
+if(categoryFromURL){
+
+    const allowedCategories = [
+        "دراما",
+        "رومانسية",
+        "غموض",
+        "تشويق",
+        "رعب",
+        "مغامرة"
+    ];
+
+    if(allowedCategories.includes(categoryFromURL)){
+
+        currentCategory = categoryFromURL;
+
+    }
 
 }
 
@@ -1145,26 +1044,29 @@ function renderNovels(){
         .trim();
 
 
-    let filtered = novels.filter(novel => {
+    const filtered =
+        novels.filter(novel => {
 
-        const matchCategory =
-            currentCategory === "الكل" ||
-            novel.category === currentCategory;
-
-
-        const matchSearch =
-            novel.title
-            .toLowerCase()
-            .includes(search) ||
-
-            novel.author
-            .toLowerCase()
-            .includes(search);
+            const matchCategory =
+                currentCategory === "الكل" ||
+                novel.category === currentCategory;
 
 
-        return matchCategory && matchSearch;
+            const matchSearch =
+                novel.title
+                .toLowerCase()
+                .includes(search)
 
-    });
+                ||
+
+                novel.author
+                .toLowerCase()
+                .includes(search);
+
+
+            return matchCategory && matchSearch;
+
+        });
 
 
     document.getElementById("count").textContent =
@@ -1209,7 +1111,7 @@ function renderNovels(){
                         </h3>
 
                         <p class="author">
-                            ${novel.author}
+                            بقلم ${novel.author}
                         </p>
 
                         <div class="read-btn">
@@ -1228,6 +1130,46 @@ function renderNovels(){
 
 
 /* ==================================================
+   فلترة التصنيف
+================================================== */
+
+function filterCategory(category){
+
+    currentCategory = category;
+
+
+    document
+        .querySelectorAll(".filter")
+        .forEach(button => {
+
+            button.classList.remove("active");
+
+            if(
+                button.dataset.category === category
+            ){
+
+                button.classList.add("active");
+
+            }
+
+        });
+
+
+    renderNovels();
+
+
+    const newURL =
+        category === "الكل"
+        ? "all-novels.html"
+        : `all-novels.html?category=${encodeURIComponent(category)}`;
+
+
+    window.history.replaceState({}, "", newURL);
+
+}
+
+
+/* ==================================================
    البحث
 ================================================== */
 
@@ -1239,38 +1181,36 @@ function searchNovels(){
 
 
 document
-.getElementById("searchInput")
-.addEventListener("input", renderNovels);
+    .getElementById("searchInput")
+    .addEventListener(
+        "input",
+        renderNovels
+    );
 
 
 /* ==================================================
-   التصنيف
+   تحديد التصنيف القادم من الرابط
 ================================================== */
 
-function filterCategory(category, button){
-
-    currentCategory = category;
-
-
-    document
+document
     .querySelectorAll(".filter")
-    .forEach(btn => {
+    .forEach(button => {
 
-        btn.classList.remove("active");
+        button.classList.remove("active");
+
+        if(
+            button.dataset.category === currentCategory
+        ){
+
+            button.classList.add("active");
+
+        }
 
     });
 
 
-    button.classList.add("active");
-
-
-    renderNovels();
-
-}
-
-
 /* ==================================================
-   البداية
+   تشغيل الصفحة
 ================================================== */
 
 renderNovels();
