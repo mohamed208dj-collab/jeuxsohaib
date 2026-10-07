@@ -1,1 +1,1131 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>القراءة | رواياتي</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Cairo", sans-serif;
+            background: #030712;
+            color: #e5e7eb;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            height: 68px;
+            padding: 0 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background: rgba(3, 7, 18, 0.92);
+            backdrop-filter: blur(18px);
+
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: 800;
+            color: #3b82f6;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 9px;
+        }
+
+        .header-btn {
+            width: 41px;
+            height: 41px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+
+            font-size: 18px;
+
+            transition: .3s;
+        }
+
+        .header-btn:hover {
+            background: #3b82f6;
+            transform: translateY(-2px);
+        }
+
+
+        /* ================= READER ================= */
+
+        .reader-container {
+            width: 92%;
+            max-width: 850px;
+            margin: auto;
+            padding: 35px 0 120px;
+        }
+
+
+        /* ================= TOP ================= */
+
+        .reader-top {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .reader-category {
+            display: inline-block;
+
+            padding: 6px 13px;
+
+            border-radius: 20px;
+
+            color: #60a5fa;
+
+            background: rgba(59,130,246,0.1);
+
+            border: 1px solid rgba(59,130,246,0.2);
+
+            font-size: 12px;
+
+            margin-bottom: 12px;
+        }
+
+        .novel-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 7px;
+        }
+
+        .chapter-title {
+            color: #9ca3af;
+            font-size: 15px;
+        }
+
+
+        /* ================= PROGRESS ================= */
+
+        .progress-box {
+            margin: 25px 0;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+
+            color: #6b7280;
+
+            font-size: 11px;
+
+            margin-bottom: 8px;
+        }
+
+        .progress {
+            width: 100%;
+            height: 5px;
+
+            background: rgba(255,255,255,0.07);
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+
+            background: #3b82f6;
+
+            border-radius: 20px;
+
+            transition: width .4s;
+        }
+
+
+        /* ================= CONTENT ================= */
+
+        .story-card {
+            background: rgba(255,255,255,0.025);
+
+            border: 1px solid rgba(255,255,255,0.07);
+
+            border-radius: 22px;
+
+            padding: 45px 50px;
+
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .story {
+            font-size: 18px;
+
+            line-height: 2.4;
+
+            color: #d1d5db;
+
+            text-align: right;
+        }
+
+        .story p {
+            margin-bottom: 25px;
+        }
+
+        .story .quote {
+            margin: 30px 0;
+
+            padding: 18px 22px;
+
+            border-right: 3px solid #3b82f6;
+
+            background: rgba(59,130,246,0.06);
+
+            color: #93c5fd;
+
+            border-radius: 8px;
+        }
+
+
+        /* ================= CONTROLS ================= */
+
+        .reader-controls {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 12px;
+
+            margin-top: 30px;
+        }
+
+        .control-btn {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            min-width: 145px;
+
+            padding: 13px 20px;
+
+            border-radius: 13px;
+
+            background: rgba(255,255,255,0.05);
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition: .3s;
+        }
+
+        .control-btn:hover {
+            background: rgba(59,130,246,0.15);
+
+            border-color: rgba(59,130,246,0.3);
+
+            transform: translateY(-2px);
+        }
+
+        .control-btn.disabled {
+            opacity: .35;
+            pointer-events: none;
+        }
+
+        .chapter-list-btn {
+            min-width: 50px;
+            width: 50px;
+            padding: 13px;
+        }
+
+
+        /* ================= CHAPTER SELECTOR ================= */
+
+        .chapter-selector {
+            margin-top: 35px;
+
+            background: rgba(255,255,255,0.025);
+
+            border: 1px solid rgba(255,255,255,0.07);
+
+            border-radius: 18px;
+
+            padding: 18px;
+        }
+
+        .selector-title {
+            font-size: 15px;
+
+            font-weight: 700;
+
+            margin-bottom: 15px;
+        }
+
+        .chapter-grid {
+            display: grid;
+
+            grid-template-columns: repeat(6, 1fr);
+
+            gap: 8px;
+        }
+
+        .chapter-number {
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: rgba(255,255,255,0.04);
+
+            border: 1px solid rgba(255,255,255,0.06);
+
+            color: #9ca3af;
+
+            font-size: 12px;
+
+            transition: .3s;
+        }
+
+        .chapter-number:hover {
+            background: rgba(59,130,246,0.12);
+
+            color: white;
+        }
+
+        .chapter-number.current {
+            background: #3b82f6;
+
+            color: white;
+
+            border-color: #3b82f6;
+        }
+
+
+        /* ================= ERROR ================= */
+
+        .error {
+            text-align: center;
+
+            padding: 100px 20px;
+        }
+
+        .error-icon {
+            font-size: 55px;
+
+            margin-bottom: 20px;
+        }
+
+        .error h2 {
+            font-size: 25px;
+
+            margin-bottom: 10px;
+        }
+
+        .error p {
+            color: #9ca3af;
+
+            margin-bottom: 25px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+
+            padding: 12px 20px;
+
+            background: #3b82f6;
+
+            border-radius: 12px;
+
+            font-weight: 700;
+        }
+
+
+        /* ================= BOTTOM NAV ================= */
+
+        .bottom-nav {
+            position: fixed;
+
+            bottom: 0;
+            left: 0;
+
+            width: 100%;
+            height: 68px;
+
+            display: flex;
+
+            justify-content: space-around;
+
+            align-items: center;
+
+            background: rgba(3,7,18,.95);
+
+            backdrop-filter: blur(18px);
+
+            border-top: 1px solid rgba(255,255,255,.07);
+
+            z-index: 200;
+        }
+
+        .nav-item {
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            gap: 3px;
+
+            color: #6b7280;
+
+            font-size: 10px;
+
+            transition: .3s;
+        }
+
+        .nav-item span {
+            font-size: 19px;
+        }
+
+        .nav-item:hover {
+            color: #3b82f6;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width:700px) {
+
+            header {
+                padding: 0 5%;
+            }
+
+            .reader-container {
+                width: 92%;
+                padding-top: 25px;
+            }
+
+            .novel-title {
+                font-size: 25px;
+            }
+
+            .chapter-title {
+                font-size: 13px;
+            }
+
+            .story-card {
+                padding: 28px 20px;
+                border-radius: 18px;
+            }
+
+            .story {
+                font-size: 16px;
+                line-height: 2.25;
+            }
+
+            .reader-controls {
+                flex-wrap: wrap;
+            }
+
+            .control-btn {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .chapter-list-btn {
+                flex: 0 0 50px;
+            }
+
+            .chapter-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+        }
+
+
+        @media(max-width:400px) {
+
+            .chapter-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .story {
+                font-size: 15px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <a href="index.html" class="logo">
+        رواياتي.
+    </a>
+
+    <div class="header-actions">
+
+        <a href="search.html" class="header-btn">
+            🔍
+        </a>
+
+        <a href="library.html" class="header-btn">
+            📚
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- ================= READER ================= -->
+
+<main class="reader-container">
+
+    <div id="reader"></div>
+
+</main>
+
+
+
+<!-- ================= BOTTOM NAV ================= -->
+
+<nav class="bottom-nav">
+
+    <a href="index.html" class="nav-item">
+        <span>⌂</span>
+        الرئيسية
+    </a>
+
+    <a href="all-novels.html" class="nav-item">
+        <span>📖</span>
+        الروايات
+    </a>
+
+    <a href="search.html" class="nav-item">
+        <span>🔍</span>
+        البحث
+    </a>
+
+    <a href="library.html" class="nav-item">
+        <span>📚</span>
+        المكتبة
+    </a>
+
+    <a href="profile.html" class="nav-item">
+        <span>👤</span>
+        حسابي
+    </a>
+
+</nav>
+
+
+
+<script>
+
+
+/* ==================================================
+   بيانات الروايات
+================================================== */
+
+
+const novels = {
+
+    1: {
+        title: "آخر ما تبقى مني",
+        category: "دراما",
+        chapters: 25,
+
+        contents: {
+
+            1: {
+                title: "البداية",
+
+                text: `
+                    <p>
+                        لم يكن يعلم أن ذلك الصباح سيكون مختلفاً عن كل صباح مر عليه.
+                        استيقظ قبل شروق الشمس، ونظر من نافذة غرفته بصمت.
+                        كانت القرية هادئة، والضباب يغطي أطراف الطريق.
+                    </p>
+
+                    <p>
+                        حمل كوب القهوة واتجه نحو الباب.
+                        شيء ما في داخله كان يخبره أن هذا اليوم سيغير حياته إلى الأبد.
+                    </p>
+
+                    <div class="quote">
+                        "بعض القصص تبدأ عندما نظن أن كل شيء قد انتهى."
+                    </div>
+
+                    <p>
+                        خرج من المنزل، ونظر إلى الطريق الطويل أمامه.
+                        لم يكن يعرف إلى أين سيقوده ذلك الطريق،
+                        لكنه كان متأكداً من شيء واحد...
+                        أنه لن يعود الشخص نفسه مرة أخرى.
+                    </p>
+
+                    <p>
+                        ومن هنا بدأت الحكاية.
+                    </p>
+                `
+            },
+
+            2: {
+                title: "الرسالة",
+
+                text: `
+                    <p>
+                        في صباح اليوم التالي، وجد رسالة صغيرة أمام باب منزله.
+                        لم يكن عليها اسم المرسل.
+                    </p>
+
+                    <p>
+                        فتحها ببطء، وكانت الكلمات قليلة لكنها جعلت قلبه يتوقف للحظة.
+                    </p>
+
+                    <div class="quote">
+                        "إذا كنت تريد معرفة الحقيقة، تعال إلى المكان الذي بدأ منه كل شيء."
+                    </div>
+
+                    <p>
+                        بقي واقفاً للحظات وهو يقرأ الرسالة مرة أخرى.
+                        من كتبها؟
+                        وماذا يقصد بالمكان الذي بدأ منه كل شيء؟
+                    </p>
+
+                    <p>
+                        وضع الرسالة في جيبه وقرر أن يبحث عن الإجابة بنفسه.
+                    </p>
+                `
+            }
+
+        }
+
+    },
+
+
+    2: {
+        title: "مدينة الرماد",
+        category: "غموض",
+        chapters: 32,
+
+        contents: {
+
+            1: {
+                title: "المدينة",
+
+                text: `
+                    <p>
+                        ظهرت المدينة أمامه من بعيد، محاطة بضباب كثيف.
+                        لم يكن هناك أي صوت في الشوارع.
+                    </p>
+
+                    <p>
+                        كل شيء كان هادئاً بشكل مخيف.
+                        حتى الرياح كانت تتحرك وكأنها تخشى الاقتراب من المكان.
+                    </p>
+
+                    <div class="quote">
+                        "لا تدخل المدينة بعد غروب الشمس."
+                    </div>
+
+                    <p>
+                        كانت تلك آخر نصيحة تلقاها قبل أن يصل.
+                        لكنه لم يكن يملك خياراً آخر.
+                    </p>
+                `
+            },
+
+            2: {
+                title: "الباب",
+
+                text: `
+                    <p>
+                        وجد باباً قديماً في نهاية الشارع.
+                        كان مفتوحاً قليلاً.
+                    </p>
+
+                    <p>
+                        اقترب منه، ثم سمع صوتاً من الداخل.
+                    </p>
+
+                    <p>
+                        توقف للحظة...
+                        ثم دفع الباب ببطء.
+                    </p>
+                `
+            }
+
+        }
+
+    }
+
+};
+
+
+/* ==================================================
+   الروايات من 3 إلى 70
+   بيانات أساسية حتى يبقى النظام يدعم كامل الروايات
+================================================== */
+
+
+const names = [
+    "حينما ينام القمر",
+    "ظل الماضي",
+    "رسائل لم تصل",
+    "آخر ليلة",
+    "الطريق المجهول",
+    "ما وراء الظلام",
+    "سر الغرفة السابعة",
+    "عندما اختفى المطر",
+    "لعنة البحر",
+    "بين نارين",
+    "حكاية بلا نهاية",
+    "صوت من الماضي",
+    "الفتاة التي لم تعد",
+    "مدينة لا تنام",
+    "حب تحت المطر",
+    "الطيف الأسود",
+    "آخر وعد",
+    "خلف الباب",
+    "المنفى",
+    "قبل أن ترحل",
+    "نصف قلب",
+    "ليلة في الغابة",
+    "أوراق محترقة",
+    "عشق مستحيل",
+    "المجهول",
+    "حين التقينا",
+    "أنت قدري",
+    "الناجي الأخير",
+    "رماد الذكريات",
+    "أحببتك مرتين",
+    "المدينة القديمة",
+    "البيت المهجور",
+    "بيننا ألف حكاية",
+    "الرجل الأخير",
+    "أسرار الليل",
+    "قدرنا واحد",
+    "على حافة الهاوية",
+    "الممر السري",
+    "أنت وأنا فقط",
+    "الندم الأخير",
+    "الرسالة الأخيرة",
+    "نبض بعيد",
+    "لعنة العائلة",
+    "حين يعود الغائب",
+    "الحب المستحيل",
+    "أيام لا تنسى",
+    "صندوق الأسرار",
+    "في انتظارك",
+    "الوجه الآخر",
+    "الطريق إلى النجاة",
+    "حب من بعيد",
+    "المطاردة",
+    "الحقيقة المخفية",
+    "قصة قلب",
+    "السر القديم",
+    "في قلب العاصفة",
+    "لا تنساني",
+    "المدينة المظلمة",
+    "رسالة مجهولة",
+    "حب بلا حدود",
+    "العودة",
+    "ظل المدينة",
+    "أجمل صدفة",
+    "السر الأخير",
+    "أبواب مغلقة",
+    "وعد قديم",
+    "نهاية البداية",
+    "الحكاية الأخيرة"
+];
+
+
+const categories = [
+    "رومانسية",
+    "تشويق",
+    "دراما",
+    "غموض",
+    "رعب",
+    "مغامرة"
+];
+
+
+for(let i = 3; i <= 70; i++) {
+
+    if(!novels[i]) {
+
+        novels[i] = {
+
+            title: names[i - 3],
+
+            category: categories[i % categories.length],
+
+            chapters: 20 + (i % 16),
+
+            contents: {}
+
+        };
+
+    }
+
+}
+
+
+/* ==================================================
+   قراءة الرابط
+================================================== */
+
+
+const params = new URLSearchParams(window.location.search);
+
+
+let novelId = parseInt(params.get("novel"));
+
+let chapterNumber = parseInt(params.get("chapter"));
+
+
+if(!novelId || novelId < 1 || novelId > 70) {
+    novelId = 1;
+}
+
+
+if(!chapterNumber || chapterNumber < 1) {
+    chapterNumber = 1;
+}
+
+
+const novel = novels[novelId];
+
+
+/* ==================================================
+   التحقق من الفصل
+================================================== */
+
+
+if(chapterNumber > novel.chapters) {
+
+    chapterNumber = novel.chapters;
+
+}
+
+
+/* ==================================================
+   بيانات الفصل
+================================================== */
+
+
+let chapter = novel.contents[chapterNumber];
+
+
+/*
+   إذا الفصل غير مكتوب بعد،
+   نعرض محتوى مؤقت منظم
+*/
+
+
+if(!chapter) {
+
+    chapter = {
+
+        title: "الفصل " + chapterNumber,
+
+        text: `
+
+            <p>
+                وصلت إلى الفصل ${chapterNumber} من رواية
+                <strong>${novel.title}</strong>.
+            </p>
+
+            <p>
+                هذا الفصل جاهز للإضافة.
+                تقدر لاحقاً تبدل هذا النص بمحتوى الفصل الحقيقي.
+            </p>
+
+            <div class="quote">
+                رواياتي. — حيث تبدأ الحكاية.
+            </div>
+
+            <p>
+                استمتع بالقراءة، وعندما نجهز محتوى الرواية الحقيقي
+                نضعه هنا مباشرة بدون تغيير نظام القارئ.
+            </p>
+
+        `
+
+    };
+
+}
+
+
+/* ==================================================
+   حساب التقدم
+================================================== */
+
+
+const progress =
+    Math.round((chapterNumber / novel.chapters) * 100);
+
+
+/* ==================================================
+   عرض القارئ
+================================================== */
+
+
+const reader = document.getElementById("reader");
+
+
+reader.innerHTML = `
+
+    <div class="reader-top">
+
+        <div class="reader-category">
+            ${novel.category}
+        </div>
+
+        <h1 class="novel-title">
+            ${novel.title}
+        </h1>
+
+        <div class="chapter-title">
+            ${chapter.title}
+        </div>
+
+    </div>
+
+
+    <div class="progress-box">
+
+        <div class="progress-info">
+
+            <span>
+                الفصل ${chapterNumber} من ${novel.chapters}
+            </span>
+
+            <span>
+                ${progress}%
+            </span>
+
+        </div>
+
+        <div class="progress">
+
+            <div
+                class="progress-bar"
+                style="width:${progress}%"
+            ></div>
+
+        </div>
+
+    </div>
+
+
+    <article class="story-card">
+
+        <div class="story">
+
+            ${chapter.text}
+
+        </div>
+
+    </article>
+
+
+    <div class="reader-controls">
+
+        ${
+            chapterNumber > 1
+
+            ?
+
+            `
+            <a
+                href="reader.html?novel=${novelId}&chapter=${chapterNumber - 1}"
+                class="control-btn"
+            >
+                → السابق
+            </a>
+            `
+
+            :
+
+            `
+            <span class="control-btn disabled">
+                → السابق
+            </span>
+            `
+        }
+
+
+        <a
+            href="chapters.html?novel=${novelId}"
+            class="control-btn chapter-list-btn"
+        >
+            📖
+        </a>
+
+
+        ${
+            chapterNumber < novel.chapters
+
+            ?
+
+            `
+            <a
+                href="reader.html?novel=${novelId}&chapter=${chapterNumber + 1}"
+                class="control-btn"
+            >
+                التالي ←
+            </a>
+            `
+
+            :
+
+            `
+            <a
+                href="novel.html?id=${novelId}"
+                class="control-btn"
+            >
+                ✓ انتهت الرواية
+            </a>
+            `
+        }
+
+    </div>
+
+
+    <div class="chapter-selector">
+
+        <div class="selector-title">
+            📚 فصول الرواية
+        </div>
+
+        <div class="chapter-grid" id="chapterGrid"></div>
+
+    </div>
+
+`;
+
+
+/* ==================================================
+   قائمة الفصول
+================================================== */
+
+
+const chapterGrid =
+    document.getElementById("chapterGrid");
+
+
+let chapterHTML = "";
+
+
+for(let i = 1; i <= novel.chapters; i++) {
+
+    chapterHTML += `
+
+        <a
+            href="reader.html?novel=${novelId}&chapter=${i}"
+            class="chapter-number ${i === chapterNumber ? "current" : ""}"
+        >
+            ${i}
+        </a>
+
+    `;
+
+}
+
+
+chapterGrid.innerHTML = chapterHTML;
+
+
+/* ==================================================
+   عنوان الصفحة
+================================================== */
+
+
+document.title =
+    `${novel.title} - الفصل ${chapterNumber} | رواياتي.`;
+
+
+/* ==================================================
+   حفظ آخر فصل تمت قراءته
+================================================== */
+
+
+localStorage.setItem(
+
+    "lastRead",
+
+    JSON.stringify({
+
+        novel: novelId,
+
+        chapter: chapterNumber,
+
+        title: novel.title,
+
+        date: new Date().toISOString()
+
+    })
+
+);
+
+</script>
+
+
+</body>
+</html>
