@@ -1,1 +1,1282 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>كل الروايات | رواياتي</title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:"Cairo",sans-serif;
+
+    background:#030712;
+
+    color:white;
+
+    min-height:100vh;
+
+    padding-bottom:90px;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+
+/* ================= HEADER ================= */
+
+header{
+
+    height:70px;
+
+    padding:0 6%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    position:sticky;
+
+    top:0;
+
+    z-index:100;
+
+    background:rgba(3,7,18,.92);
+
+    backdrop-filter:blur(18px);
+
+    border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.logo{
+
+    color:#3b82f6;
+
+    font-size:24px;
+
+    font-weight:800;
+}
+
+.header-actions{
+
+    display:flex;
+
+    gap:10px;
+}
+
+.header-btn{
+
+    width:42px;
+
+    height:42px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:12px;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    font-size:18px;
+
+    transition:.3s;
+}
+
+.header-btn:hover{
+
+    background:#3b82f6;
+
+    transform:translateY(-2px);
+}
+
+
+/* ================= CONTAINER ================= */
+
+.container{
+
+    width:92%;
+
+    max-width:1200px;
+
+    margin:auto;
+
+    padding:35px 0;
+}
+
+
+/* ================= TITLE ================= */
+
+.page-title{
+
+    margin-bottom:25px;
+}
+
+.page-title h1{
+
+    font-size:30px;
+
+    font-weight:800;
+
+    margin-bottom:5px;
+}
+
+.page-title p{
+
+    color:#9ca3af;
+
+    font-size:13px;
+}
+
+
+/* ================= SEARCH ================= */
+
+.search-box{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-bottom:25px;
+}
+
+.search-box input{
+
+    flex:1;
+
+    height:52px;
+
+    padding:0 18px;
+
+    border-radius:14px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    outline:none;
+
+    background:rgba(255,255,255,.04);
+
+    color:white;
+
+    font-family:"Cairo";
+
+    font-size:13px;
+}
+
+.search-box input:focus{
+
+    border-color:#3b82f6;
+
+    box-shadow:0 0 20px rgba(59,130,246,.1);
+}
+
+.search-box button{
+
+    width:55px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#3b82f6;
+
+    color:white;
+
+    font-size:19px;
+
+    cursor:pointer;
+}
+
+
+/* ================= FILTERS ================= */
+
+.filters{
+
+    display:flex;
+
+    gap:8px;
+
+    overflow-x:auto;
+
+    padding-bottom:8px;
+
+    margin-bottom:25px;
+}
+
+.filters::-webkit-scrollbar{
+
+    display:none;
+}
+
+.filter{
+
+    white-space:nowrap;
+
+    padding:9px 16px;
+
+    border-radius:30px;
+
+    background:rgba(255,255,255,.04);
+
+    border:1px solid rgba(255,255,255,.07);
+
+    color:#9ca3af;
+
+    font-family:"Cairo";
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.filter:hover,
+.filter.active{
+
+    background:#3b82f6;
+
+    border-color:#3b82f6;
+
+    color:white;
+}
+
+
+/* ================= COUNT ================= */
+
+.result-info{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:15px;
+}
+
+.result-info h2{
+
+    font-size:19px;
+
+    font-weight:800;
+}
+
+.result-info span{
+
+    color:#60a5fa;
+
+    font-size:12px;
+}
+
+
+/* ================= GRID ================= */
+
+.novels-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(5,1fr);
+
+    gap:18px;
+}
+
+
+/* ================= CARD ================= */
+
+.novel-card{
+
+    position:relative;
+
+    overflow:hidden;
+
+    border-radius:17px;
+
+    background:rgba(255,255,255,.035);
+
+    border:1px solid rgba(255,255,255,.07);
+
+    transition:.35s;
+}
+
+.novel-card:hover{
+
+    transform:translateY(-6px);
+
+    border-color:rgba(59,130,246,.4);
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.35);
+}
+
+.cover{
+
+    width:100%;
+
+    height:250px;
+
+    object-fit:cover;
+
+    display:block;
+}
+
+.card-content{
+
+    padding:13px;
+}
+
+.category{
+
+    display:inline-block;
+
+    font-size:9px;
+
+    color:#60a5fa;
+
+    background:rgba(59,130,246,.1);
+
+    border:1px solid rgba(59,130,246,.18);
+
+    padding:4px 8px;
+
+    border-radius:20px;
+
+    margin-bottom:7px;
+}
+
+.novel-title{
+
+    font-size:14px;
+
+    font-weight:800;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    margin-bottom:4px;
+}
+
+.author{
+
+    color:#9ca3af;
+
+    font-size:10px;
+
+    margin-bottom:10px;
+}
+
+.read-btn{
+
+    display:block;
+
+    text-align:center;
+
+    padding:8px;
+
+    border-radius:9px;
+
+    background:rgba(59,130,246,.1);
+
+    color:#60a5fa;
+
+    font-size:11px;
+
+    font-weight:700;
+
+    transition:.3s;
+}
+
+.read-btn:hover{
+
+    background:#3b82f6;
+
+    color:white;
+}
+
+
+/* ================= EMPTY ================= */
+
+.empty{
+
+    display:none;
+
+    text-align:center;
+
+    padding:70px 20px;
+
+    color:#9ca3af;
+}
+
+.empty-icon{
+
+    font-size:50px;
+
+    margin-bottom:15px;
+}
+
+.empty h3{
+
+    color:white;
+
+    margin-bottom:7px;
+}
+
+
+/* ================= BOTTOM NAV ================= */
+
+.bottom-nav{
+
+    position:fixed;
+
+    bottom:0;
+
+    left:0;
+
+    width:100%;
+
+    height:70px;
+
+    display:flex;
+
+    justify-content:space-around;
+
+    align-items:center;
+
+    background:rgba(3,7,18,.95);
+
+    backdrop-filter:blur(18px);
+
+    border-top:1px solid rgba(255,255,255,.07);
+
+    z-index:200;
+}
+
+.nav-item{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:3px;
+
+    color:#6b7280;
+
+    font-size:10px;
+
+    transition:.3s;
+}
+
+.nav-item span{
+
+    font-size:19px;
+}
+
+.nav-item:hover,
+.nav-item.active{
+
+    color:#3b82f6;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1000px){
+
+    .novels-grid{
+
+        grid-template-columns:
+            repeat(4,1fr);
+    }
+
+}
+
+@media(max-width:750px){
+
+    .novels-grid{
+
+        grid-template-columns:
+            repeat(3,1fr);
+
+        gap:12px;
+    }
+
+    .cover{
+
+        height:200px;
+    }
+
+}
+
+@media(max-width:500px){
+
+    header{
+
+        padding:0 5%;
+    }
+
+    .container{
+
+        width:92%;
+
+        padding-top:25px;
+    }
+
+    .page-title h1{
+
+        font-size:25px;
+    }
+
+    .novels-grid{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+        gap:12px;
+    }
+
+    .cover{
+
+        height:220px;
+    }
+
+    .card-content{
+
+        padding:10px;
+    }
+
+    .novel-title{
+
+        font-size:12px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <a href="index.html"
+       class="logo">
+
+        رواياتي.
+
+    </a>
+
+
+    <div class="header-actions">
+
+        <a href="search.html"
+           class="header-btn">
+
+            🔍
+
+        </a>
+
+
+        <a href="library.html"
+           class="header-btn">
+
+            📚
+
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- ================= CONTENT ================= -->
+
+<main class="container">
+
+
+    <div class="page-title">
+
+        <h1>
+            كل الروايات 📚
+        </h1>
+
+        <p>
+            اكتشف جميع الروايات الموجودة في رواياتي
+        </p>
+
+    </div>
+
+
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="ابحث عن رواية أو كاتب..."
+        >
+
+        <button onclick="searchNovels()">
+
+            🔍
+
+        </button>
+
+    </div>
+
+
+
+    <!-- FILTERS -->
+
+    <div class="filters">
+
+        <button
+            class="filter active"
+            onclick="filterCategory('الكل',this)">
+
+            الكل
+
+        </button>
+
+
+        <button
+            class="filter"
+            onclick="filterCategory('دراما',this)">
+
+            دراما
+
+        </button>
+
+
+        <button
+            class="filter"
+            onclick="filterCategory('رومانسية',this)">
+
+            رومانسية
+
+        </button>
+
+
+        <button
+            class="filter"
+            onclick="filterCategory('غموض',this)">
+
+            غموض
+
+        </button>
+
+
+        <button
+            class="filter"
+            onclick="filterCategory('تشويق',this)">
+
+            تشويق
+
+        </button>
+
+
+        <button
+            class="filter"
+            onclick="filterCategory('رعب',this)">
+
+            رعب
+
+        </button>
+
+
+        <button
+            class="filter"
+            onclick="filterCategory('مغامرة',this)">
+
+            مغامرة
+
+        </button>
+
+    </div>
+
+
+
+    <!-- RESULT -->
+
+    <div class="result-info">
+
+        <h2>
+            الروايات
+        </h2>
+
+        <span id="count">
+            70 رواية
+        </span>
+
+    </div>
+
+
+
+    <!-- GRID -->
+
+    <div
+        class="novels-grid"
+        id="novelsGrid">
+    </div>
+
+
+
+    <!-- EMPTY -->
+
+    <div
+        class="empty"
+        id="empty">
+
+        <div class="empty-icon">
+            🔎
+        </div>
+
+        <h3>
+            لم نجد أي رواية
+        </h3>
+
+        <p>
+            جرب البحث باسم مختلف
+        </p>
+
+    </div>
+
+
+</main>
+
+
+
+<!-- ================= BOTTOM NAV ================= -->
+
+<nav class="bottom-nav">
+
+    <a href="index.html"
+       class="nav-item">
+
+        <span>⌂</span>
+
+        الرئيسية
+
+    </a>
+
+
+    <a href="all-novels.html"
+       class="nav-item active">
+
+        <span>📖</span>
+
+        الروايات
+
+    </a>
+
+
+    <a href="search.html"
+       class="nav-item">
+
+        <span>🔍</span>
+
+        البحث
+
+    </a>
+
+
+    <a href="library.html"
+       class="nav-item">
+
+        <span>📚</span>
+
+        المكتبة
+
+    </a>
+
+
+    <a href="profile.html"
+       class="nav-item">
+
+        <span>👤</span>
+
+        حسابي
+
+    </a>
+
+</nav>
+
+
+
+<script>
+
+
+/* ==================================================
+   الروايات
+================================================== */
+
+const titles = [
+
+"آخر ما تبقى مني",
+"مدينة الرماد",
+"حينما ينام القمر",
+"ظل الماضي",
+"رسائل لم تصل",
+"آخر ليلة",
+"الطريق المجهول",
+"ما وراء الظلام",
+"سر الغرفة السابعة",
+"عندما اختفى المطر",
+"لعنة البحر",
+"بين نارين",
+"حكاية بلا نهاية",
+"صوت من الماضي",
+"الفتاة التي لم تعد",
+"مدينة لا تنام",
+"حب تحت المطر",
+"الطيف الأسود",
+"آخر وعد",
+"خلف الباب",
+"المنفى",
+"قبل أن ترحل",
+"نصف قلب",
+"ليلة في الغابة",
+"أوراق محترقة",
+"عشق مستحيل",
+"المجهول",
+"حين التقينا",
+"أنت قدري",
+"الناجي الأخير",
+"رماد الذكريات",
+"أحببتك مرتين",
+"المدينة القديمة",
+"البيت المهجور",
+"بيننا ألف حكاية",
+"الرجل الأخير",
+"أسرار الليل",
+"قدرنا واحد",
+"على حافة الهاوية",
+"الممر السري",
+"أنت وأنا فقط",
+"الندم الأخير",
+"الرسالة الأخيرة",
+"نبض بعيد",
+"لعنة العائلة",
+"حين يعود الغائب",
+"الحب المستحيل",
+"أيام لا تنسى",
+"صندوق الأسرار",
+"في انتظارك",
+"الوجه الآخر",
+"الطريق إلى النجاة",
+"حب من بعيد",
+"المطاردة",
+"الحقيقة المخفية",
+"قصة قلب",
+"السر القديم",
+"في قلب العاصفة",
+"لا تنساني",
+"المدينة المظلمة",
+"رسالة مجهولة",
+"حب بلا حدود",
+"العودة",
+"ظل المدينة",
+"أجمل صدفة",
+"السر الأخير",
+"أبواب مغلقة",
+"وعد قديم",
+"نهاية البداية",
+"الحكاية الأخيرة"
+
+];
+
+
+const authors = [
+
+"أحمد الرواي",
+"ليان نور",
+"سارة محمد",
+"ياسين كاتب",
+"نور الهدى",
+"يوسف خالد",
+"عمر عادل",
+"مالك أحمد",
+"رامي منصور",
+"ريم عادل",
+"سليم ناصر",
+"محمد أمين",
+"ليلى حسن",
+"آدم يوسف",
+"مريم علي",
+"كريم وليد",
+"هبة أحمد",
+"ياسر عادل",
+"سارة نجيب",
+"إياد منصور",
+"خالد سمير",
+"نور أحمد",
+"ملك سامي",
+"أنس إبراهيم",
+"رامي يوسف",
+"رؤى محمد",
+"سيف الدين",
+"إيمان علي",
+"ليان أحمد",
+"عادل منصور",
+"حسن كمال",
+"جنى يوسف",
+"وليد سامي",
+"طارق نجيب",
+"نوران خالد",
+"إيهاب حسن",
+"يحيى محمد",
+"تالا يوسف",
+"سامي خالد",
+"بدر الدين",
+"سلمى علي",
+"فارس أحمد",
+"سارة ناصر",
+"ياسمين عادل",
+"جواد منصور",
+"مريم خالد",
+"رنا يوسف",
+"أمين ناصر",
+"عبد الرحمن علي",
+"نورهان محمد",
+"حسام نجيب",
+"كريم أحمد",
+"سندس علي",
+"مراد خالد",
+"ياسين محمد",
+"آية نور",
+"فؤاد ناصر",
+"عمر يوسف",
+"ملك أحمد",
+"سيف أحمد",
+"ريم خالد",
+"لارا محمد",
+"مازن علي",
+"إسلام ناصر",
+"سارة يوسف",
+"حسين أحمد",
+"خالد يوسف",
+"ليلى ناصر",
+"أمين خالد",
+"محمد ياسين"
+
+];
+
+
+const categories = [
+
+"دراما",
+"غموض",
+"رومانسية",
+"تشويق",
+"دراما",
+"تشويق",
+"مغامرة",
+"رعب",
+"غموض",
+"دراما",
+"رعب",
+"دراما",
+"دراما",
+"غموض",
+"رومانسية",
+"دراما",
+"رومانسية",
+"رعب",
+"رومانسية",
+"غموض",
+"دراما",
+"رومانسية",
+"رومانسية",
+"رعب",
+"دراما",
+"رومانسية",
+"غموض",
+"رومانسية",
+"رومانسية",
+"مغامرة",
+"دراما",
+"رومانسية",
+"غموض",
+"رعب",
+"دراما",
+"تشويق",
+"غموض",
+"رومانسية",
+"تشويق",
+"غموض",
+"رومانسية",
+"دراما",
+"غموض",
+"رومانسية",
+"رعب",
+"دراما",
+"رومانسية",
+"دراما",
+"غموض",
+"رومانسية",
+"غموض",
+"مغامرة",
+"رومانسية",
+"تشويق",
+"غموض",
+"رومانسية",
+"غموض",
+"مغامرة",
+"رومانسية",
+"رعب",
+"غموض",
+"رومانسية",
+"دراما",
+"غموض",
+"رومانسية",
+"غموض",
+"دراما",
+"رومانسية",
+"دراما",
+"غموض"
+
+];
+
+
+const covers = [
+
+"https://images.unsplash.com/photo-1512820790803-83ca734da794",
+"https://images.unsplash.com/photo-1500534623283-312aade485b7",
+"https://images.unsplash.com/photo-1499750310107-5fef28a66643",
+"https://images.unsplash.com/photo-1516979187457-637abb4f9353",
+"https://images.unsplash.com/photo-1455390582262-044cdead277a",
+"https://images.unsplash.com/photo-1519681393784-d120267933ba",
+"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
+"https://images.unsplash.com/photo-1511497584788-876760111969",
+"https://images.unsplash.com/photo-1511108690759-009324a90311",
+"https://images.unsplash.com/photo-1501691223387-dd0500403074"
+
+];
+
+
+let currentCategory = "الكل";
+
+
+/* ==================================================
+   إنشاء الروايات
+================================================== */
+
+const novels = [];
+
+
+for(let i = 0; i < 70; i++){
+
+    novels.push({
+
+        id:i + 1,
+
+        title:titles[i],
+
+        author:authors[i],
+
+        category:categories[i],
+
+        cover:covers[i % covers.length]
+
+    });
+
+}
+
+
+/* ==================================================
+   عرض الروايات
+================================================== */
+
+function renderNovels(){
+
+    const grid =
+        document.getElementById("novelsGrid");
+
+    const empty =
+        document.getElementById("empty");
+
+    const search =
+        document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    let filtered = novels.filter(novel => {
+
+        const matchCategory =
+            currentCategory === "الكل" ||
+            novel.category === currentCategory;
+
+
+        const matchSearch =
+            novel.title
+            .toLowerCase()
+            .includes(search) ||
+
+            novel.author
+            .toLowerCase()
+            .includes(search);
+
+
+        return matchCategory && matchSearch;
+
+    });
+
+
+    document.getElementById("count").textContent =
+        `${filtered.length} رواية`;
+
+
+    if(filtered.length === 0){
+
+        grid.innerHTML = "";
+
+        empty.style.display = "block";
+
+        return;
+
+    }
+
+
+    empty.style.display = "none";
+
+
+    grid.innerHTML =
+        filtered.map(novel => `
+
+            <article class="novel-card">
+
+                <a href="novel.html?id=${novel.id}">
+
+                    <img
+                        src="${novel.cover}?auto=format&fit=crop&w=600&q=80"
+                        class="cover"
+                        alt="${novel.title}"
+                    >
+
+                    <div class="card-content">
+
+                        <span class="category">
+                            ${novel.category}
+                        </span>
+
+                        <h3 class="novel-title">
+                            ${novel.title}
+                        </h3>
+
+                        <p class="author">
+                            ${novel.author}
+                        </p>
+
+                        <div class="read-btn">
+                            عرض الرواية
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </article>
+
+        `).join("");
+
+}
+
+
+/* ==================================================
+   البحث
+================================================== */
+
+function searchNovels(){
+
+    renderNovels();
+
+}
+
+
+document
+.getElementById("searchInput")
+.addEventListener("input", renderNovels);
+
+
+/* ==================================================
+   التصنيف
+================================================== */
+
+function filterCategory(category, button){
+
+    currentCategory = category;
+
+
+    document
+    .querySelectorAll(".filter")
+    .forEach(btn => {
+
+        btn.classList.remove("active");
+
+    });
+
+
+    button.classList.add("active");
+
+
+    renderNovels();
+
+}
+
+
+/* ==================================================
+   البداية
+================================================== */
+
+renderNovels();
+
+</script>
+
+</body>
+
+</html>
