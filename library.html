@@ -1,1 +1,1630 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>مكتبتي | رواياتي</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Cairo", sans-serif;
+            background: #030712;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: #2563eb;
+            filter: blur(180px);
+            opacity: 0.12;
+            top: -150px;
+            right: -100px;
+            z-index: -1;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            width: 350px;
+            height: 350px;
+            background: #3b82f6;
+            filter: blur(180px);
+            opacity: 0.08;
+            bottom: -150px;
+            left: -100px;
+            z-index: -1;
+        }
+
+        /* HEADER */
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(3, 7, 18, 0.88);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(59, 130, 246, 0.12);
+        }
+
+        .header-content {
+            max-width: 1250px;
+            margin: auto;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #3b82f6;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 9px;
+        }
+
+        .icon-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+            background: rgba(17, 24, 39, 0.9);
+            border: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            transition: .3s;
+        }
+
+        .icon-btn:hover {
+            border-color: #3b82f6;
+            background: rgba(59,130,246,.12);
+        }
+
+        /* CONTAINER */
+
+        .container {
+            max-width: 1250px;
+            margin: auto;
+            padding: 30px 20px 110px;
+        }
+
+        .top-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .title h1 {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .title p {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 15px;
+            border-radius: 12px;
+            background: rgba(17,24,39,.9);
+            border: 1px solid rgba(59,130,246,.25);
+            color: #dbeafe;
+            font-size: 13px;
+            transition: .3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(59,130,246,.15);
+            border-color: #3b82f6;
+        }
+
+        /* TABS */
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            margin-bottom: 30px;
+            padding-bottom: 5px;
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab {
+            flex-shrink: 0;
+            padding: 10px 17px;
+            border-radius: 12px;
+            background: rgba(17,24,39,.8);
+            border: 1px solid rgba(255,255,255,.07);
+            color: #94a3b8;
+            font-size: 12px;
+            transition: .3s;
+        }
+
+        .tab:hover,
+        .tab.active {
+            color: #60a5fa;
+            background: rgba(59,130,246,.13);
+            border-color: rgba(59,130,246,.4);
+        }
+
+        /* SECTION */
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 17px;
+        }
+
+        .section-header h2 {
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        .count {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        /* GRID */
+
+        .novels-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .novel-card {
+            background: rgba(17,24,39,.72);
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 18px;
+            overflow: hidden;
+            transition: .3s;
+        }
+
+        .novel-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(59,130,246,.45);
+            box-shadow: 0 18px 40px rgba(0,0,0,.3);
+        }
+
+        .cover {
+            height: 220px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: .4s;
+        }
+
+        .novel-card:hover .cover img {
+            transform: scale(1.06);
+        }
+
+        .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(3,7,18,.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(59,130,246,.3);
+            color: #60a5fa;
+            padding: 5px 9px;
+            border-radius: 8px;
+            font-size: 9px;
+        }
+
+        .novel-info {
+            padding: 13px;
+        }
+
+        .novel-info h3 {
+            font-size: 14px;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .author {
+            color: #64748b;
+            font-size: 10px;
+            margin-bottom: 10px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            color: #94a3b8;
+            font-size: 9px;
+            margin-bottom: 6px;
+        }
+
+        .progress {
+            height: 5px;
+            width: 100%;
+            background: #111827;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #3b82f6;
+            border-radius: 10px;
+        }
+
+        .read-btn {
+            display: block;
+            text-align: center;
+            margin-top: 11px;
+            padding: 8px;
+            border-radius: 10px;
+            background: rgba(59,130,246,.1);
+            border: 1px solid rgba(59,130,246,.2);
+            color: #60a5fa;
+            font-size: 10px;
+            transition: .3s;
+        }
+
+        .read-btn:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* BOTTOM NAV */
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(3,7,18,.94);
+            backdrop-filter: blur(18px);
+            border-top: 1px solid rgba(255,255,255,.07);
+            padding: 8px 10px;
+        }
+
+        .nav-items {
+            max-width: 600px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(5,1fr);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            color: #64748b;
+            font-size: 9px;
+            padding: 5px;
+            transition: .3s;
+        }
+
+        .nav-item span:first-child {
+            font-size: 18px;
+        }
+
+        .nav-item.active,
+        .nav-item:hover {
+            color: #3b82f6;
+        }
+
+        @media (min-width: 650px) {
+            .novels-grid {
+                grid-template-columns: repeat(3,1fr);
+            }
+
+            .cover {
+                height: 270px;
+            }
+        }
+
+        @media (min-width: 900px) {
+            .novels-grid {
+                grid-template-columns: repeat(4,1fr);
+            }
+
+            .cover {
+                height: 290px;
+            }
+        }
+
+        @media (min-width: 1150px) {
+            .novels-grid {
+                grid-template-columns: repeat(5,1fr);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .title h1 {
+                font-size: 23px;
+            }
+
+            .back-btn {
+                padding: 9px 11px;
+            }
+
+            .cover {
+                height: 205px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-content">
+
+        <a href="index.html" class="logo">
+            رواياتي<span>.</span>
+        </a>
+
+        <div class="header-actions">
+
+            <a href="search.html" class="icon-btn" title="البحث">
+                🔍
+            </a>
+
+            <a href="index.html" class="icon-btn" title="الرئيسية">
+                🏠
+            </a>
+
+        </div>
+    </div>
+</header>
+
+
+<main class="container">
+
+    <div class="top-section">
+
+        <div class="title">
+            <h1>📚 مكتبتي</h1>
+            <p>اكتشف عالمًا مليئًا بالحكايات والروايات</p>
+        </div>
+
+        <!-- زر الرجوع للايندكس -->
+        <a href="index.html" class="back-btn">
+            ← الرئيسية
+        </a>
+
+    </div>
+
+
+    <div class="tabs">
+
+        <a href="library.html" class="tab active">
+            📚 مكتبتي
+        </a>
+
+        <a href="history.html" class="tab">
+            🕘 سجل القراءة
+        </a>
+
+        <a href="all-novels.html" class="tab">
+            ✨ كل الروايات
+        </a>
+
+        <a href="categories.html" class="tab">
+            🗂️ التصنيفات
+        </a>
+
+    </div>
+
+
+    <div class="section-header">
+        <h2>📖 روايات المكتبة</h2>
+        <span class="count">70 رواية</span>
+    </div>
+
+
+    <div class="novels-grid">
+
+
+        <!-- 01 -->
+        <a href="novel.html?id=1" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>آخر ما تبقى مني</h3>
+                <div class="author">أحمد الرواي</div>
+                <div class="progress-info"><span>الفصل 7 من 20</span><span>35%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:35%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 02 -->
+        <a href="novel.html?id=2" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1511108690759-009324a90311?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>مدينة الرماد</h3>
+                <div class="author">ليان نور</div>
+                <div class="progress-info"><span>الفصل 12 من 30</span><span>40%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:40%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 03 -->
+        <a href="novel.html?id=3" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>حينما ينام القمر</h3>
+                <div class="author">سارة محمد</div>
+                <div class="progress-info"><span>الفصل 5 من 18</span><span>28%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:28%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 04 -->
+        <a href="novel.html?id=4" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>ظل الماضي</h3>
+                <div class="author">ياسين كاتب</div>
+                <div class="progress-info"><span>الفصل 9 من 25</span><span>36%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:36%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 05 -->
+        <a href="novel.html?id=5" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>رسائل لم تصل</h3>
+                <div class="author">نور الهدى</div>
+                <div class="progress-info"><span>الفصل 15 من 22</span><span>68%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:68%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 06 -->
+        <a href="novel.html?id=6" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1519682337058-a94d519337bc?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>آخر ليلة</h3>
+                <div class="author">يوسف خالد</div>
+                <div class="progress-info"><span>الفصل 8 من 19</span><span>42%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:42%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 07 -->
+        <a href="novel.html?id=7" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1495640452828-3df6795cf69b?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>الطريق المجهول</h3>
+                <div class="author">عمر عادل</div>
+                <div class="progress-info"><span>الفصل 11 من 27</span><span>41%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:41%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 08 -->
+        <a href="novel.html?id=8" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>ما وراء الظلام</h3>
+                <div class="author">مالك أحمد</div>
+                <div class="progress-info"><span>الفصل 4 من 16</span><span>25%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:25%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 09 -->
+        <a href="novel.html?id=9" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>سر الغرفة السابعة</h3>
+                <div class="author">رامي منصور</div>
+                <div class="progress-info"><span>الفصل 3 من 21</span><span>14%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:14%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 10 -->
+        <a href="novel.html?id=10" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>عندما اختفى المطر</h3>
+                <div class="author">ريم عادل</div>
+                <div class="progress-info"><span>الفصل 2 من 18</span><span>11%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:11%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 11 -->
+        <a href="novel.html?id=11" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1513001900722-370f803f498d?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>لعنة البحر</h3>
+                <div class="author">سليم ناصر</div>
+                <div class="progress-info"><span>الفصل 6 من 24</span><span>25%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:25%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 12 -->
+        <a href="novel.html?id=12" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>بين نارين</h3>
+                <div class="author">محمد أمين</div>
+                <div class="progress-info"><span>الفصل 10 من 28</span><span>36%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:36%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 13 -->
+        <a href="novel.html?id=13" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1510172951991-856a654760a9?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>حكاية بلا نهاية</h3>
+                <div class="author">ليلى حسن</div>
+                <div class="progress-info"><span>الفصل 1 من 30</span><span>3%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:3%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 14 -->
+        <a href="novel.html?id=14" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1514894780887-121968d00567?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>صوت من الماضي</h3>
+                <div class="author">آدم يوسف</div>
+                <div class="progress-info"><span>الفصل 17 من 25</span><span>68%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:68%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 15 -->
+        <a href="novel.html?id=15" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>الفتاة التي لم تعد</h3>
+                <div class="author">مريم علي</div>
+                <div class="progress-info"><span>الفصل 13 من 20</span><span>65%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:65%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 16 -->
+        <a href="novel.html?id=16" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>مدينة لا تنام</h3>
+                <div class="author">كريم وليد</div>
+                <div class="progress-info"><span>الفصل 4 من 22</span><span>18%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:18%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 17 -->
+        <a href="novel.html?id=17" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>حب تحت المطر</h3>
+                <div class="author">هبة أحمد</div>
+                <div class="progress-info"><span>الفصل 14 من 20</span><span>70%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:70%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 18 -->
+        <a href="novel.html?id=18" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1511108690759-009324a90311?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>الطيف الأسود</h3>
+                <div class="author">ياسر عادل</div>
+                <div class="progress-info"><span>الفصل 8 من 26</span><span>31%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:31%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 19 -->
+        <a href="novel.html?id=19" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>آخر وعد</h3>
+                <div class="author">سارة نجيب</div>
+                <div class="progress-info"><span>الفصل 2 من 17</span><span>12%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:12%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 20 -->
+        <a href="novel.html?id=20" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1495640452828-3df6795cf69b?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>خلف الباب</h3>
+                <div class="author">إياد منصور</div>
+                <div class="progress-info"><span>الفصل 19 من 24</span><span>79%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:79%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 21 -->
+        <a href="novel.html?id=21" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>المنفى</h3>
+                <div class="author">خالد سمير</div>
+                <div class="progress-info"><span>الفصل 7 من 23</span><span>30%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:30%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 22 -->
+        <a href="novel.html?id=22" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>قبل أن ترحل</h3>
+                <div class="author">نور أحمد</div>
+                <div class="progress-info"><span>الفصل 3 من 18</span><span>17%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:17%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 23 -->
+        <a href="novel.html?id=23" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>نصف قلب</h3>
+                <div class="author">ملك سامي</div>
+                <div class="progress-info"><span>الفصل 12 من 21</span><span>57%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:57%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 24 -->
+        <a href="novel.html?id=24" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1513001900722-370f803f498d?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>ليلة في الغابة</h3>
+                <div class="author">أنس إبراهيم</div>
+                <div class="progress-info"><span>الفصل 9 من 30</span><span>30%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:30%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 25 -->
+        <a href="novel.html?id=25" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>أوراق محترقة</h3>
+                <div class="author">رامي يوسف</div>
+                <div class="progress-info"><span>الفصل 5 من 20</span><span>25%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:25%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 26 -->
+        <a href="novel.html?id=26" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1510172951991-856a654760a9?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>عشق مستحيل</h3>
+                <div class="author">رؤى محمد</div>
+                <div class="progress-info"><span>الفصل 16 من 22</span><span>73%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:73%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 27 -->
+        <a href="novel.html?id=27" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1514894780887-121968d00567?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>المجهول</h3>
+                <div class="author">سيف الدين</div>
+                <div class="progress-info"><span>الفصل 6 من 25</span><span>24%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:24%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 28 -->
+        <a href="novel.html?id=28" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>حين التقينا</h3>
+                <div class="author">إيمان علي</div>
+                <div class="progress-info"><span>الفصل 4 من 19</span><span>21%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:21%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 29 -->
+        <a href="novel.html?id=29" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>أنت قدري</h3>
+                <div class="author">ليان أحمد</div>
+                <div class="progress-info"><span>الفصل 13 من 18</span><span>72%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:72%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 30 -->
+        <a href="novel.html?id=30" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1511108690759-009324a90311?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>الناجي الأخير</h3>
+                <div class="author">عادل منصور</div>
+                <div class="progress-info"><span>الفصل 15 من 30</span><span>50%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:50%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 31 -->
+        <a href="novel.html?id=31" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>رماد الذكريات</h3>
+                <div class="author">حسن كمال</div>
+                <div class="progress-info"><span>الفصل 3 من 24</span><span>13%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:13%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 32 -->
+        <a href="novel.html?id=32" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>أحببتك مرتين</h3>
+                <div class="author">جنى يوسف</div>
+                <div class="progress-info"><span>الفصل 18 من 22</span><span>82%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:82%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 33 -->
+        <a href="novel.html?id=33" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>المدينة القديمة</h3>
+                <div class="author">وليد سامي</div>
+                <div class="progress-info"><span>الفصل 10 من 26</span><span>38%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:38%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 34 -->
+        <a href="novel.html?id=34" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1519682337058-a94d519337bc?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>البيت المهجور</h3>
+                <div class="author">طارق نجيب</div>
+                <div class="progress-info"><span>الفصل 2 من 20</span><span>10%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:10%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 35 -->
+        <a href="novel.html?id=35" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1495640452828-3df6795cf69b?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>بيننا ألف حكاية</h3>
+                <div class="author">نوران خالد</div>
+                <div class="progress-info"><span>الفصل 14 من 21</span><span>67%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:67%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 36 -->
+        <a href="novel.html?id=36" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>الرجل الأخير</h3>
+                <div class="author">إيهاب حسن</div>
+                <div class="progress-info"><span>الفصل 8 من 20</span><span>40%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:40%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 37 -->
+        <a href="novel.html?id=37" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>أسرار الليل</h3>
+                <div class="author">يحيى محمد</div>
+                <div class="progress-info"><span>الفصل 5 من 23</span><span>22%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:22%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 38 -->
+        <a href="novel.html?id=38" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>قدرنا واحد</h3>
+                <div class="author">تالا يوسف</div>
+                <div class="progress-info"><span>الفصل 17 من 20</span><span>85%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:85%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 39 -->
+        <a href="novel.html?id=39" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1513001900722-370f803f498d?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>على حافة الهاوية</h3>
+                <div class="author">سامي خالد</div>
+                <div class="progress-info"><span>الفصل 11 من 27</span><span>41%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:41%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 40 -->
+        <a href="novel.html?id=40" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>الممر السري</h3>
+                <div class="author">بدر الدين</div>
+                <div class="progress-info"><span>الفصل 1 من 16</span><span>6%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:6%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 41 -->
+        <a href="novel.html?id=41" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1510172951991-856a654760a9?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>أنت وأنا فقط</h3>
+                <div class="author">سلمى علي</div>
+                <div class="progress-info"><span>الفصل 15 من 20</span><span>75%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:75%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 42 -->
+        <a href="novel.html?id=42" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1514894780887-121968d00567?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>الندم الأخير</h3>
+                <div class="author">فارس أحمد</div>
+                <div class="progress-info"><span>الفصل 9 من 22</span><span>41%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:41%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 43 -->
+        <a href="novel.html?id=43" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>الرسالة الأخيرة</h3>
+                <div class="author">سارة ناصر</div>
+                <div class="progress-info"><span>الفصل 4 من 18</span><span>22%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:22%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 44 -->
+        <a href="novel.html?id=44" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>نبض بعيد</h3>
+                <div class="author">ياسمين عادل</div>
+                <div class="progress-info"><span>الفصل 12 من 20</span><span>60%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:60%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 45 -->
+        <a href="novel.html?id=45" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1511108690759-009324a90311?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>لعنة العائلة</h3>
+                <div class="author">جواد منصور</div>
+                <div class="progress-info"><span>الفصل 6 من 24</span><span>25%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:25%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 46 -->
+        <a href="novel.html?id=46" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>حين يعود الغائب</h3>
+                <div class="author">مريم خالد</div>
+                <div class="progress-info"><span>الفصل 2 من 21</span><span>10%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:10%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 47 -->
+        <a href="novel.html?id=47" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>الحب المستحيل</h3>
+                <div class="author">رنا يوسف</div>
+                <div class="progress-info"><span>الفصل 19 من 25</span><span>76%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:76%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 48 -->
+        <a href="novel.html?id=48" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>أيام لا تنسى</h3>
+                <div class="author">أمين ناصر</div>
+                <div class="progress-info"><span>الفصل 10 من 20</span><span>50%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:50%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 49 -->
+        <a href="novel.html?id=49" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1519682337058-a94d519337bc?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>صندوق الأسرار</h3>
+                <div class="author">عبد الرحمن علي</div>
+                <div class="progress-info"><span>الفصل 5 من 25</span><span>20%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:20%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 50 -->
+        <a href="novel.html?id=50" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1495640452828-3df6795cf69b?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>في انتظارك</h3>
+                <div class="author">نورهان محمد</div>
+                <div class="progress-info"><span>الفصل 16 من 20</span><span>80%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:80%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 51 -->
+        <a href="novel.html?id=51" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>الوجه الآخر</h3>
+                <div class="author">حسام نجيب</div>
+                <div class="progress-info"><span>الفصل 8 من 21</span><span>38%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:38%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 52 -->
+        <a href="novel.html?id=52" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>الطريق إلى النجاة</h3>
+                <div class="author">كريم أحمد</div>
+                <div class="progress-info"><span>الفصل 3 من 22</span><span>14%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:14%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 53 -->
+        <a href="novel.html?id=53" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>حب من بعيد</h3>
+                <div class="author">سندس علي</div>
+                <div class="progress-info"><span>الفصل 13 من 20</span><span>65%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:65%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 54 -->
+        <a href="novel.html?id=54" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1513001900722-370f803f498d?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>المطاردة</h3>
+                <div class="author">مراد خالد</div>
+                <div class="progress-info"><span>الفصل 9 من 30</span><span>30%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:30%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 55 -->
+        <a href="novel.html?id=55" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>الحقيقة المخفية</h3>
+                <div class="author">ياسين محمد</div>
+                <div class="progress-info"><span>الفصل 4 من 24</span><span>17%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:17%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 56 -->
+        <a href="novel.html?id=56" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1510172951991-856a654760a9?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>قصة قلب</h3>
+                <div class="author">آية نور</div>
+                <div class="progress-info"><span>الفصل 18 من 22</span><span>82%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:82%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 57 -->
+        <a href="novel.html?id=57" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1514894780887-121968d00567?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>السر القديم</h3>
+                <div class="author">فؤاد ناصر</div>
+                <div class="progress-info"><span>الفصل 7 من 19</span><span>37%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:37%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 58 -->
+        <a href="novel.html?id=58" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>في قلب العاصفة</h3>
+                <div class="author">عمر يوسف</div>
+                <div class="progress-info"><span>الفصل 2 من 25</span><span>8%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:8%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 59 -->
+        <a href="novel.html?id=59" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>لا تنساني</h3>
+                <div class="author">ملك أحمد</div>
+                <div class="progress-info"><span>الفصل 15 من 20</span><span>75%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:75%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 60 -->
+        <a href="novel.html?id=60" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1511108690759-009324a90311?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>المدينة المظلمة</h3>
+                <div class="author">سيف أحمد</div>
+                <div class="progress-info"><span>الفصل 11 من 28</span><span>39%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:39%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 61 -->
+        <a href="novel.html?id=61" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>رسالة مجهولة</h3>
+                <div class="author">ريم خالد</div>
+                <div class="progress-info"><span>الفصل 3 من 20</span><span>15%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:15%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 62 -->
+        <a href="novel.html?id=62" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>حب بلا حدود</h3>
+                <div class="author">لارا محمد</div>
+                <div class="progress-info"><span>الفصل 17 من 20</span><span>85%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:85%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 63 -->
+        <a href="novel.html?id=63" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>العودة</h3>
+                <div class="author">مازن علي</div>
+                <div class="progress-info"><span>الفصل 9 من 18</span><span>50%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:50%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 64 -->
+        <a href="novel.html?id=64" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1519682337058-a94d519337bc?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>ظل المدينة</h3>
+                <div class="author">إسلام ناصر</div>
+                <div class="progress-info"><span>الفصل 5 من 23</span><span>22%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:22%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 65 -->
+        <a href="novel.html?id=65" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1495640452828-3df6795cf69b?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>أجمل صدفة</h3>
+                <div class="author">سارة يوسف</div>
+                <div class="progress-info"><span>الفصل 14 من 18</span><span>78%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:78%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 66 -->
+        <a href="novel.html?id=66" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>السر الأخير</h3>
+                <div class="author">حسين أحمد</div>
+                <div class="progress-info"><span>الفصل 10 من 24</span><span>42%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:42%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 67 -->
+        <a href="novel.html?id=67" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>أبواب مغلقة</h3>
+                <div class="author">خالد يوسف</div>
+                <div class="progress-info"><span>الفصل 4 من 21</span><span>19%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:19%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 68 -->
+        <a href="novel.html?id=68" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">مفضلة</span>
+            </div>
+            <div class="novel-info">
+                <h3>وعد قديم</h3>
+                <div class="author">ليلى ناصر</div>
+                <div class="progress-info"><span>الفصل 16 من 20</span><span>80%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:80%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 69 -->
+        <a href="novel.html?id=69" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1513001900722-370f803f498d?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">قيد القراءة</span>
+            </div>
+            <div class="novel-info">
+                <h3>نهاية البداية</h3>
+                <div class="author">أمين خالد</div>
+                <div class="progress-info"><span>الفصل 12 من 25</span><span>48%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:48%"></div></div>
+                <span class="read-btn">متابعة القراءة</span>
+            </div>
+        </a>
+
+
+        <!-- 70 -->
+        <a href="novel.html?id=70" class="novel-card">
+            <div class="cover">
+                <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=700&q=85">
+                <span class="badge">جديدة</span>
+            </div>
+            <div class="novel-info">
+                <h3>الحكاية الأخيرة</h3>
+                <div class="author">محمد ياسين</div>
+                <div class="progress-info"><span>الفصل 1 من 30</span><span>3%</span></div>
+                <div class="progress"><div class="progress-bar" style="width:3%"></div></div>
+                <span class="read-btn">ابدأ القراءة</span>
+            </div>
+        </a>
+
+    </div>
+
+</main>
+
+
+<!-- NAVIGATION -->
+
+<nav class="bottom-nav">
+
+    <div class="nav-items">
+
+        <a href="index.html" class="nav-item">
+            <span>🏠</span>
+            <span>الرئيسية</span>
+        </a>
+
+        <a href="all-novels.html" class="nav-item">
+            <span>📚</span>
+            <span>الروايات</span>
+        </a>
+
+        <a href="search.html" class="nav-item">
+            <span>🔍</span>
+            <span>بحث</span>
+        </a>
+
+        <a href="library.html" class="nav-item active">
+            <span>❤️</span>
+            <span>مكتبتي</span>
+        </a>
+
+        <a href="profile.html" class="nav-item">
+            <span>👤</span>
+            <span>حسابي</span>
+        </a>
+
+    </div>
+
+</nav>
+
+</body>
+</html>
