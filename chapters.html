@@ -1,1 +1,1012 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>فصول الرواية | رواياتي</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Cairo", sans-serif;
+            background: #030712;
+            color: white;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            height: 70px;
+            padding: 0 6%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background: rgba(3,7,18,0.9);
+            backdrop-filter: blur(18px);
+
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            color: #3b82f6;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-btn {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: rgba(255,255,255,0.05);
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            font-size: 18px;
+
+            transition: .3s;
+        }
+
+        .header-btn:hover {
+            background: #3b82f6;
+            transform: translateY(-2px);
+        }
+
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+            width: 92%;
+            max-width: 950px;
+
+            margin: auto;
+
+            padding: 35px 0 110px;
+        }
+
+
+        /* ================= BACK ================= */
+
+        .back {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            color: #9ca3af;
+
+            margin-bottom: 25px;
+
+            transition: .3s;
+        }
+
+        .back:hover {
+            color: #3b82f6;
+        }
+
+
+        /* ================= NOVEL HEADER ================= */
+
+        .novel-header {
+            position: relative;
+
+            overflow: hidden;
+
+            padding: 30px;
+
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(17,24,39,.95),
+                    rgba(15,23,42,.9)
+                );
+
+            border: 1px solid rgba(255,255,255,.08);
+
+            margin-bottom: 25px;
+        }
+
+        .novel-header::before {
+            content: "";
+
+            position: absolute;
+
+            width: 300px;
+            height: 300px;
+
+            background: #2563eb;
+
+            filter: blur(140px);
+
+            opacity: .1;
+
+            top: -150px;
+            right: -80px;
+        }
+
+        .novel-header-content {
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 22px;
+        }
+
+        .cover {
+            width: 105px;
+            height: 150px;
+
+            object-fit: cover;
+
+            border-radius: 14px;
+
+            border: 1px solid rgba(255,255,255,.08);
+
+            box-shadow: 0 15px 35px rgba(0,0,0,.4);
+        }
+
+        .novel-info {
+            flex: 1;
+        }
+
+        .category {
+            display: inline-block;
+
+            color: #60a5fa;
+
+            background: rgba(59,130,246,.1);
+
+            border: 1px solid rgba(59,130,246,.2);
+
+            padding: 5px 12px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+
+            margin-bottom: 9px;
+        }
+
+        .novel-title {
+            font-size: 28px;
+
+            font-weight: 800;
+
+            margin-bottom: 5px;
+        }
+
+        .author {
+            color: #9ca3af;
+
+            font-size: 13px;
+
+            margin-bottom: 12px;
+        }
+
+        .chapters-count {
+            color: #60a5fa;
+
+            font-size: 12px;
+        }
+
+
+        /* ================= CHAPTERS ================= */
+
+        .section-title {
+            font-size: 21px;
+
+            font-weight: 800;
+
+            margin-bottom: 15px;
+        }
+
+        .chapters-box {
+            background: rgba(255,255,255,.025);
+
+            border: 1px solid rgba(255,255,255,.07);
+
+            border-radius: 20px;
+
+            padding: 10px;
+        }
+
+        .chapter {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 17px 20px;
+
+            border-radius: 13px;
+
+            border-bottom: 1px solid rgba(255,255,255,.04);
+
+            transition: .3s;
+        }
+
+        .chapter:last-child {
+            border-bottom: none;
+        }
+
+        .chapter:hover {
+            background: rgba(59,130,246,.09);
+
+            transform: translateX(-3px);
+        }
+
+        .chapter-left {
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+        }
+
+        .chapter-number {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: rgba(59,130,246,.1);
+
+            color: #60a5fa;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+        .chapter-name {
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+        .chapter-status {
+            color: #6b7280;
+
+            font-size: 11px;
+        }
+
+        .arrow {
+            color: #60a5fa;
+
+            font-size: 18px;
+        }
+
+
+        /* ================= BUTTONS ================= */
+
+        .actions {
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 20px;
+
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            padding: 12px 18px;
+
+            border-radius: 12px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition: .3s;
+        }
+
+        .primary {
+            background: #3b82f6;
+        }
+
+        .primary:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .secondary {
+            background: rgba(255,255,255,.05);
+
+            border: 1px solid rgba(255,255,255,.08);
+        }
+
+        .secondary:hover {
+            background: rgba(255,255,255,.1);
+        }
+
+
+        /* ================= ERROR ================= */
+
+        .error {
+            text-align: center;
+
+            padding: 100px 20px;
+        }
+
+        .error-icon {
+            font-size: 55px;
+
+            margin-bottom: 15px;
+        }
+
+        .error h2 {
+            font-size: 25px;
+
+            margin-bottom: 10px;
+        }
+
+        .error p {
+            color: #9ca3af;
+
+            margin-bottom: 20px;
+        }
+
+
+        /* ================= BOTTOM NAV ================= */
+
+        .bottom-nav {
+            position: fixed;
+
+            bottom: 0;
+            left: 0;
+
+            width: 100%;
+
+            height: 70px;
+
+            display: flex;
+
+            justify-content: space-around;
+
+            align-items: center;
+
+            background: rgba(3,7,18,.95);
+
+            backdrop-filter: blur(18px);
+
+            border-top: 1px solid rgba(255,255,255,.07);
+
+            z-index: 200;
+        }
+
+        .nav-item {
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            gap: 3px;
+
+            color: #6b7280;
+
+            font-size: 10px;
+
+            transition: .3s;
+        }
+
+        .nav-item span {
+            font-size: 19px;
+        }
+
+        .nav-item:hover {
+            color: #3b82f6;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width:600px) {
+
+            header {
+                padding: 0 5%;
+            }
+
+            .container {
+                width: 92%;
+
+                padding-top: 25px;
+            }
+
+            .novel-header {
+                padding: 20px;
+            }
+
+            .novel-header-content {
+                gap: 15px;
+            }
+
+            .cover {
+                width: 85px;
+                height: 125px;
+            }
+
+            .novel-title {
+                font-size: 21px;
+            }
+
+            .author {
+                font-size: 11px;
+            }
+
+            .chapter {
+                padding: 14px 12px;
+            }
+
+            .chapter-number {
+                width: 34px;
+                height: 34px;
+            }
+
+            .chapter-name {
+                font-size: 12px;
+            }
+
+            .chapter-status {
+                font-size: 9px;
+            }
+
+            .arrow {
+                font-size: 16px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <a href="index.html" class="logo">
+        رواياتي.
+    </a>
+
+    <div class="header-actions">
+
+        <a href="search.html" class="header-btn">
+            🔍
+        </a>
+
+        <a href="library.html" class="header-btn">
+            📚
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- ================= CONTENT ================= -->
+
+<main class="container">
+
+    <div id="page"></div>
+
+</main>
+
+
+
+<!-- ================= BOTTOM NAV ================= -->
+
+<nav class="bottom-nav">
+
+    <a href="index.html" class="nav-item">
+        <span>⌂</span>
+        الرئيسية
+    </a>
+
+    <a href="all-novels.html" class="nav-item">
+        <span>📖</span>
+        الروايات
+    </a>
+
+    <a href="search.html" class="nav-item">
+        <span>🔍</span>
+        البحث
+    </a>
+
+    <a href="library.html" class="nav-item">
+        <span>📚</span>
+        المكتبة
+    </a>
+
+    <a href="profile.html" class="nav-item">
+        <span>👤</span>
+        حسابي
+    </a>
+
+</nav>
+
+
+
+<script>
+
+
+/* ==================================================
+   بيانات الروايات
+================================================== */
+
+const novels = {
+
+    1: {
+        title: "آخر ما تبقى مني",
+        author: "أحمد الرواي",
+        category: "دراما",
+        chapters: 25,
+        cover: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=500&q=80"
+    },
+
+    2: {
+        title: "مدينة الرماد",
+        author: "ليان نور",
+        category: "غموض",
+        chapters: 32,
+        cover: "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=500&q=80"
+    },
+
+    3: {
+        title: "حينما ينام القمر",
+        author: "سارة محمد",
+        category: "رومانسية",
+        chapters: 28,
+        cover: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=500&q=80"
+    },
+
+    4: {
+        title: "ظل الماضي",
+        author: "ياسين كاتب",
+        category: "تشويق",
+        chapters: 30,
+        cover: "https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=500&q=80"
+    },
+
+    5: {
+        title: "رسائل لم تصل",
+        author: "نور الهدى",
+        category: "دراما",
+        chapters: 21,
+        cover: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=500&q=80"
+    },
+
+    6: {
+        title: "آخر ليلة",
+        author: "يوسف خالد",
+        category: "تشويق",
+        chapters: 18,
+        cover: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=500&q=80"
+    },
+
+    7: {
+        title: "الطريق المجهول",
+        author: "عمر عادل",
+        category: "مغامرة",
+        chapters: 26,
+        cover: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=500&q=80"
+    },
+
+    8: {
+        title: "ما وراء الظلام",
+        author: "مالك أحمد",
+        category: "رعب",
+        chapters: 24,
+        cover: "https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=500&q=80"
+    },
+
+    9: {
+        title: "سر الغرفة السابعة",
+        author: "رامي منصور",
+        category: "غموض",
+        chapters: 20,
+        cover: "https://images.unsplash.com/photo-1511108690759-009324a90311?auto=format&fit=crop&w=500&q=80"
+    },
+
+    10: {
+        title: "عندما اختفى المطر",
+        author: "ريم عادل",
+        category: "دراما",
+        chapters: 22,
+        cover: "https://images.unsplash.com/photo-1501691223387-dd0500403074?auto=format&fit=crop&w=500&q=80"
+    }
+
+};
+
+
+/* ==================================================
+   باقي الروايات
+================================================== */
+
+const names = [
+    "لعنة البحر",
+    "بين نارين",
+    "حكاية بلا نهاية",
+    "صوت من الماضي",
+    "الفتاة التي لم تعد",
+    "مدينة لا تنام",
+    "حب تحت المطر",
+    "الطيف الأسود",
+    "آخر وعد",
+    "خلف الباب",
+    "المنفى",
+    "قبل أن ترحل",
+    "نصف قلب",
+    "ليلة في الغابة",
+    "أوراق محترقة",
+    "عشق مستحيل",
+    "المجهول",
+    "حين التقينا",
+    "أنت قدري",
+    "الناجي الأخير",
+    "رماد الذكريات",
+    "أحببتك مرتين",
+    "المدينة القديمة",
+    "البيت المهجور",
+    "بيننا ألف حكاية",
+    "الرجل الأخير",
+    "أسرار الليل",
+    "قدرنا واحد",
+    "على حافة الهاوية",
+    "الممر السري",
+    "أنت وأنا فقط",
+    "الندم الأخير",
+    "الرسالة الأخيرة",
+    "نبض بعيد",
+    "لعنة العائلة",
+    "حين يعود الغائب",
+    "الحب المستحيل",
+    "أيام لا تنسى",
+    "صندوق الأسرار",
+    "في انتظارك",
+    "الوجه الآخر",
+    "الطريق إلى النجاة",
+    "حب من بعيد",
+    "المطاردة",
+    "الحقيقة المخفية",
+    "قصة قلب",
+    "السر القديم",
+    "في قلب العاصفة",
+    "لا تنساني",
+    "المدينة المظلمة",
+    "رسالة مجهولة",
+    "حب بلا حدود",
+    "العودة",
+    "ظل المدينة",
+    "أجمل صدفة",
+    "السر الأخير",
+    "أبواب مغلقة",
+    "وعد قديم",
+    "نهاية البداية",
+    "الحكاية الأخيرة"
+];
+
+
+const authors = [
+    "سليم ناصر",
+    "محمد أمين",
+    "ليلى حسن",
+    "آدم يوسف",
+    "مريم علي",
+    "كريم وليد",
+    "هبة أحمد",
+    "ياسر عادل",
+    "سارة نجيب",
+    "إياد منصور",
+    "خالد سمير",
+    "نور أحمد",
+    "ملك سامي",
+    "أنس إبراهيم",
+    "رامي يوسف",
+    "رؤى محمد",
+    "سيف الدين",
+    "إيمان علي",
+    "ليان أحمد",
+    "عادل منصور",
+    "حسن كمال",
+    "جنى يوسف",
+    "وليد سامي",
+    "طارق نجيب",
+    "نوران خالد",
+    "إيهاب حسن",
+    "يحيى محمد",
+    "تالا يوسف",
+    "سامي خالد",
+    "بدر الدين",
+    "سلمى علي",
+    "فارس أحمد",
+    "سارة ناصر",
+    "ياسمين عادل",
+    "جواد منصور",
+    "مريم خالد",
+    "رنا يوسف",
+    "أمين ناصر",
+    "عبد الرحمن علي",
+    "نورهان محمد",
+    "حسام نجيب",
+    "كريم أحمد",
+    "سندس علي",
+    "مراد خالد",
+    "ياسين محمد",
+    "آية نور",
+    "فؤاد ناصر",
+    "عمر يوسف",
+    "ملك أحمد",
+    "سيف أحمد",
+    "ريم خالد",
+    "لارا محمد",
+    "مازن علي",
+    "إسلام ناصر",
+    "سارة يوسف",
+    "حسين أحمد",
+    "خالد يوسف",
+    "ليلى ناصر",
+    "أمين خالد",
+    "محمد ياسين"
+];
+
+
+const categories = [
+    "مغامرة",
+    "دراما",
+    "رومانسية",
+    "غموض",
+    "رعب",
+    "تشويق"
+];
+
+
+for(let i = 11; i <= 70; i++) {
+
+    const index = i - 11;
+
+    novels[i] = {
+
+        title: names[index],
+
+        author: authors[index],
+
+        category: categories[index % categories.length],
+
+        chapters: 20 + (i % 16),
+
+        cover:
+        `https://images.unsplash.com/photo-${
+            [
+                "1512820790803-83ca734da794",
+                "1495446815901-a7297e633e8d",
+                "1543002588-bfa74002ed7e",
+                "1544947950-fa07a98d237f",
+                "1519682337058-a94d519337bc",
+                "1507842217343-583bb7270b66"
+            ][i % 6]
+        }?auto=format&fit=crop&w=500&q=80`
+
+    };
+
+}
+
+
+/* ==================================================
+   قراءة ID
+================================================== */
+
+const params =
+    new URLSearchParams(window.location.search);
+
+let novelId =
+    parseInt(params.get("novel"));
+
+
+if(!novelId || novelId < 1 || novelId > 70) {
+    novelId = 1;
+}
+
+
+const novel =
+    novels[novelId];
+
+
+/* ==================================================
+   عرض الصفحة
+================================================== */
+
+const page =
+    document.getElementById("page");
+
+
+document.title =
+    `فصول ${novel.title} | رواياتي`;
+
+
+let chaptersHTML = "";
+
+
+for(let i = 1; i <= novel.chapters; i++) {
+
+    chaptersHTML += `
+
+        <a
+            href="reader.html?novel=${novelId}&chapter=${i}"
+            class="chapter"
+        >
+
+            <div class="chapter-left">
+
+                <div class="chapter-number">
+                    ${i}
+                </div>
+
+                <div>
+
+                    <div class="chapter-name">
+                        الفصل ${i}
+                    </div>
+
+                    <div class="chapter-status">
+                        اضغط للقراءة
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="arrow">
+                ←
+            </div>
+
+        </a>
+
+    `;
+
+}
+
+
+/* ==================================================
+   HTML
+================================================== */
+
+page.innerHTML = `
+
+    <a
+        href="novel.html?id=${novelId}"
+        class="back"
+    >
+        → العودة إلى تفاصيل الرواية
+    </a>
+
+
+    <div class="novel-header">
+
+        <div class="novel-header-content">
+
+            <img
+                src="${novel.cover}"
+                class="cover"
+                alt="${novel.title}"
+            >
+
+            <div class="novel-info">
+
+                <div class="category">
+                    ${novel.category}
+                </div>
+
+                <h1 class="novel-title">
+                    ${novel.title}
+                </h1>
+
+                <div class="author">
+                    بقلم ${novel.author}
+                </div>
+
+                <div class="chapters-count">
+                    📖 ${novel.chapters} فصل
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <h2 class="section-title">
+        📚 جميع الفصول
+    </h2>
+
+
+    <div class="chapters-box">
+
+        ${chaptersHTML}
+
+    </div>
+
+
+    <div class="actions">
+
+        <a
+            href="reader.html?novel=${novelId}&chapter=1"
+            class="btn primary"
+        >
+            ▶ ابدأ من الفصل الأول
+        </a>
+
+        <a
+            href="novel.html?id=${novelId}"
+            class="btn secondary"
+        >
+            ℹ تفاصيل الرواية
+        </a>
+
+    </div>
+
+`;
+
+</script>
+
+</body>
+</html>
