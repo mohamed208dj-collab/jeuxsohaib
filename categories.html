@@ -1,1 +1,915 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>التصنيفات | رواياتي</title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:"Cairo",sans-serif;
+
+    background:#030712;
+
+    color:white;
+
+    min-height:100vh;
+
+    padding-bottom:90px;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+
+/* ================= HEADER ================= */
+
+header{
+
+    height:70px;
+
+    padding:0 6%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    position:sticky;
+
+    top:0;
+
+    z-index:100;
+
+    background:rgba(3,7,18,.92);
+
+    backdrop-filter:blur(18px);
+
+    border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+.logo{
+
+    color:#3b82f6;
+
+    font-size:24px;
+
+    font-weight:800;
+}
+
+.header-actions{
+
+    display:flex;
+
+    gap:10px;
+}
+
+.header-btn{
+
+    width:42px;
+
+    height:42px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:12px;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    font-size:18px;
+
+    transition:.3s;
+}
+
+.header-btn:hover{
+
+    background:#3b82f6;
+
+    transform:translateY(-2px);
+}
+
+
+/* ================= CONTAINER ================= */
+
+.container{
+
+    width:92%;
+
+    max-width:1100px;
+
+    margin:auto;
+
+    padding:35px 0 30px;
+}
+
+
+/* ================= TITLE ================= */
+
+.page-title{
+
+    margin-bottom:28px;
+}
+
+.page-title h1{
+
+    font-size:30px;
+
+    font-weight:800;
+
+    margin-bottom:6px;
+}
+
+.page-title p{
+
+    color:#9ca3af;
+
+    font-size:13px;
+}
+
+
+/* ================= CATEGORIES ================= */
+
+.categories{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:18px;
+
+    margin-bottom:35px;
+}
+
+.category-card{
+
+    position:relative;
+
+    overflow:hidden;
+
+    min-height:180px;
+
+    border-radius:22px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(17,24,39,.95),
+            rgba(15,23,42,.9)
+        );
+
+    transition:.35s;
+}
+
+.category-card:hover{
+
+    transform:translateY(-7px);
+
+    border-color:rgba(59,130,246,.45);
+
+    box-shadow:
+        0 20px 45px rgba(0,0,0,.35);
+}
+
+.category-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:170px;
+
+    height:170px;
+
+    border-radius:50%;
+
+    background:#2563eb;
+
+    filter:blur(90px);
+
+    opacity:.14;
+
+    top:-70px;
+
+    left:-40px;
+}
+
+.category-content{
+
+    position:relative;
+
+    height:100%;
+
+    min-height:180px;
+
+    padding:25px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+}
+
+.category-icon{
+
+    width:58px;
+
+    height:58px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:17px;
+
+    background:rgba(59,130,246,.1);
+
+    border:1px solid rgba(59,130,246,.2);
+
+    font-size:28px;
+}
+
+.category-name{
+
+    font-size:20px;
+
+    font-weight:800;
+
+    margin-top:18px;
+}
+
+.category-description{
+
+    color:#9ca3af;
+
+    font-size:11px;
+
+    margin-top:3px;
+}
+
+.category-count{
+
+    color:#60a5fa;
+
+    font-size:11px;
+
+    margin-top:13px;
+}
+
+.category-arrow{
+
+    position:absolute;
+
+    left:23px;
+
+    bottom:25px;
+
+    color:#60a5fa;
+
+    font-size:22px;
+
+    transition:.3s;
+}
+
+.category-card:hover .category-arrow{
+
+    transform:translateX(-5px);
+}
+
+
+/* ================= ALL ================= */
+
+.all-box{
+
+    padding:25px;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,.035);
+
+    border:1px solid rgba(255,255,255,.07);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:20px;
+}
+
+.all-box h2{
+
+    font-size:19px;
+
+    margin-bottom:4px;
+}
+
+.all-box p{
+
+    color:#9ca3af;
+
+    font-size:11px;
+}
+
+.all-btn{
+
+    background:#3b82f6;
+
+    padding:11px 18px;
+
+    border-radius:11px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    white-space:nowrap;
+
+    transition:.3s;
+}
+
+.all-btn:hover{
+
+    background:#2563eb;
+
+    transform:translateY(-2px);
+}
+
+
+/* ================= BOTTOM NAV ================= */
+
+.bottom-nav{
+
+    position:fixed;
+
+    bottom:0;
+
+    left:0;
+
+    width:100%;
+
+    height:70px;
+
+    display:flex;
+
+    justify-content:space-around;
+
+    align-items:center;
+
+    background:rgba(3,7,18,.95);
+
+    backdrop-filter:blur(18px);
+
+    border-top:1px solid rgba(255,255,255,.07);
+
+    z-index:200;
+}
+
+.nav-item{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:3px;
+
+    color:#6b7280;
+
+    font-size:10px;
+
+    transition:.3s;
+}
+
+.nav-item span{
+
+    font-size:19px;
+}
+
+.nav-item:hover,
+.nav-item.active{
+
+    color:#3b82f6;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:750px){
+
+    .categories{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+        gap:12px;
+    }
+
+    .category-content{
+
+        padding:20px;
+    }
+
+    .category-name{
+
+        font-size:17px;
+    }
+
+    .category-arrow{
+
+        left:18px;
+
+        bottom:20px;
+    }
+
+}
+
+@media(max-width:500px){
+
+    .container{
+
+        padding-top:25px;
+    }
+
+    .page-title h1{
+
+        font-size:25px;
+    }
+
+    .categories{
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .category-card{
+
+        min-height:165px;
+    }
+
+    .category-content{
+
+        min-height:165px;
+
+        padding:16px;
+    }
+
+    .category-icon{
+
+        width:48px;
+
+        height:48px;
+
+        font-size:23px;
+    }
+
+    .category-name{
+
+        font-size:15px;
+    }
+
+    .category-description{
+
+        font-size:9px;
+    }
+
+    .category-count{
+
+        font-size:9px;
+    }
+
+    .all-box{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+    }
+
+    .all-btn{
+
+        width:100%;
+
+        text-align:center;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <a href="index.html"
+       class="logo">
+
+        رواياتي.
+
+    </a>
+
+
+    <div class="header-actions">
+
+        <a href="search.html"
+           class="header-btn">
+
+            🔍
+
+        </a>
+
+
+        <a href="library.html"
+           class="header-btn">
+
+            📚
+
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- ================= CONTENT ================= -->
+
+<main class="container">
+
+
+    <div class="page-title">
+
+        <h1>
+            تصفح حسب التصنيف 📚
+        </h1>
+
+        <p>
+            اختر النوع الذي يناسب ذوقك واكتشف روايات جديدة
+        </p>
+
+    </div>
+
+
+
+    <section class="categories">
+
+
+        <!-- دراما -->
+
+        <a href="all-novels.html?category=دراما"
+           class="category-card">
+
+            <div class="category-content">
+
+                <div>
+
+                    <div class="category-icon">
+                        🎭
+                    </div>
+
+                    <div class="category-name">
+                        دراما
+                    </div>
+
+                    <div class="category-description">
+                        قصص مليئة بالمشاعر والأحداث
+                    </div>
+
+                    <div class="category-count">
+                        روايات درامية
+                    </div>
+
+                </div>
+
+                <div class="category-arrow">
+                    ←
+                </div>
+
+            </div>
+
+        </a>
+
+
+
+        <!-- رومانسية -->
+
+        <a href="all-novels.html?category=رومانسية"
+           class="category-card">
+
+            <div class="category-content">
+
+                <div>
+
+                    <div class="category-icon">
+                        ❤️
+                    </div>
+
+                    <div class="category-name">
+                        رومانسية
+                    </div>
+
+                    <div class="category-description">
+                        قصص الحب والعلاقات
+                    </div>
+
+                    <div class="category-count">
+                        روايات رومانسية
+                    </div>
+
+                </div>
+
+                <div class="category-arrow">
+                    ←
+                </div>
+
+            </div>
+
+        </a>
+
+
+
+        <!-- غموض -->
+
+        <a href="all-novels.html?category=غموض"
+           class="category-card">
+
+            <div class="category-content">
+
+                <div>
+
+                    <div class="category-icon">
+                        🔮
+                    </div>
+
+                    <div class="category-name">
+                        غموض
+                    </div>
+
+                    <div class="category-description">
+                        أسرار وأحداث غير متوقعة
+                    </div>
+
+                    <div class="category-count">
+                        روايات غامضة
+                    </div>
+
+                </div>
+
+                <div class="category-arrow">
+                    ←
+                </div>
+
+            </div>
+
+        </a>
+
+
+
+        <!-- تشويق -->
+
+        <a href="all-novels.html?category=تشويق"
+           class="category-card">
+
+            <div class="category-content">
+
+                <div>
+
+                    <div class="category-icon">
+                        ⚡
+                    </div>
+
+                    <div class="category-name">
+                        تشويق
+                    </div>
+
+                    <div class="category-description">
+                        أحداث سريعة ومليئة بالإثارة
+                    </div>
+
+                    <div class="category-count">
+                        روايات مشوقة
+                    </div>
+
+                </div>
+
+                <div class="category-arrow">
+                    ←
+                </div>
+
+            </div>
+
+        </a>
+
+
+
+        <!-- رعب -->
+
+        <a href="all-novels.html?category=رعب"
+           class="category-card">
+
+            <div class="category-content">
+
+                <div>
+
+                    <div class="category-icon">
+                        👻
+                    </div>
+
+                    <div class="category-name">
+                        رعب
+                    </div>
+
+                    <div class="category-description">
+                        أجواء مظلمة وأحداث مخيفة
+                    </div>
+
+                    <div class="category-count">
+                        روايات رعب
+                    </div>
+
+                </div>
+
+                <div class="category-arrow">
+                    ←
+                </div>
+
+            </div>
+
+        </a>
+
+
+
+        <!-- مغامرة -->
+
+        <a href="all-novels.html?category=مغامرة"
+           class="category-card">
+
+            <div class="category-content">
+
+                <div>
+
+                    <div class="category-icon">
+                        🗺️
+                    </div>
+
+                    <div class="category-name">
+                        مغامرة
+                    </div>
+
+                    <div class="category-description">
+                        رحلات ومخاطر وأحداث كبيرة
+                    </div>
+
+                    <div class="category-count">
+                        روايات مغامرات
+                    </div>
+
+                </div>
+
+                <div class="category-arrow">
+                    ←
+                </div>
+
+            </div>
+
+        </a>
+
+
+    </section>
+
+
+
+    <!-- ================= ALL NOVELS ================= -->
+
+    <section class="all-box">
+
+        <div>
+
+            <h2>
+                📖 أكثر من 70 رواية
+            </h2>
+
+            <p>
+                تصفح المكتبة كاملة واكتشف روايتك القادمة
+            </p>
+
+        </div>
+
+
+        <a href="all-novels.html"
+           class="all-btn">
+
+            مشاهدة كل الروايات
+
+        </a>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- ================= BOTTOM NAV ================= -->
+
+<nav class="bottom-nav">
+
+    <a href="index.html"
+       class="nav-item">
+
+        <span>⌂</span>
+
+        الرئيسية
+
+    </a>
+
+
+    <a href="all-novels.html"
+       class="nav-item">
+
+        <span>📖</span>
+
+        الروايات
+
+    </a>
+
+
+    <a href="search.html"
+       class="nav-item">
+
+        <span>🔍</span>
+
+        البحث
+
+    </a>
+
+
+    <a href="categories.html"
+       class="nav-item active">
+
+        <span>🏷️</span>
+
+        التصنيفات
+
+    </a>
+
+
+    <a href="profile.html"
+       class="nav-item">
+
+        <span>👤</span>
+
+        حسابي
+
+    </a>
+
+</nav>
+
+
+</body>
+
+</html>
