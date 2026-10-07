@@ -1,183 +1,1082 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Love Wheel PRO | sohaib26</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Pacifico&display=swap" rel="stylesheet">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <title>رواياتي | الصفحة الرئيسية</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Cairo -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
+
     <style>
-        :root { --main: #ff2e63; --gold: #ffd700; --dark: #0a0406; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body { 
-            background: var(--dark); color: white; font-family: 'Cairo', sans-serif;
-            display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh; overflow-x: hidden;
-            background: radial-gradient(circle at center, #250811 0%, #0a0406 100%);
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .app-container { 
-            display: flex; flex-direction: column; align-items: center;
-            width: 100%; max-width: 450px; padding: 20px; flex-grow: 1;
+        html {
+            scroll-behavior: smooth;
         }
 
-        .dedication { font-size: 1.4rem; color: var(--gold); margin-top: 10px; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
-        .title { font-family: 'Pacifico'; font-size: 2.8rem; color: var(--main); margin-bottom: 10px; }
+        body {
 
-        .wheel-wrapper {
-            position: relative; width: 300px; height: 300px; margin: 20px 0;
+            margin: 0;
+
+            font-family: 'Cairo', sans-serif;
+
+            background: #030712;
+
+            color: #f3f4f6;
+
+            min-height: 100vh;
+
+            overflow-x: hidden;
+
+            background-image:
+                radial-gradient(
+                    circle at 50% 0%,
+                    rgba(59, 130, 246, 0.16),
+                    transparent 45%
+                );
+
         }
 
-        .pointer { 
-            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
-            width: 30px; height: 40px; z-index: 100;
-            background: var(--gold); clip-path: polygon(50% 100%, 0 0, 100% 0);
-            filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+
+        /* =========================
+           GLASS
+        ========================= */
+
+        .glass {
+
+            background: rgba(17, 24, 39, 0.62);
+
+            backdrop-filter: blur(20px);
+
+            -webkit-backdrop-filter: blur(20px);
+
+            border: 1px solid rgba(255, 255, 255, 0.08);
+
         }
 
-        #wheelCanvas {
-            width: 100%; height: 100%; border-radius: 50%;
-            border: 8px solid #1a1a1a; box-shadow: 0 0 30px rgba(255, 46, 99, 0.4);
-            transition: transform 5s cubic-bezier(0.15, 0, 0.15, 1);
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+
+            position: relative;
+
+            min-height: 360px;
+
+            overflow: hidden;
+
+            border-radius: 28px;
+
+            background:
+                linear-gradient(
+                    to bottom,
+                    rgba(3,7,18,0.05),
+                    rgba(3,7,18,0.35) 35%,
+                    rgba(3,7,18,0.98) 100%
+                ),
+                url("https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=1200&auto=format&fit=crop");
+
+            background-size: cover;
+
+            background-position: center;
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            box-shadow:
+                0 25px 70px rgba(0,0,0,0.45);
+
         }
 
-        .result-box {
-            width: 100%; min-height: 70px; background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px; display: flex; align-items: center; justify-content: center;
-            padding: 15px; border: 1px solid var(--main); font-size: 1.1rem; margin: 15px 0;
-            text-align: center; color: #fff;
+
+        .hero-content {
+
+            position: absolute;
+
+            bottom: 0;
+
+            right: 0;
+
+            left: 0;
+
+            padding: 25px;
+
         }
 
-        .btn-spin {
-            background: linear-gradient(45deg, var(--main), #800f2f);
-            color: white; border: none; padding: 15px 45px;
-            border-radius: 50px; font-size: 1.4rem; font-weight: 900;
-            cursor: pointer; transition: 0.3s;
-            box-shadow: 0 5px 20px rgba(255, 46, 99, 0.4);
-            z-index: 100;
+
+        /* =========================
+           CATEGORY BUTTON
+        ========================= */
+
+        .category-btn {
+
+            white-space: nowrap;
+
+            transition: .25s;
+
         }
 
-        .btn-spin:active { transform: scale(0.9); }
-        .btn-spin:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .footer { 
-            margin-top: auto; padding: 20px; width: 100%; 
-            text-align: center; border-top: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.3);
-        }
-        .footer b { color: var(--main); font-size: 1.1rem; }
+        .category-btn:hover {
 
-        /* أنيميشن بسيط للخلفية */
-        .heart-float {
-            position: fixed; color: rgba(255, 46, 99, 0.1);
-            z-index: -1; animation: move 10s linear infinite;
+            transform: translateY(-2px);
+
         }
-        @keyframes move { from { bottom: -10%; } to { bottom: 110%; } }
+
+
+        .category-active {
+
+            background: #3b82f6 !important;
+
+            border-color: #3b82f6 !important;
+
+            box-shadow:
+                0 7px 25px rgba(59,130,246,0.3);
+
+        }
+
+
+        /* =========================
+           BOOK CARD
+        ========================= */
+
+        .book-card {
+
+            transition: .25s;
+
+            cursor: pointer;
+
+        }
+
+
+        .book-card:hover {
+
+            transform: translateY(-4px);
+
+            border-color:
+                rgba(59,130,246,0.35);
+
+        }
+
+
+        .book-card:active {
+
+            transform: scale(.97);
+
+        }
+
+
+        .book-cover {
+
+            height: 220px;
+
+            object-fit: cover;
+
+            width: 100%;
+
+        }
+
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        .bottom-nav {
+
+            background:
+                rgba(3,7,18,0.90);
+
+            backdrop-filter: blur(20px);
+
+            -webkit-backdrop-filter: blur(20px);
+
+            border-top:
+                1px solid rgba(255,255,255,0.08);
+
+        }
+
+
+        .nav-item {
+
+            transition: .2s;
+
+        }
+
+
+        .nav-item:hover {
+
+            color: #60a5fa;
+
+        }
+
+
+        .nav-active {
+
+            color: #60a5fa;
+
+        }
+
+
+        /* =========================
+           BADGE
+        ========================= */
+
+        .badge {
+
+            background:
+                rgba(59,130,246,0.12);
+
+            color: #60a5fa;
+
+            border:
+                1px solid rgba(59,130,246,0.22);
+
+        }
+
+
+        /* =========================
+           ANIMATION
+        ========================= */
+
+        .fade {
+
+            animation:
+                fadeIn .45s ease forwards;
+
+        }
+
+
+        @keyframes fadeIn {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(10px);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+
+            }
+
+        }
+
+
+        /* =========================
+           SCROLLBAR
+        ========================= */
+
+        ::-webkit-scrollbar {
+
+            display: none;
+
+        }
+
     </style>
+
 </head>
-<body>
 
-<div class="app-container">
-    <div class="dedication">💖 أحـبـك أُمـيـمـة 💖</div>
-    <h1 class="title">Love YOU OMAYMA</h1>
-    
-    <div class="wheel-wrapper">
-        <div class="pointer"></div>
-        <canvas id="wheelCanvas" width="500" height="500"></canvas>
-    </div>
 
-    <div id="result" class="result-box">هل أنت جاهزة للتحدي يا أميمة؟ 🔥</div>
-    
-    <button id="spinBtn" class="btn-spin" onclick="startSpin()">اضغطي هنا للعب 🎰</button>
-</div>
+<body class="pb-28">
 
-<div class="footer">
-    تم التطوير باحترافية من قبل <b>sohaib26</b>
-</div>
 
-<script>
-    const tasks = [
-        "اغرب اكلة اكلتها ☕",
-        "قولي كلمة حلوة لصهيب 🙊",
-        "صورة لك 🤳",
-        "نفذي لي طلب واحد 🙋‍♂️",
-        "غني مقطع صغير 🎤",
-        "ارسمي قلب باسمي ❤️",
-        "احكي موقف محرج 😂",
-        "ممنوع صهيب يتكلم دقيقة 🤫"
-    
-    ];
+    <!-- =========================================
+         HEADER
+    ========================================== -->
 
-    const canvas = document.getElementById('wheelCanvas');
-    const ctx = canvas.getContext('2d');
-    const colors = ['#ff2e63', '#1a0a0e', '#ff4d6d', '#1a0a0e', '#ff758f', '#1a0a0e', '#c9184a', '#1a0a0e'];
-    
-    function drawWheel() {
-        const centerX = canvas.width / 2;
-        const centerY = canvas.height / 2;
-        const radius = canvas.width / 2;
-        const sliceAngle = (2 * Math.PI) / tasks.length;
+    <header class="px-4 pt-6">
 
-        for (let i = 0; i < tasks.length; i++) {
-            ctx.beginPath();
-            ctx.fillStyle = colors[i];
-            ctx.moveTo(centerX, centerY);
-            ctx.arc(centerX, centerY, radius, i * sliceAngle, (i + 1) * sliceAngle);
-            ctx.fill();
+        <div
+            class="max-w-6xl mx-auto flex items-center justify-between"
+        >
 
-            // رسم رمز قلب صغير في كل قسم بدل النص لإخفاء التحدي
-            ctx.save();
-            ctx.translate(centerX, centerY);
-            ctx.rotate(i * sliceAngle + sliceAngle / 2);
-            ctx.fillStyle = "rgba(255,255,255,0.3)";
-            ctx.font = "30px Cairo";
-            ctx.fillText("❤️", radius / 1.5, 10);
-            ctx.restore();
-        }
-    }
+            <!-- Logo -->
 
-    let currentRotation = 0;
-    let isSpinning = false;
+            <a href="index.html">
 
-    function startSpin() {
-        if (isSpinning) return;
-        isSpinning = true;
-        
-        const wheel = document.getElementById('wheelCanvas');
-        const btn = document.getElementById('spinBtn');
-        const resultDiv = document.getElementById('result');
-        
-        btn.disabled = true;
-        resultDiv.innerText = "جاري الدوران...قارعي المقلووعة! ✨";
+                <p
+                    class="text-[9px] text-blue-400 font-bold tracking-[0.25em]"
+                >
+                    WELCOME TO
+                </p>
 
-        const extraDegrees = Math.floor(Math.random() * 360) + 2160; 
-        currentRotation += extraDegrees;
-        
-        wheel.style.transform = `rotate(${currentRotation}deg)`;
+                <h1
+                    class="text-2xl font-black italic"
+                >
+                    رواياتي
+                </h1>
 
-        setTimeout(() => {
-            isSpinning = false;
-            btn.disabled = false;
-            
-            const actualDeg = currentRotation % 360;
-            const sliceSize = 360 / tasks.length;
-            // حساب الفائز بناءً على المؤشر في الأعلى
-            const index = Math.floor((360 - (actualDeg % 360) + 270) % 360 / sliceSize);
-            
-            resultDiv.innerHTML = `<b>تحدي أميمة: ${tasks[index]}</b>`;
-            
-            confetti({
-                particleCount: 150,
-                spread: 70,
-                origin: { y: 0.8 },
-                colors: ['#ff2e63', '#ffd700']
-            });
-        }, 5000);
-    }
+            </a>
 
-    drawWheel();
-</script>
+
+            <!-- Search -->
+
+            <a
+                href="search.html"
+                class="glass w-11 h-11 rounded-2xl flex items-center justify-center"
+            >
+
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="m21 21-4.35-4.35m1.35-5.65a7 7 0 1 1-14 0 7 7 0 0 1 14 0z"
+                    />
+
+                </svg>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================================
+         MAIN
+    ========================================== -->
+
+    <main
+        class="max-w-6xl mx-auto px-4"
+    >
+
+
+        <!-- =====================================
+             HERO
+        ====================================== -->
+
+        <section class="mt-6">
+
+            <div class="hero fade">
+
+                <div class="hero-content">
+
+                    <span
+                        class="badge inline-block px-3 py-1 rounded-full text-[9px] font-bold"
+                    >
+                        ⭐ رواية مميزة
+                    </span>
+
+
+                    <h2
+                        class="text-2xl md:text-3xl font-black mt-3"
+                    >
+                        آخر ما تبقى مني
+                    </h2>
+
+
+                    <p
+                        class="text-xs text-gray-300 leading-6 mt-2 max-w-md"
+                    >
+                        رواية مليئة بالغموض والمشاعر والأسرار.
+                        اكتشف القصة وابدأ رحلتك مع الشخصيات.
+                    </p>
+
+
+                    <div class="flex gap-2 mt-5">
+
+                        <!-- READ -->
+
+                        <a
+                            href="reader.html?novel=1&chapter=1"
+                            class="bg-blue-600 hover:bg-blue-500 px-5 py-3 rounded-xl text-xs font-black transition"
+                        >
+                            📖 ابدأ القراءة
+                        </a>
+
+
+                        <!-- DETAILS -->
+
+                        <a
+                            href="novel.html?id=1"
+                            class="glass px-5 py-3 rounded-xl text-xs font-bold"
+                        >
+                            التفاصيل
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             QUICK LINKS
+        ====================================== -->
+
+        <section class="mt-7">
+
+            <div class="grid grid-cols-3 gap-3">
+
+                <!-- ALL NOVELS -->
+
+                <a
+                    href="all-novels.html"
+                    class="glass rounded-2xl p-4 text-center transition hover:-translate-y-1"
+                >
+
+                    <div class="text-2xl mb-2">
+                        📚
+                    </div>
+
+                    <p class="text-[10px] font-bold">
+                        كل الروايات
+                    </p>
+
+                </a>
+
+
+                <!-- CATEGORIES -->
+
+                <a
+                    href="categories.html"
+                    class="glass rounded-2xl p-4 text-center transition hover:-translate-y-1"
+                >
+
+                    <div class="text-2xl mb-2">
+                        🗂️
+                    </div>
+
+                    <p class="text-[10px] font-bold">
+                        التصنيفات
+                    </p>
+
+                </a>
+
+
+                <!-- LIBRARY -->
+
+                <a
+                    href="library.html"
+                    class="glass rounded-2xl p-4 text-center transition hover:-translate-y-1"
+                >
+
+                    <div class="text-2xl mb-2">
+                        ❤️
+                    </div>
+
+                    <p class="text-[10px] font-bold">
+                        مكتبتي
+                    </p>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             CATEGORIES
+        ====================================== -->
+
+        <section class="mt-8">
+
+            <div class="flex items-center justify-between mb-4">
+
+                <h2 class="text-lg font-black">
+                    التصنيفات
+                </h2>
+
+
+                <a
+                    href="categories.html"
+                    class="text-[10px] text-blue-400"
+                >
+                    عرض الكل
+                </a>
+
+            </div>
+
+
+            <div
+                class="flex gap-2 overflow-x-auto pb-2"
+            >
+
+                <a
+                    href="categories.html?category=all"
+                    class="category-btn category-active px-5 py-2.5 rounded-xl text-xs font-bold border border-blue-500"
+                >
+                    الكل
+                </a>
+
+
+                <a
+                    href="categories.html?category=romance"
+                    class="category-btn glass px-5 py-2.5 rounded-xl text-xs font-bold"
+                >
+                    ❤️ رومانسي
+                </a>
+
+
+                <a
+                    href="categories.html?category=action"
+                    class="category-btn glass px-5 py-2.5 rounded-xl text-xs font-bold"
+                >
+                    ⚔️ أكشن
+                </a>
+
+
+                <a
+                    href="categories.html?category=mystery"
+                    class="category-btn glass px-5 py-2.5 rounded-xl text-xs font-bold"
+                >
+                    🕵️ غموض
+                </a>
+
+
+                <a
+                    href="categories.html?category=horror"
+                    class="category-btn glass px-5 py-2.5 rounded-xl text-xs font-bold"
+                >
+                    👻 رعب
+                </a>
+
+
+                <a
+                    href="categories.html?category=fantasy"
+                    class="category-btn glass px-5 py-2.5 rounded-xl text-xs font-bold"
+                >
+                    🧙 خيال
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             POPULAR NOVELS
+        ====================================== -->
+
+        <section class="mt-8">
+
+            <div class="flex items-center justify-between mb-4">
+
+                <div>
+
+                    <p
+                        class="text-[9px] text-blue-400 font-bold"
+                    >
+                        TRENDING NOW
+                    </p>
+
+                    <h2 class="text-lg font-black">
+                        🔥 الأكثر قراءة
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="all-novels.html?sort=popular"
+                    class="text-[10px] text-blue-400"
+                >
+                    المزيد
+                </a>
+
+            </div>
+
+
+            <!-- Books -->
+
+            <div
+                id="booksContainer"
+                class="grid grid-cols-2 md:grid-cols-4 gap-4"
+            >
+
+
+                <!-- BOOK 1 -->
+
+                <a
+                    href="novel.html?id=1"
+                    class="book-card glass rounded-2xl overflow-hidden fade"
+                >
+
+                    <img
+                        src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=600&auto=format&fit=crop"
+                        class="book-cover"
+                        alt="آخر ما تبقى مني"
+                    >
+
+                    <div class="p-3">
+
+                        <h3 class="font-black text-sm truncate">
+                            آخر ما تبقى مني
+                        </h3>
+
+                        <p class="text-[9px] text-gray-500 mt-1">
+                            أحمد خالد
+                        </p>
+
+                        <div class="flex items-center justify-between mt-3">
+
+                            <span
+                                class="badge px-2 py-1 rounded-lg text-[8px] font-bold"
+                            >
+                                32 فصل
+                            </span>
+
+                            <span class="text-yellow-400 text-[10px]">
+                                ★ 4.9
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- BOOK 2 -->
+
+                <a
+                    href="novel.html?id=2"
+                    class="book-card glass rounded-2xl overflow-hidden fade"
+                >
+
+                    <img
+                        src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?q=80&w=600&auto=format&fit=crop"
+                        class="book-cover"
+                        alt="الطريق المظلم"
+                    >
+
+                    <div class="p-3">
+
+                        <h3 class="font-black text-sm truncate">
+                            الطريق المظلم
+                        </h3>
+
+                        <p class="text-[9px] text-gray-500 mt-1">
+                            محمد أحمد
+                        </p>
+
+                        <div class="flex items-center justify-between mt-3">
+
+                            <span
+                                class="badge px-2 py-1 rounded-lg text-[8px] font-bold"
+                            >
+                                48 فصل
+                            </span>
+
+                            <span class="text-yellow-400 text-[10px]">
+                                ★ 4.8
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- BOOK 3 -->
+
+                <a
+                    href="novel.html?id=3"
+                    class="book-card glass rounded-2xl overflow-hidden fade"
+                >
+
+                    <img
+                        src="https://images.unsplash.com/photo-1511108690759-009324a90311?q=80&w=600&auto=format&fit=crop"
+                        class="book-cover"
+                        alt="آخر الناجين"
+                    >
+
+                    <div class="p-3">
+
+                        <h3 class="font-black text-sm truncate">
+                            آخر الناجين
+                        </h3>
+
+                        <p class="text-[9px] text-gray-500 mt-1">
+                            عمر خالد
+                        </p>
+
+                        <div class="flex items-center justify-between mt-3">
+
+                            <span
+                                class="badge px-2 py-1 rounded-lg text-[8px] font-bold"
+                            >
+                                27 فصل
+                            </span>
+
+                            <span class="text-yellow-400 text-[10px]">
+                                ★ 4.7
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- BOOK 4 -->
+
+                <a
+                    href="novel.html?id=4"
+                    class="book-card glass rounded-2xl overflow-hidden fade"
+                >
+
+                    <img
+                        src="https://images.unsplash.com/photo-1513001900722-370f803f498d?q=80&w=600&auto=format&fit=crop"
+                        class="book-cover"
+                        alt="من خلف الباب"
+                    >
+
+                    <div class="p-3">
+
+                        <h3 class="font-black text-sm truncate">
+                            من خلف الباب
+                        </h3>
+
+                        <p class="text-[9px] text-gray-500 mt-1">
+                            سارة علي
+                        </p>
+
+                        <div class="flex items-center justify-between mt-3">
+
+                            <span
+                                class="badge px-2 py-1 rounded-lg text-[8px] font-bold"
+                            >
+                                19 فصل
+                            </span>
+
+                            <span class="text-yellow-400 text-[10px]">
+                                ★ 4.6
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             NEW NOVELS
+        ====================================== -->
+
+        <section class="mt-9">
+
+            <div class="flex items-center justify-between mb-4">
+
+                <div>
+
+                    <p class="text-[9px] text-blue-400 font-bold">
+                        NEW RELEASES
+                    </p>
+
+                    <h2 class="text-lg font-black">
+                        ✨ أحدث الروايات
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="all-novels.html?sort=new"
+                    class="text-[10px] text-blue-400"
+                >
+                    المزيد
+                </a>
+
+            </div>
+
+
+            <div class="space-y-3">
+
+
+                <!-- NEW 1 -->
+
+                <a
+                    href="novel.html?id=5"
+                    class="glass rounded-2xl p-3 flex gap-4 items-center hover:border-blue-500/30 transition"
+                >
+
+                    <img
+                        src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=300&auto=format&fit=crop"
+                        class="w-20 h-24 object-cover rounded-xl"
+                        alt="عالم آخر"
+                    >
+
+                    <div class="flex-1 min-w-0">
+
+                        <h3 class="font-black text-sm">
+                            عالم آخر
+                        </h3>
+
+                        <p class="text-[9px] text-gray-500 mt-1">
+                            يوسف محمد
+                        </p>
+
+                        <p class="text-[10px] text-gray-400 mt-2 line-clamp-2">
+                            رحلة إلى عالم مليء بالأسرار
+                            والمخلوقات الغريبة.
+                        </p>
+
+                        <span
+                            class="inline-block badge px-2 py-1 rounded-lg text-[8px] mt-2"
+                        >
+                            خيال
+                        </span>
+
+                    </div>
+
+                    <span class="text-blue-400">
+                        ←
+                    </span>
+
+                </a>
+
+
+
+                <!-- NEW 2 -->
+
+                <a
+                    href="novel.html?id=6"
+                    class="glass rounded-2xl p-3 flex gap-4 items-center hover:border-blue-500/30 transition"
+                >
+
+                    <img
+                        src="https://images.unsplash.com/photo-1519682337058-a94d519337bc?q=80&w=300&auto=format&fit=crop"
+                        class="w-20 h-24 object-cover rounded-xl"
+                        alt="بين قلبين"
+                    >
+
+                    <div class="flex-1 min-w-0">
+
+                        <h3 class="font-black text-sm">
+                            بين قلبين
+                        </h3>
+
+                        <p class="text-[9px] text-gray-500 mt-1">
+                            ليان
+                        </p>
+
+                        <p class="text-[10px] text-gray-400 mt-2 line-clamp-2">
+                            قصة حب تبدأ بلقاء لم يكن في الحسبان.
+                        </p>
+
+                        <span
+                            class="inline-block badge px-2 py-1 rounded-lg text-[8px] mt-2"
+                        >
+                            رومانسي
+                        </span>
+
+                    </div>
+
+                    <span class="text-blue-400">
+                        ←
+                    </span>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             CTA
+        ====================================== -->
+
+        <section class="mt-9">
+
+            <a
+                href="all-novels.html"
+                class="glass block rounded-3xl p-6 text-center hover:border-blue-500/30 transition"
+            >
+
+                <div class="text-3xl mb-3">
+                    📚
+                </div>
+
+                <h2 class="font-black text-lg">
+                    اكتشف المزيد من الروايات
+                </h2>
+
+                <p class="text-[10px] text-gray-500 mt-2">
+                    أكثر من قصة تنتظرك
+                </p>
+
+                <span
+                    class="inline-block mt-4 bg-blue-600 px-6 py-2.5 rounded-xl text-xs font-black"
+                >
+                    استكشف المكتبة
+                </span>
+
+            </a>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================================
+         BOTTOM NAVIGATION
+    ========================================== -->
+
+    <nav
+        class="bottom-nav fixed bottom-0 left-0 right-0 h-[72px] z-50"
+    >
+
+        <div
+            class="max-w-xl mx-auto h-full flex items-center justify-around px-2"
+        >
+
+
+            <!-- HOME -->
+
+            <a
+                href="index.html"
+                class="nav-item nav-active flex flex-col items-center gap-1"
+            >
+
+                <span class="text-xl">
+                    🏠
+                </span>
+
+                <span class="text-[9px] font-bold">
+                    الرئيسية
+                </span>
+
+            </a>
+
+
+
+            <!-- LIBRARY -->
+
+            <a
+                href="library.html"
+                class="nav-item text-gray-500 flex flex-col items-center gap-1"
+            >
+
+                <span class="text-xl">
+                    📚
+                </span>
+
+                <span class="text-[9px] font-bold">
+                    مكتبتي
+                </span>
+
+            </a>
+
+
+
+            <!-- SEARCH -->
+
+            <a
+                href="search.html"
+                class="nav-item text-gray-500 flex flex-col items-center gap-1"
+            >
+
+                <span class="text-xl">
+                    🔎
+                </span>
+
+                <span class="text-[9px] font-bold">
+                    بحث
+                </span>
+
+            </a>
+
+
+
+            <!-- HISTORY -->
+
+            <a
+                href="history.html"
+                class="nav-item text-gray-500 flex flex-col items-center gap-1"
+            >
+
+                <span class="text-xl">
+                    🕘
+                </span>
+
+                <span class="text-[9px] font-bold">
+                    السجل
+                </span>
+
+            </a>
+
+
+
+            <!-- PROFILE -->
+
+            <a
+                href="profile.html"
+                class="nav-item text-gray-500 flex flex-col items-center gap-1"
+            >
+
+                <span class="text-xl">
+                    👤
+                </span>
+
+                <span class="text-[9px] font-bold">
+                    حسابي
+                </span>
+
+            </a>
+
+        </div>
+
+    </nav>
+
 
 </body>
+
 </html>
